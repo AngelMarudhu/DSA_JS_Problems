@@ -1864,27 +1864,159 @@
 // console.log(getMaximumGenerated(7));
 
 // ------------------------------->----------------------------------->
-var generateParenthesis = function (n) {
-  const result = [];
+// var generateParenthesis = function (n) {
+//   const result = [];
 
-  const recusiveParan = function (str, open, close) {
-    if (open === n && close === n) {
-      result.push(str);
-      return;
+//   const recusiveParan = function (str, open, close) {
+//     if (open === n && close === n) {
+//       result.push(str);
+//       return;
+//     }
+
+//     if (open < n) {
+//       recusiveParan(str + '(', open + 1, close);
+//     }
+//     console.log(str);
+//     if (close < open) {
+//       recusiveParan(str + ')', open, close + 1);
+//     }
+//   };
+
+//   recusiveParan('', 0, 0);
+
+//   return result;
+// };
+
+// console.log(generateParenthesis(3));
+
+// const board = [
+//   [5, 3, 0, 0, 7, 0, 0, 0, 0],
+//   [6, 0, 0, 1, 9, 5, 0, 0, 0],
+//   [0, 9, 8, 0, 0, 0, 0, 6, 0],
+//   [8, 0, 0, 0, 6, 0, 0, 0, 3],
+//   [4, 0, 0, 8, 0, 3, 0, 0, 1],
+//   [7, 0, 0, 0, 2, 0, 0, 0, 6],
+//   [0, 6, 0, 0, 0, 0, 2, 8, 0],
+//   [0, 0, 0, 4, 1, 9, 0, 0, 5],
+//   [0, 0, 0, 0, 8, 0, 0, 7, 9],
+// ];
+
+// const N = board.length;
+
+// function solveSudoku() {
+//   // Recursive function to solve the Sudoku
+//   function solve() {
+//     const emptyCell = findEmptyCell();
+//     if (!emptyCell) {
+//       return true; // All cells are filled
+//     }
+
+//     const [row, col] = emptyCell;
+//     for (let num = 1; num <= 9; num++) {
+//       if (isSafe(row, col, num)) {
+//         board[row][col] = num;
+//         if (solve()) {
+//           // Continue Solving The Sudoku
+//           return true; // Found a solution
+//         }
+//         board[row][col] = 0; // Backtrack
+//       }
+//     }
+
+//     return false; // No solution found
+//   }
+
+//   // Start solving from the top-left corner
+//   if (solve()) {
+//     return board; // Return the solved Sudoku
+//   } else {
+//     return null; // No solution exists
+//   }
+// }
+
+// // Find an empty cell (unassigned cell)
+// function findEmptyCell() {
+//   for (let row = 0; row < N; row++) {
+//     for (let col = 0; col < N; col++) {
+//       if (board[row][col] === 0) {
+//         return [row, col];
+//       }
+//     }
+//   }
+//   return null; // No empty cell found
+// }
+
+// // Check if the value is safe to place in the given cell
+// function isSafe(row, col, num) {
+//   // Check row and column
+//   for (let i = 0; i < N; i++) {
+//     if (board[row][i] === num || board[i][col] === num) {
+//       return false;
+//     }
+//   }
+
+//   // Check 3x3 subgrid
+//   const startRow = Math.floor(row / 3) * 3;
+//   const startCol = Math.floor(col / 3) * 3;
+//   for (let i = startRow; i < startRow + 3; i++) {
+//     for (let j = startCol; j < startCol + 3; j++) {
+//       if (board[i][j] === num) {
+//         return false;
+//       }
+//     }
+//   }
+
+//   return true;
+// }
+
+// // Example Sudoku board (0 represents an empty cell)
+
+// const solvedSudoku = solveSudoku();
+// if (solvedSudoku) {
+//   console.log("Solved Sudoku:");
+//   console.log(solvedSudoku);
+// } else {
+//   console.log("No solution exists.");
+// }
+
+// -----------------------------------------------------------------------------------------
+function knapsackTopDown(weights, values, capacity) {
+  const memo = {}; // Memoization table
+
+  function recursiveKnapsack(index, remainingCapacity) {
+    if (index < 0 || remainingCapacity <= 0) {
+      return 0;
+    }
+    console.log(memo, "memo values after solving solution");
+    if (memo[index] && memo[index][remainingCapacity]) {
+      return memo[index][remainingCapacity];
     }
 
-    if (open < n) {
-      recusiveParan(str + '(', open + 1, close);
+    let includeItem = 0;
+    if (weights[index] <= remainingCapacity) {
+      includeItem =
+        values[index] +
+        recursiveKnapsack(index - 1, remainingCapacity - weights[index]);
     }
-    console.log(str);
-    if (close < open) {
-      recusiveParan(str + ')', open, close + 1);
+
+    const excludeItem = recursiveKnapsack(index - 1, remainingCapacity);
+
+    const max = Math.max(includeItem, excludeItem);
+
+    if (!memo[index]) {
+      memo[index] = {};
     }
-  };
+    memo[index][remainingCapacity] = max;
 
-  recusiveParan('', 0, 0);
+    return max;
+  }
 
-  return result;
-};
+  return recursiveKnapsack(weights.length - 1, capacity);
+}
 
-console.log(generateParenthesis(3));
+const weights = [2, 3, 4, 5];
+const values = [3, 4, 5, 6];
+const capacity = 5;
+
+const maxValue = knapsackTopDown(weights, values, capacity);
+console.log("Maximum value:", maxValue);
