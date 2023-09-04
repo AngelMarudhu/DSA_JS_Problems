@@ -1980,43 +1980,119 @@
 // }
 
 // -----------------------------------------------------------------------------------------
-function knapsackTopDown(weights, values, capacity) {
-  const memo = {}; // Memoization table
+// function knapsackTopDown(weights, values, capacity) {
+//   const memo = {}; // Memoization table
 
-  function recursiveKnapsack(index, remainingCapacity) {
-    if (index < 0 || remainingCapacity <= 0) {
+//   function recursiveKnapsack(index, remainingCapacity) {
+//     if (index < 0 || remainingCapacity <= 0) {
+//       return 0;
+//     }
+//     console.log(memo, "memo values after solving solution");
+//     if (memo[index] && memo[index][remainingCapacity]) {
+//       return memo[index][remainingCapacity];
+//     }
+
+//     let includeItem = 0;
+//     if (weights[index] <= remainingCapacity) {
+//       includeItem =
+//         values[index] +
+//         recursiveKnapsack(index - 1, remainingCapacity - weights[index]);
+//     }
+
+//     const excludeItem = recursiveKnapsack(index - 1, remainingCapacity);
+
+//     const max = Math.max(includeItem, excludeItem);
+
+//     if (!memo[index]) {
+//       memo[index] = {};
+//     }
+//     memo[index][remainingCapacity] = max;
+
+//     return max;
+//   }
+
+//   return recursiveKnapsack(weights.length - 1, capacity);
+// }
+
+// const weights = [2, 3, 4, 5];
+// const values = [3, 4, 5, 6];
+// const capacity = 5;
+
+// const maxValue = knapsackTopDown(weights, values, capacity);
+// console.log("Maximum value:", maxValue);
+
+// -----------------------------------------------------------------------------------------
+
+// function maxMeritPoints(points) {
+//   const N = points.length;
+//   const memo = new Array(N).fill(null).map(() => new Array(3).fill(-1));
+
+//   function dp(day, activity) {
+//     if (day < 0) {
+//       return 0;
+//     }
+
+//     if (memo[day][activity] !== -1) {
+//       return memo[day][activity];
+//     }
+
+//     let maxPoints = 0;
+//     for (let prevActivity = 0; prevActivity < 3; prevActivity++) {
+//       if (prevActivity !== activity) {
+//         maxPoints = Math.max(
+//           maxPoints,
+//           points[day][activity] + dp(day - 1, prevActivity)
+//         );
+//       }
+//     }
+
+//     memo[day][activity] = maxPoints;
+//     return maxPoints;
+//   }
+
+//   let maxTotalPoints = 0;
+//   for (let activity = 0; activity < 3; activity++) {
+//     maxTotalPoints = Math.max(maxTotalPoints, dp(N - 1, activity));
+//   }
+
+//   return maxTotalPoints;
+// }
+
+// const points = [
+//   [1, 2, 3],
+//   [4, 5, 6],
+//   [7, 8, 9],
+// ];
+
+// console.log("Maximum Merit Points:", maxMeritPoints(points)); // Output will be the maximum merit points Ninja can earn
+
+// -----------------------------------------------------------------------------------------
+
+function rodCuttingTopDown(prices, n) {
+  const memo = new Array(n + 1).fill(-1);
+
+  function dp(length) {
+    if (length === 0) {
       return 0;
     }
-    console.log(memo, "memo values after solving solution");
-    if (memo[index] && memo[index][remainingCapacity]) {
-      return memo[index][remainingCapacity];
+
+    if (memo[length] !== -1) {
+      return memo[length];
     }
 
-    let includeItem = 0;
-    if (weights[index] <= remainingCapacity) {
-      includeItem =
-        values[index] +
-        recursiveKnapsack(index - 1, remainingCapacity - weights[index]);
+    let maxVal = -Infinity;
+    for (let i = 1; i <= length; i++) {
+      maxVal = Math.max(maxVal, prices[i - 1] + dp(length - i));
     }
 
-    const excludeItem = recursiveKnapsack(index - 1, remainingCapacity);
-
-    const max = Math.max(includeItem, excludeItem);
-
-    if (!memo[index]) {
-      memo[index] = {};
-    }
-    memo[index][remainingCapacity] = max;
-
-    return max;
+    memo[length] = maxVal;
+    return maxVal;
   }
 
-  return recursiveKnapsack(weights.length - 1, capacity);
+  return dp(n);
 }
 
-const weights = [2, 3, 4, 5];
-const values = [3, 4, 5, 6];
-const capacity = 5;
-
-const maxValue = knapsackTopDown(weights, values, capacity);
-console.log("Maximum value:", maxValue);
+const prices = [2, 5, 7, 8, 10];
+const rodLength = 5;
+const maxTotalValue = rodCuttingTopDown(prices, rodLength);
+console.log("Maximum Total Value (Top Down):", maxTotalValue);
