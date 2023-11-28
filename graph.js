@@ -13,6 +13,7 @@
 // 13) DETECT A CYCLE DIRECTED GRAPH WITH kahn's algorithm bfs IN DIRECTED GRAPH solved gfg
 // 14) DETECT A CYCLE DIRECTED GRAPH WITH DFS TECHNIQUE IN DIRECTED GRAPH not solved anywhere
 // 15) Course Schedule One and Two
+// 16) Find Eventual Safe States in kahn's algorithm modified BFS technique solved on LEETCODE reversed graph
 
 // class bfs {
 //   bfsGraph(v, adj) {
@@ -943,3 +944,48 @@
 // console.log(output);
 
 // ---------------------------------------------------------------------------------
+// Find Eventual Safe States in kahn's algorithm modified BFS technique solved on leetcode reversed graph indegree
+// class Solution {
+//   eventualStates(graph) {
+//     let reversedAdj = new Array(graph.length).fill(null).map(() => []);
+
+//     let indegree = new Array(graph.length).fill(0);
+
+//     for (let i = 0; i < graph.length; i++) {
+//       for (let adj of graph[i]) {
+//         reversedAdj[adj].push(i);
+//         indegree[i]++;
+//       }
+//     }
+
+//     // console.log(reversedAdj, "reversed adj");
+//     // console.log(indegree);
+//     let safeNode = [];
+//     let queue = [];
+//     for (let i = 0; i < reversedAdj.length; i++) {
+//       if (indegree[i] === 0) {
+//         queue.push(i);
+//       }
+//     }
+//     // console.log(queue);
+//     while (queue.length !== 0) {
+//       let vertex = queue.shift();
+//       safeNode.push(vertex);
+
+//       for (let remove of reversedAdj[vertex]) {
+//         indegree[remove]--;
+//         if (indegree[remove] === 0) {
+//           queue.push(remove);
+//         }
+//       }
+//     }
+//     let out = safeNode.sort((a, b) => a - b);
+//     return out;
+//   }
+// }
+
+// let graph = [[1, 2], [2, 3], [5], [0], [5], [], []];
+
+// let data = new Solution();
+// let output = data.eventualStates(graph);
+// console.log("commited safe states", output);
