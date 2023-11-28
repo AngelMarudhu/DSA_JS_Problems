@@ -11,7 +11,7 @@
 //     }
 //   }
 //   return console.log("Everything is failure so sorrryyyy!!!!!");
-// };
+// };Gl
 
 // compare(arrOne, arrTwo);
 
@@ -552,7 +552,7 @@
 //       // initially next is null and next time next will be pointing another node why because next oda work idhuthan so value venam maaralam but next oda work pointing mattum dhaan carefull
 //       next: null,
 //       prev: null,
-//     };
+//     };z
 //     // initially no value in the list so tail value also head value
 //     // important tail reference to the head value...
 //     this.tail = this.head;

@@ -2068,31 +2068,762 @@
 
 // -----------------------------------------------------------------------------------------
 
-function rodCuttingTopDown(prices, n) {
-  const memo = new Array(n + 1).fill(-1);
+// function rodCuttingTopDown(prices, n) {
+//   const memo = new Array(n + 1).fill(-1);
 
-  function dp(length) {
-    if (length === 0) {
-      return 0;
-    }
+//   function dp(length) {
+//     if (length === 0) {
+//       return 0;
+//     }
 
-    if (memo[length] !== -1) {
-      return memo[length];
-    }
+//     if (memo[length] !== -1) {
+//       return memo[length];
+//     }
 
-    let maxVal = -Infinity;
-    for (let i = 1; i <= length; i++) {
-      maxVal = Math.max(maxVal, prices[i - 1] + dp(length - i));
-    }
+//     let maxVal = -Infinity;
+//     for (let i = 1; i <= length; i++) {
+//       maxVal = Math.max(maxVal, prices[i - 1] + dp(length - i));
+//     }
 
-    memo[length] = maxVal;
-    return maxVal;
-  }
+//     memo[length] = maxVal;
+//     return maxVal;
+//   }
 
-  return dp(n);
-}
+//   return dp(n);
+// }
 
-const prices = [2, 5, 7, 8, 10];
-const rodLength = 5;
-const maxTotalValue = rodCuttingTopDown(prices, rodLength);
-console.log("Maximum Total Value (Top Down):", maxTotalValue);
+// const prices = [2, 5, 7, 8, 10];
+// const rodLength = 5;
+// const maxTotalValue = rodCuttingTopDown(prices, rodLength);
+// console.log("Maximum Total Value (Top Down):", maxTotalValue);
+
+// -----------------------------------------------------------------------------------------
+
+// function minDistance(word1, word2) {
+//   const memo = {}; // Memoization table
+
+//   function dp(i, j) {
+//     // Base case: If either string is empty, insert/remove all characters from the other string.
+//     if (i === -1) return j + 1;
+//     if (j === -1) return i + 1;
+
+//     const key = `${i}-${j}`;
+//     if (memo[key] !== undefined) {
+//       return memo[key];
+//     }
+
+//     if (word1[i] === word2[j]) {
+//       // Characters match, no operation needed.
+//       memo[key] = dp(i - 1, j - 1);
+//     } else {
+//       // Three options: Insert, Delete, Replace.
+//       memo[key] = Math.min(
+//         dp(i, j - 1) + 1, // Insert
+//         dp(i - 1, j) + 1, // Delete
+//         dp(i - 1, j - 1) + 1 // Replace
+//       );
+//     }
+
+//     return memo[key];
+//   }
+
+//   return dp(word1.length - 1, word2.length - 1);
+// }
+
+// const word1 = "intention";
+// const word2 = "execution";
+
+// const minEditDistance = minDistance(word1, word2);
+// console.log("Minimum Edit Distance:", minEditDistance);
+
+// -----------------------------------------------------------------------------------------
+// function longestCommonSubsequence(text1, text2) {
+//   const m = text1.length;
+//   const n = text2.length;
+
+//   // Create a memoization table.
+//   const memo = new Array(m + 1).fill(0).map(() => new Array(n + 1).fill(0));
+
+//   function lcsLength(i, j) {
+//     if (i === 0 || j === 0) {
+//       return 0;
+//     }
+
+//     if (memo[i][j] !== 0) {
+//       return memo[i][j];
+//     }
+
+//     if (text1[i - 1] === text2[j - 1]) {
+//       memo[i][j] = 1 + lcsLength(i - 1, j - 1);
+//     } else {
+//       memo[i][j] = Math.max(lcsLength(i - 1, j), lcsLength(i, j - 1));
+//     }
+
+//     return memo[i][j];
+//   }
+
+//   return lcsLength(m, n);
+// }
+
+// // Example usage:
+// const text1 = "abcde";
+// const text2 = "ace";
+// const lengthOfLCS = longestCommonSubsequence(text1, text2);
+// console.log("Length of Longest Common Subsequence:", lengthOfLCS);
+
+// -----------------------------------------------------------------------------------------
+// function numDistinct(s, t) {
+//   const memo = new Map();
+
+//   function dfs(i, j) {
+//       // Base case: If t is empty, we've found a subsequence.
+//       if (j === t.length) {
+//           return 1;
+//       }
+
+//       // If we've reached the end of s but not t, there's no subsequence.
+//       if (i === s.length) {
+//           return 0;
+//       }
+
+//       // Check if the current characters match.
+//       if (s[i] === t[j]) {
+//           // Try advancing both pointers in s and t, or just advance in s.
+//           const include = dfs(i + 1, j + 1);
+//           const exclude = dfs(i + 1, j);
+//           memo.set(`${i}-${j}`, include + exclude);
+//           return include + exclude;
+//       } else {
+//           // Characters don't match, so just advance in s.
+//           if (!memo.has(`${i}-${j}`)) {
+//               memo.set(`${i}-${j}`, dfs(i + 1, j));
+//           }
+//           return memo.get(`${i}-${j}`);
+//       }
+//   }
+
+//   return dfs(0, 0);
+// }
+
+// const s = "babgbag";
+// const t = "bag";
+// console.log(numDistinct(s, t)); // Output: 5
+
+// -----------------------------------------------------------------------------------------
+// function isMatch(p, s) {
+//   const memo = new Map();
+
+//   function dp(i, j) {
+//     // Check if we've already computed this subproblem
+//     if (memo.has(`${i}-${j}`)) {
+//       return memo.get(`${i}-${j}`);
+//     }
+
+//     // Base case: If both strings are empty, they match.
+//     if (i === 0 && j === 0) {
+//       return true;
+//     }
+
+//     // If only the pattern is empty, they don't match.
+//     if (i < 0 && j >= 0) {
+//       return false;
+//     }
+
+//     if (j < 0 && i >= 0) {
+//       for (let i = 0; i <= i; i++) {
+//         if (p[i] != "*") {
+//           return false;
+//         }
+//       }
+//       return true;
+//     }
+
+//     if (p[i - 1] === "*" || s[j - 1] === "*") {
+//       // Two possibilities: match 0 characters or match 1 character.
+//       const matchZero = dp(i, j - 1);
+//       const matchOne = i > 0 && dp(i - 1, j);
+//       const result = matchZero || matchOne;
+//       memo.set(`${i}-${j}`, result);
+//       return result;
+//     }
+
+//     if (p[i - 1] === "?" || s[j - 1] === p[i - 1]) {
+//       // If characters match or pattern has '?', move both pointers.
+//       const result = dp(i - 1, j - 1);
+//       memo.set(`${i}-${j}`, result);
+//       return result;
+//     }
+
+//     // Characters don't match.
+//     memo.set(`${i}-${j}`, false);
+//     return false;
+//   }
+
+//   return dp(p.length, s.length);
+// }
+
+// // Example usage:
+// const p = "aa"; // pattern
+// const s = "?*"; // string for an comparison
+// console.log(isMatch(p, s)); // Output: true
+
+// -----------------------------------------------------
+/// wild card problem
+
+// function isMatch(s, p) {
+//   const memo = new Map();
+
+//   function dp(i, j) {
+//     // Check if we've already computed this subproblem
+//     if (memo.has(`${i}-${j}`)) {
+//       return memo.get(`${i}-${j}`);
+//     }
+
+//     // Base case: If both strings are empty, they match.
+//     if (i === 0 && j === 0) {
+//       return true;
+//     }
+
+//     // If only the pattern is empty, they don't match.
+//     if (j === 0) {
+//       return false;
+//     }
+
+//     // if (i == 0 && j > 0) {
+//     //   for (let j = 0; j <= j; j++) {
+//     //     if (p[j] != "*") {
+//     //       return false;
+//     //     }
+//     //   }
+//     //   return true;
+//     // }
+
+//     if (p[j - 1] === "*" || s[i - 1] === "*") {
+//       // Two possibilities: match 0 characters or match 1 character.
+//       const matchZero = dp(i, j - 1);
+//       const matchOne = i > 0 && dp(i - 1, j);
+//       const result = matchZero || matchOne;
+//       memo.set(`${i}-${j}`, result);
+//       return result;
+//     }
+
+//     if (p[j - 1] === "?" || s[i - 1] === p[j - 1]) {
+//       // If characters match or pattern has '?', move both pointers.
+//       const result = dp(i - 1, j - 1);
+//       memo.set(`${i}-${j}`, result);
+//       return result;
+//     }
+
+//     // Characters don't match.
+//     memo.set(`${i}-${j}`, false);
+//     return false;
+//   }
+
+//   return dp(s.length, p.length);
+// }
+// // Example for false statment
+// // const s = "abcd"; // pattern
+// // const p = "ab?*cd"; // string for an comparison
+// // console.log(isMatch(s, p)); // Output: false
+
+// // Example usage:
+// const s = "aa"; // pattern
+// const p = "*"; // string for an comparison
+// console.log(isMatch(s, p)); // Output: true
+
+// ---------------------------------------------------------------
+
+// BINARY SEARCH ALGORITHM.....
+
+// function lowerBoundRecursive(arr, target, left, right) {
+//   if (left > right) {
+//     return -1; // Base case: element not found
+//   }
+
+//   const mid = left + Math.floor((right - left) / 2);
+
+//   if (arr[mid] === target) {
+//     // Update the result to the current index and search on the left half.
+//     return Math.min(mid, lowerBoundRecursive(arr, target, left, mid - 1));
+//   } else if (arr[mid] < target) {
+//     return lowerBoundRecursive(arr, target, mid + 1, right); // Search the right half
+//   } else {
+//     return lowerBoundRecursive(arr, target, left, mid - 1); // Search the left half
+//   }
+// }
+
+// // Wrapper function for lower bound using recursion.
+// function lowerBound(arr, target) {
+//   return lowerBoundRecursive(arr, target, 0, arr.length - 1);
+// }
+
+// // Example usage:
+// const arr = [1, 2, 2, 2, 3, 4, 4, 5];
+// const target = 2;
+// const result = lowerBound(arr, target);
+// console.log(`Lower bound of ${target} is at index ${result}`);
+
+// ---------------------------------------
+
+// function lowerBoundRecursive(arr, target, left, right) {
+//   if (left > right) {
+//     return left; // Return the insertion point
+//   }
+
+//   const mid = left + Math.floor((right - left) / 2);
+
+//   if (arr[mid] === target) {
+//     // Update the result to the current index and search on the left half.
+//     return Math.min(mid, lowerBoundRecursive(arr, target, left, mid - 1));
+//   } else if (arr[mid] < target) {
+//     return lowerBoundRecursive(arr, target, mid + 1, right); // Search the right half
+//   } else {
+//     return lowerBoundRecursive(arr, target, left, mid - 1); // Search the left half
+//   }
+// }
+
+// // Wrapper function for lower bound using recursion.
+// function lowerBound(arr, target) {
+//   return lowerBoundRecursive(arr, target, 0, arr.length - 1);
+// }
+
+// // Example usage:
+// const arr = [1, 2, 2, 2, 3, 4, 4, 5];
+// const target = 6; // Element not in the array
+// const result = lowerBound(arr, target);
+// console.log(`Lower bound of ${target} is at index ${result}`);
+
+// ---------------------------------------------------------------
+// function findOccurrences(arr, x, left, right) {
+//   if (left > right) {
+//     return -1; // Element not found
+//   }
+
+//   const mid = left + Math.floor((right - left) / 2);
+
+//   if (arr[mid] === x) {
+//     if (mid === 0 || arr[mid - 1] !== x) {
+//       return mid; // Found the first occurrence
+//     } else if (mid === arr.length - 1 || arr[mid + 1] !== x) {
+//       return mid; // Found the last occurrence
+//     } else {
+//       // Continue searching for the first or last occurrence
+//       const first = findOccurrences(arr, x, left, mid - 1);
+//       const last = findOccurrences(arr, x, mid + 1, right);
+//       return first !== -1 ? first : last;
+//     }
+//   } else if (arr[mid] < x) {
+//     return findOccurrences(arr, x, mid + 1, right); // Search the right half
+//   } else {
+//     return findOccurrences(arr, x, left, mid - 1); // Search the left half
+//   }
+// }
+
+// // Example usage:
+// const arr = [1, 3, 5, 5, 5, 5, 67, 123, 125];
+// const x = 5;
+
+// // Find the first and last occurrences
+// const occurrence = findOccurrences(arr, x, 0, arr.length - 1);
+
+// console.log(`First occurrence of ${x} is at index ${occurrence}`);
+// console.log(`Last occurrence of ${x} is at index ${occurrence}`);
+
+// 2 method
+
+// function findFirstOccurrence(arr, x, left, right) {
+//   if (left > right) {
+//     return -1; // Element not found
+//   }
+
+//   const mid = left + Math.floor((right - left) / 2);
+
+//   if (arr[mid] === x) {
+//     if (mid === 0 || arr[mid - 1] !== x) {
+//       return mid; // Found the first occurrence
+//     } else {
+//       return findFirstOccurrence(arr, x, left, mid - 1);
+//     }
+//   } else if (arr[mid] < x) {
+//     return findFirstOccurrence(arr, x, mid + 1, right); // Search the right half
+//   } else {
+//     return findFirstOccurrence(arr, x, left, mid - 1); // Search the left half
+//   }
+// }
+
+// function findLastOccurrence(arr, x, left, right) {
+//   if (left > right) {
+//     return -1; // Element not found
+//   }
+
+//   const mid = left + Math.floor((right - left) / 2);
+
+//   if (arr[mid] === x) {
+//     if (mid === arr.length - 1 || arr[mid + 1] !== x) {
+//       return mid; // Found the last occurrence
+//     } else {
+//       return findLastOccurrence(arr, x, mid + 1, right);
+//     }
+//   } else if (arr[mid] <= x) {
+//     return findLastOccurrence(arr, x, mid + 1, right); // Search the right half
+//   } else {
+//     return findLastOccurrence(arr, x, left, mid - 1); // Search the left half
+//   }
+// }
+
+// // Example usage:
+// const arr = [1, 3, 5, 5, 5, 5, 67, 123, 125];
+// const x = 5;
+
+// // Find the first occurrence
+// const firstOccurrence = findFirstOccurrence(arr, x, 0, arr.length - 1);
+
+// // Find the last occurrence
+// const lastOccurrence = findLastOccurrence(arr, x, 0, arr.length - 1);
+
+// console.log(`First occurrence of ${x} is at index ${firstOccurrence}`);
+// console.log(`Last occurrence of ${x} is at index ${lastOccurrence}`);
+
+// --------------------------------------------------------------------------------------
+// My own code
+
+// function singleElement(arr, n) {
+//   if (n === 1) return arr[0];
+//   let low = 0;
+//   let high = arr.length - 1;
+//   while (low <= high) {
+//     let mid = low + Math.floor((high - low) / 2);
+
+//     if (arr[mid] !== arr[mid - 1] && arr[mid] !== arr[mid + 1]) {
+//       return arr[mid]; // got the output
+//     }
+//     if (
+//       (mid % 2 === 1 && arr[mid] === arr[mid - 1]) ||
+//       (mid % 2 === 0 && arr[mid] === arr[mid + 1])
+//     ) {
+//       low = mid + 1;
+//     } else {
+//       high = mid - 1;
+//     }
+//   }
+//   return -1; // no matched condition
+// }
+
+// const question = [1, 1, 4, 2, 2, 3, 3, 50, 50, 70, 70];
+// const total = question.length;
+// console.log(total);
+// const data = singleElement(question, total);
+
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
+
+// function findPeak(arr, n) {
+//   if (n === 1) return 0;
+//   // now classical logic here like as i told you before while coding sepepratly check the 0 and n-1 last index peak or not
+//   if (arr[0] > arr[1]) return 1; // if 0th index has peak logic
+//   if (arr[n - 1] > arr[n - 2]) return n - 1; // this one if n-1 last index has peak logic
+//   // now comes to the logic we already checked the 0th and last index peak or not so anymore we don't want to check that again so shrink that array like low = 1 and high = n -2 in usually we do low = 0 and high = n-1
+//   let low = 1;
+//   let high = n - 2;
+//   // the loop always same as what we did before
+//   while (low <= high) {
+//     const mid = low + Math.floor((high - low) / 2);
+//     // first we should check mid is greater then or not of left and right neighbor
+//     if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+//       return mid;
+//     } else if (arr[mid] > arr[mid - 1]) {
+//       low = mid + 1;
+//     } else if (arr[mid] > arr[mid + 1]) {
+//       high = mid - 1;
+//     }
+//   }
+//   return -1;
+// }
+
+// const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+// const totalLength = arr.length;
+
+// const data = findPeak(arr, totalLength);
+// console.log(`this is your peak value ${data} Marudhu thank you`);
+
+// --------------------------------------------------------------------------------------
+
+// function repeat(mid, n, m) {
+//   let ans = 1;
+
+//   // return 1 means matched you root //
+//   // return 2 means greater then your m value
+//   // return 0 means less then your m value // you can assume anything what you imagine it's just an example // I'm using greater less equal string......
+
+//   // ans = Math.pow(mid, n); // method one to find your power of the value
+//   for (let i = 1; i <= n; i++) {
+//     ans = ans * mid;
+//     if (ans > m) {
+//       return "greater";
+//     }
+//   } // method second to find your power of the value you can use either of anyone...
+
+//   if (ans === m) {
+//     return "equal";
+//   }
+//   return "less";
+// }
+
+// function findRoot(n, m) {
+//   let low = 1;
+//   let high = m;
+
+//   while (low <= high) {
+//     let mid = low + Math.floor((high - low) / 2);
+//     let midReturn = repeat(mid, n, m);
+
+//     if (midReturn === "equal") {
+//       return mid;
+//     } else if (midReturn === "less") {
+//       low = mid + 1;
+//     } else {
+//       high = mid - 1;
+//     }
+//   }
+//   return -1;
+// }
+
+// const data = findRoot(3, 27);
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
+
+// KOKO Eating Bananas...
+
+// function findMax(arr) {
+//   let intialMaxi = Number.MIN_VALUE;
+//   let totalLength = arr.length;
+
+//   for (let i = 0; i <= totalLength - 1; i++) {
+//     intialMaxi = Math.max(intialMaxi, arr[i]);
+//   }
+//   return intialMaxi;
+// }
+
+// function findTotalHours(arr, mid) {
+//   // as usual same initially total hours = 0
+//   let totalHours = 0;
+
+//   for (let i = 0; i < arr.length; i++) {
+//     totalHours = totalHours + Math.ceil(arr[i] / mid);
+//   }
+//   // console.log(totalHours);
+//   return totalHours;
+// }
+
+// // -------------------------------------------------------------------------------------
+
+// function kokoEating(arr, hours) {
+//   let low = 1;
+//   let high = findMax(arr);
+
+//   while (low <= high) {
+//     let mid = low + Math.floor((high - low) / 2);
+//     let totalHours = findTotalHours(arr, mid);
+
+//     if (totalHours <= hours) {
+//       high = mid - 1;
+//     } else {
+//       low = mid + 1;
+//     }
+//   }
+//   return low;
+// }
+
+// let hour = 8;
+// let arry = [3, 6, 7, 11];
+
+// let finalOutput = kokoEating(arry, hour);
+// console.log(finalOutput);
+
+// --------------------------------------------------------------------------------------
+// ALLOCATE THE BOOKS NUMBER OF STUDENTS
+
+// function studentCepacity(arr, maxPage) {
+//   let stu = 1;
+//   let pageallocate = 0;
+
+//   for (let i = 0; i < arr.length; i++) {
+//     if (pageallocate + arr[i] <= maxPage) {
+//       pageallocate += arr[i];
+//     } else {
+//       stu++;
+//       pageallocate = arr[i];
+//     }
+//   }
+//   return stu;
+// }
+
+// function allocate(arr, m) {
+//   let low = Math.max(...arr);
+//   let high = arr.reduce((acc, val) => acc + val, 0);
+//   let ans = 0;
+
+//   while (low <= high) {
+//     let mid = low + Math.floor((high - low) / 2);
+//     let count = studentCepacity(arr, mid);
+//     if (count <= m) {
+//       ans = mid;
+//       high = mid - 1;
+//     } else {
+//       low = mid + 1;
+//     }
+//   }
+//   return ans;
+// }
+
+// let arrays = [25, 46, 28, 49, 24];
+// let students = 4;
+// let data = allocate(arrays, students);
+
+// console.log(data, "total allocate books");
+
+// --------------------------------------------------------------------------------------
+
+// function KthMissing(arr, k) {
+//   let missingCount = 0;
+//   for (let i = 1; missingCount < k; i++) {
+//     if (!arr.includes(i)) {
+//       missingCount++;
+//     }
+
+//     if (missingCount === k) {
+//       return i;p
+//     }
+//   }
+//   return -1;
+// }
+
+// let arrays = [2, 3, 4, 7, 11];
+// let miss = 5;
+// let data = KthMissing(arrays, miss);
+
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
+
+// max sub array kadane's algorithm
+
+// function maxArray(arr) {
+//   let n = arr.length;
+//   let max = Number.MIN_VALUE;
+//   let sum = 0;
+//   // let start = -1;
+//   // let subStart = -1;
+//   // let subEnd = -1;
+//   // let maxArray = [];
+
+//   for (let i = 0; i < n; i++) {
+//     // if (sum === 0) start = i; // if sum became 0 we start a new subarray that's why
+//     sum = sum + arr[i];
+
+//     if (sum > max) {
+//       // subStart = start;
+//       // subEnd = i;
+//       // maxArray = arr.slice(start, subEnd); // subarray value all printing why do we slice here ? simple slice car return new array it can extract the value from the original array
+//       max = sum;
+//     }
+
+//     if (sum < 0) {
+//       sum = 0;
+//     }
+//   }
+//   // console.log(maxArray);
+//   // console.log(`array of ${subStart} to ${subEnd}`)
+//   return max;
+// }
+
+// let arrays = [-2, -3, 4, -1, -2, 1, 5, -3];
+// let totalLength = arrays.length;
+
+// let data = maxArray(arrays, totalLength);
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
+
+// MIN COIN CHAGE PROBLEM GREEDY ALGORITHM...
+
+// function minCoin(arr, amount) {
+//   let total = 0;
+//   let changesCoins = [];
+//   for (let i = arr.length - 1; i >= 0; i--) {
+//     while (total + arr[i] <= amount) {
+//       changesCoins.push(arr[i]);
+//       total = total + arr[i];
+//     }
+//   }
+//   return changesCoins;
+// }
+
+// let denomination = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
+// let value = 87;
+// let data = minCoin(denomination, value);
+// console.log(data);
+
+// --------------------------------
+
+// function minCoin(arr, amount) {
+//   let numCoins = 0;
+//   let remainingBalance = amount;
+//   //   let changesCoins = [];
+//   for (let i = arr.length - 1; i >= 0; i--) {
+//     while (arr[i] <= remainingBalance) {
+//       remainingBalance = remainingBalance - arr[i];
+//       numCoins++;
+//     }
+//   }
+//   // If there's any remaining amount, it's not possible to make exact change.
+//   // sometimes not possible to make exact change i've already told you in greedy as much as we can make changes to your v value
+
+//   if (remainingBalance > 0 && arr.length === 1) {
+//     return -1;
+//   }
+//   return numCoins;
+// }
+
+// let denomination = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
+// let value = 87;
+// let data = minCoin(denomination, value);
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
+
+// MINIMUM COIN CHANGE PROBLEM DYNAMIC PROGRAMMING PICK NOTPICK TECHNIQUE....
+
+// function coinFind(denomination, index, target) {
+//   if (index === 0) {
+//     if (target % denomination[index] === 0) {
+//       return target / denomination[index];
+//     } else {
+//       return 1e9;
+//     }
+//   }
+
+//   let notInclude = 0 + coinFind(denomination, index - 1, target);
+//   let Include = Number.MAX_VALUE;
+//   if (denomination[index] <= target) {
+//     Include = 1 + coinFind(denomination, index, target - denomination[index]);
+//   }
+//   return Math.min(notInclude, Include);
+// }
+
+// function minCoin(denomination, target) {
+//   let indexes = denomination.length - 1;
+//   let minValue = coinFind(denomination, indexes, target);
+//   if (minValue >= 1e9) return -1;
+//   return minValue;
+// }
+
+// let arr = [1, 2, 3];
+// let tar = 8;
+
+// let data = minCoin(arr, tar);
+// console.log(data);
+
+// --------------------------------------------------------------------------------------
