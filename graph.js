@@ -14,6 +14,11 @@
 // 14) DETECT A CYCLE DIRECTED GRAPH WITH DFS TECHNIQUE IN DIRECTED GRAPH not solved anywhere
 // 15) Course Schedule One and Two
 // 16) Find Eventual Safe States in kahn's algorithm modified BFS technique solved on LEETCODE reversed graph
+// 17) Alien dictionary hard code using kahn's algorithm solved on GFG
+// 18) Shortest path in Directed Acyclic Graph using topological DFS algorithm gfg not provide js option
+// 19) Shortest path in Undirected Graph having unit distance using normal bfs algorithm,,, same above
+// 20) Word Ladder one using BFG traversal technique....My own code more time reduce using array solved on leetcode and gfg both platform
+// 21) Word Ladder Two using BFG traversal technique solved on geeks for geeks
 
 // class bfs {
 //   bfsGraph(v, adj) {
@@ -435,9 +440,14 @@
 //       }
 //     }
 
-//     if (count !== countFresh) {
-//       return -1;
-//     }
+//     // for (let i = 0; i < grid.length; i++) {
+//     //   for (let j = 0; j < grid[0].length; j++) {
+//     //     if (grid[i][j] === 1 && !visitedArray[i][j]) {
+//     //       return -1;
+//     //     }
+//     //   }
+//     // } or
+//     if (count !== countFresh) return -1;
 //     return time;
 //   }
 // }
@@ -448,11 +458,11 @@
 //   [0, 1, 2],
 // ];
 
-// // let grid = [
-// //   [2, 1, 1],
-// //   [0, 1, 1],
-// //   [1, 0, 1],
-// // ];
+// let grid = [
+//   [2, 1, 1],
+//   [0, 1, 1],
+//   [1, 0, 1],
+// ];
 
 // let data = new solution();
 // let output = data.rottenOrange(grid);
@@ -606,7 +616,7 @@
 //     let visited = new Array(grid.length)
 //       .fill()
 //       .map(() => new Array(grid[0].length).fill(false));
-//     // this is the perfect code when you put on the leetcode you got one erro 0 undefined that time you will interchange the below two for loop
+//     // this is the perfect code when you put on the leetcode you got one error 0 undefined that time you will interchange the below two for loop why because as chatGPT first column check before row that's the common practice without affecting solution
 //     for (let i = 0; i < n; i++) {
 //       // first row only
 //       if (!visited[0][i] && grid[0][i] === "O") {
@@ -989,3 +999,581 @@
 // let data = new Solution();
 // let output = data.eventualStates(graph);
 // console.log("commited safe states", output);
+
+// ---------------------------------------------------------------------------------
+// Verifying an Alien Dictionary solved on leetcode it's an easy problem
+
+// var isAlienSorted = function (words, alienOrder) {
+//   let compareWords = (words1, words2, alienOrder) => {
+//     let n = Math.min(words1.length, words2.length);
+//     for (let i = 0; i < n; i++) {
+//       let char1 = words1[i];
+//       let char2 = words2[i];
+
+//       if (char1 !== char2) {
+//         return alienOrder.get(char1) < alienOrder.get(char2);
+//       }
+//     }
+//     return words1.length <= words2.length;
+//   };
+
+//   let alienCharOrder = new Map();
+//   for (let i = 0; i < alienOrder.length; i++) {
+//     alienCharOrder.set(alienOrder[i], i);
+//   }
+//   console.log(alienCharOrder);
+//   for (let j = 0; j < words.length - 1; j++) {
+//     if (!compareWords(words[j], words[j + 1], alienCharOrder)) {
+//       return false;
+//     }
+//   }
+//   return true;
+// };
+
+// const words = ["hello", "leetcode"];
+// // in alien order we assign 0 to 25 according to this h assigned 0 and l assigned 1 checking which one letter mismatch so we got initially mismatch the string h and l that's why i given to example this h---0 < l ---1 so true
+// const order = "hlabcdefgijkmnopqrstuvwxyz";
+// console.log(isAlienSorted(words, order));
+
+// ---------------------------------------------------------------------------------
+// Alien dictionary hard code using kahn's algorithm solved on GFG
+// class Solution {
+//   kahnsAlgo(v, adj) {
+//     let indegree = new Array(v).fill(0);
+//     let queue = []; // first in first out
+//     for (let i = 0; i < v; i++) {
+//       for (let degreeIncreasing of adj[i]) {
+//         indegree[degreeIncreasing]++;
+//       }
+//     }
+//     for (let j = 0; j < v; j++) {
+//       if (indegree[j] === 0) {
+//         queue.push(j);
+//       }
+//     }
+//     let kahnstopo = [];
+//     while (queue.length !== 0) {
+//       let vertex = queue.shift();
+//       kahnstopo.push(vertex);
+
+//       for (let remove of adj[vertex]) {
+//         indegree[remove]--;
+//         if (indegree[remove] === 0) {
+//           queue.push(remove);
+//         }
+//       }
+//     }
+//     return kahnstopo;
+//   }
+
+//   findOrder(dict, n, k) {
+//     let createAdjList = new Array(k);
+//     for (let i = 0; i < k; i++) {
+//       createAdjList[i] = [];
+//     }
+//     // console.log(createAdjList);
+
+//     for (let i = 0; i < n - 1; i++) {
+//       let strOne = dict[i];
+//       let strTwo = dict[i + 1];
+
+//       let len = Math.min(strOne.length, strTwo.length);
+//       for (let j = 0; j < len; j++) {
+//         if (strOne[j] != strTwo[j]) {
+//           createAdjList[strOne[j].charCodeAt(0) - 97].push(
+//             strTwo[j].charCodeAt(0) - 97
+//           );
+//           break;
+//         }
+//       }
+//     }
+//     let topo = this.kahnsAlgo(k, createAdjList);
+//     // this one more efficient method as well as you can directly change the string example this one escape from the error time limit exceeded
+//     let changeString = [];
+//     for (let changeChar of topo) {
+//       changeString.push(String.fromCharCode(changeChar + 97));
+//     }
+//     return changeString.join(" ");
+//   }
+// }
+
+// let alienDic = ["baa", "abcd", "abca", "cab", "cad"];
+// let nOfLength = 5;
+// let standardAlbha = 4;
+
+// const data = new Solution();
+// let output = data.findOrder(alienDic, nOfLength, standardAlbha);
+// console.log(output);
+
+// ---------------------------------------------------------------------------------
+
+// Shortest path in Directed Acyclic Graph using topological algorithm we don't solve this problem anywhere because gfg doesn't allowed javascript in this problem, leetcode didn't show the question
+
+// class Solution {
+//   topoDfs(node, visited, stack, adjList) {
+//     visited[node] = true;
+//     for (let neighbor of adjList[node]) {
+//       let joiningV = neighbor[0];
+//       if (!visited[joiningV]) {
+//         this.topoDfs(joiningV, visited, stack, adjList);
+//       }
+//     }
+//     stack.push(node);
+//   }
+
+//   Graph(m, n, edges) {
+//     let adj = new Array(n).fill(null).map(() => []);
+
+//     // console.log(adj);
+//     for (let i = 0; i < m; i++) {
+//       let U = edges[i][0];
+//       let V = edges[i][1];
+//       let W = edges[i][2];
+//       adj[U].push([V, W]);
+//     }
+//     console.log(adj, "adjList");
+//     let visited = new Array(n).fill(false);
+//     let stack = [];
+//     for (let i = 0; i < n; i++) {
+//       if (!visited[i]) {
+//         this.topoDfs(i, visited, stack, adj);
+//       }
+//     }
+//     console.log(stack);
+
+//     let distance = new Array(n).fill(Infinity);
+//     distance[0] = 0;
+
+//     while (stack.length > 0) {
+//       let topNode = stack.pop();
+//       console.log(topNode, "topNode");
+//       for (let adjacent of adj[topNode]) {
+//         let v = adjacent[0];
+//         let weight = adjacent[1];
+//         if (distance[topNode] + weight < distance[v]) {
+//           distance[v] = distance[topNode] + weight;
+//         }
+//       }
+//     }
+//     return distance;
+//   }
+// }
+
+// let edges = [
+//   [0, 1, 2],
+//   [0, 4, 1],
+//   [4, 5, 4],
+//   [4, 2, 2],
+//   [1, 2, 3],
+//   [2, 3, 6],
+//   [5, 3, 1],
+// ];
+
+// let m = edges.length;
+// let n = 6;
+
+// let data = new Solution();
+// let output = data.Graph(m, n, edges);
+// console.log(output, "your shortest path");
+// output of this problem before write code 0 2 3 6 1 5
+
+// ---------------------------------------------------------------------------------
+
+//Shortest path in Undirected Graph having unit distance using normal bfs algorithm. we don't solve this problem anywhere because gfg doesn't allowed javascript in this problem, leetcode didn't show the question
+
+// class Solution {
+//   shortest(n, m, edges, src) {
+//     let adj = new Array(n).fill(null).map(() => []);
+
+//     for (let adjacent of edges) {
+//       adj[adjacent[0]].push(adjacent[1]);
+//       adj[adjacent[1]].push(adjacent[0]);
+//     }
+//     console.log(adj, "your adj List");
+
+//     let distance = new Array(n).fill(1e9);
+//     // why so we make 0 with src because the questions strictly says we go from the src to all node's that's we first push into the queue simple don't chaos read the question
+//     distance[src] = 0;
+//     let queue = [];
+//     queue.push(src);
+
+//     while (queue.length > 0) {
+//       let node = queue.shift();
+//       console.log(node, "this is node ");
+//       for (let neighbor of adj[node]) {
+//         // +1 means unit distance of weight
+//         if (distance[node] + 1 < distance[neighbor]) {
+//           distance[neighbor] = 1 + distance[node];
+//           queue.push(neighbor);
+//         }
+//       }
+//     }
+//     // if it is unreachable to reach any vertex, then return -1 for that vertex that's the loop
+//     let ans = new Array(n).fill(-1);
+//     for (let i = 0; i < n; i++) {
+//       if (distance[i] != 1e9) {
+//         ans[i] = distance[i];
+//       }
+//     }
+//     return ans;
+//   }
+// }
+
+// let edges = [
+//   [0, 1],
+//   [0, 3],
+//   [3, 4],
+//   [4, 5],
+//   [5, 6],
+//   [1, 2],
+//   [2, 6],
+//   [6, 7],
+//   [7, 8],
+//   [6, 8],
+// ];
+
+// let n = 9;
+// let m = 10;
+// let src = 0;
+
+// let data = new Solution();
+// let output = data.shortest(n, m, edges, src);
+// console.log(output, "this one is yours");
+
+// Output: 0 1 2 1 2 3 3 4 4
+
+// ---------------------------------------------------------------------------------
+
+// Word Ladder one using BFG traversal technique....My own code more time reduce using array solved on leetcode and gfg both platform
+
+// var ladderLength = function (beginWord, endWord, wordList) {
+//   let queue = [];
+//   queue.push([beginWord, 1]);
+//   let setDs = new Set();
+//   for (let i = 0; i < wordList.length; i++) {
+//     setDs.add(wordList[i]);
+//   }
+//   setDs.delete(beginWord);
+
+//   while (queue.length > 0) {
+//     let [currentWord, steps] = queue.shift();
+//     let outputLoop = [];
+//     // for (let i = 0; i < individualWords.length; i++) {
+//     if (currentWord === endWord) return steps;
+//     // }
+//     for (let i = 0; i < currentWord.length; i++) {
+//       //   let extractFirstLetter = individualWords[word];
+//       for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
+//         let data = currentWord.split("");
+//         data[i] = String.fromCharCode(j);
+//         let updated = data.join("");
+//         outputLoop.push(updated);
+//       }
+//     }
+
+//     for (let i = 0; i < outputLoop.length; i++) {
+//       if (setDs.has(outputLoop[i])) {
+//         setDs.delete(outputLoop[i]);
+//         queue.push([outputLoop[i], steps + 1]);
+//       }
+//     }
+//   }
+
+//   return 0;
+// };
+
+// let beginWord = "hit";
+// let endWord = "cog";
+// let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
+
+// console.log(
+//   ladderLength(beginWord, endWord, wordList),
+//   "your transformation sequence"
+// );
+
+// ---------------------------------------------------------------------------------
+
+// word ladder 2 using bfs technique and solved on geeks for geeks
+
+// function ladderLength(beginWord, endWord, wordList) {
+//   for (let i = 0; i < wordList.length; i++) {
+//     if (!wordList[i] === endWord) {
+//       return [];
+//     }
+//   }
+
+//   let setDs = new Set(wordList);
+//   let queue = [];
+//   queue.push([beginWord]);
+//   let usedWordOnLevel = new Set();
+//   usedWordOnLevel.add(beginWord);
+//   let level = 0;
+//   let ans = [];
+
+//   while (queue.length > 0) {
+//     let levelString = queue.shift(); // Change pop to shift to correctly process BFS.
+//     console.log(levelString, "levelString");
+
+//     if (levelString.length > level) {
+//       level++;
+//       for (let used of usedWordOnLevel) {
+//         console.log(used, "used");
+//         setDs.delete(used);
+//       }
+//     }
+
+//     let strTrans = levelString[levelString.length - 1];
+//     console.log(strTrans, "strTrans");
+
+//     if (strTrans === endWord) {
+//       ans.push([...levelString]); // Fix to correctly store the transformation sequence.
+//     }
+
+//     for (let i = 0; i < strTrans.length; i++) {
+//       for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
+//         let splits = strTrans.split("");
+//         splits[i] = String.fromCharCode(j);
+//         let update = splits.join("");
+
+//         if (setDs.has(update)) {
+//           let newLevelString = [...levelString, update];
+//           queue.push(newLevelString);
+//           usedWordOnLevel.add(update); // Change to add to correctly track used words.
+//         }
+//       }
+//     }
+//   }
+//   return ans;
+// }
+
+// let beginWord = "hit";
+// let endWord = "cog";
+// let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
+
+// console.log(
+//   ladderLength(beginWord, endWord, wordList),
+//   "your transformation sequence"
+// );
+
+// ---------------------------------------------------------------------------------
+
+// class Solution {
+//   dijkstra(V, adj, S) {
+//     let setDs = new Set();
+//     let distance = new Array(V).fill(Infinity);
+
+//     distance[S] = 0;
+
+//     setDs.add([0, S]);
+
+//     while (setDs.size !== 0) {
+//       let extraction = setDs.values().next().value;
+//       console.log(extraction, "while extraction");
+//       let node = extraction[1];
+//       let dist = extraction[0];
+//       setDs.delete(extraction);
+
+//       for (let neighbor of adj[node]) {
+//         console.log(neighbor, "neighbor before extract");
+//         let neighNode = neighbor[0];
+//         let neighWeight = neighbor[1];
+//         // 1 3
+//         // 0 6
+//         // console.log(neighNode, neighWeight);
+//         if (dist + neighWeight < distance[neighNode]) {
+//           if (distance[neighNode] != Infinity) {
+//             // simply deleted node from the stack because not need to do repetetive sum that's why
+//             setDs.delete([distance[neighNode], neighNode]);
+//           }
+
+//           distance[neighNode] = dist + neighWeight;
+//           setDs.add([distance[neighNode], neighNode]);
+//         }
+//       }
+//     }
+
+//     return distance;
+//   }
+// }
+
+// let totalVertex = 3;
+// let source = 2;
+// let adjList = [
+//   [
+//     [1, 1],
+//     [2, 6],
+//   ],
+//   [
+//     [2, 3],
+//     [0, 1],
+//   ],
+//   [
+//     [1, 3],
+//     [0, 6],
+//   ],
+// ];
+
+// let data = new Solution();
+// let output = data.dijkstra(totalVertex, adjList, source);
+// console.log(output, "this you shortest path in dj algo");
+
+// ---------------------------------------------------------------------------------
+
+// Shortest Path in Weighted undirected graph, this is the correct code, you can convert into this code c++ or java or python, then you will apply geeks for geeks,,,,, using dijkstra algorithm we don't have any platform to check the code gfg doesn't provide js option leetcode has not this problem but this is the perfect code i'm using set but in the youtube only have priority queue format optimized problem
+
+// class Solution {
+//   dijkstraShortesPath(n, m, edges) {
+//     let adjList = new Array(n + 1).fill().map(() => []);
+//     console.log(adjList);
+
+//     for (let makeEdgeConnection of edges) {
+//       adjList[makeEdgeConnection[0]].push([
+//         makeEdgeConnection[1],
+//         makeEdgeConnection[2],
+//       ]);
+//       adjList[makeEdgeConnection[1]].push([
+//         makeEdgeConnection[0],
+//         makeEdgeConnection[2],
+//       ]);
+//     }
+//     // console.log(adjList, "your final adjList");
+
+//     let setDs = new Set();
+//     let distance = new Array(n + 1).fill(Infinity);
+//     let parent = new Array(n + 1);
+
+//     for (let i = 1; i <= n; i++) {
+//       parent[i] = i;
+//     }
+
+//     distance[1] = 0;
+//     setDs.add([0, 1]); // here 1 position is call node and 0 position called distance or weight of the from this one
+
+//     while (setDs.size !== 0) {
+//       let extract = setDs.values().next().value;
+//       let node = extract[1];
+//       let dist = extract[0];
+//       setDs.delete(extract);
+//       console.log("Distance :", dist, "Node :", node);
+
+//       for (let adjacent of adjList[node]) {
+//         let adjaNode = adjacent[0];
+//         let adjaWeight = adjacent[1];
+
+//         if (dist + adjaWeight < distance[adjaNode]) {
+//           if (distance[adjaNode] !== Infinity) {
+//             setDs.delete(distance[adjaNode], adjaNode);
+//           }
+
+//           distance[adjaNode] = dist + adjaWeight;
+//           setDs.add([distance[adjaNode], adjaNode]);
+//           parent[adjaNode] = node;
+//         }
+//       }
+//     }
+//     if (distance[n] === Infinity) return -1;
+//     console.log(distance, "distance");
+//     console.log(parent, "Parent");
+//     let path = [];
+//     let node = n; // we are gonna check n means 5 where it is come from the parent of the node that's the code below here don't panic buddy
+
+//     while (parent[node] !== node) {
+//       path.push(node);
+//       node = parent[node];
+//     }
+//     path.push(1);
+//     console.log(path, "path");
+
+//     let yourPath = path.reverse();
+//     return yourPath;
+//   }
+// }
+
+// let n = 5;
+// let m = 6;
+// let edges = [
+//   [1, 2, 2],
+//   [2, 5, 5],
+//   [2, 3, 4],
+//   [1, 4, 1],
+//   [4, 3, 3],
+//   [3, 5, 1],
+// ];
+
+// let data = new Solution();
+// let output = data.dijkstraShortesPath(n, m, edges);
+// console.log(output, "this is your shortest path");
+
+// ---------------------------------------------------------------------------------
+
+// Shortest Distance in a Binary Maze using queue data structure solved on gfg
+
+// class Solution {
+//   binaryMaze(src, destiny, grid) {
+//     if (
+//       grid[src[0]] === grid[destiny[0]] &&
+//       grid[src[1]] === grid[destiny[1]]
+//     ) {
+//       return 0;
+//     } // sometimes the src and destiny might same position that time we want to return 0
+
+//     let queue = [];
+//     let distance = new Array(grid.length)
+//       .fill()
+//       .map(() => new Array(grid[0].length).fill(Infinity));
+//     // -------------->
+//     distance[src[0]][src[1]] = 0;
+//     // console.log(distance);
+
+//     queue.push([0, src[0], src[1]]);
+//     // console.log(queue);
+
+//     while (queue.length !== 0) {
+//       let [dist, row, col] = queue.shift();
+//       console.log(dist, row, col, "extraction value");
+//       let directions = [
+//         [-1, 0],
+//         [1, 0],
+//         [0, -1],
+//         [0, 1],
+//       ];
+//       queue.pop();
+
+//       for (let i = 0; i < 4; i++) {
+//         let newRow = row + directions[i][0];
+//         let newCol = col + directions[i][1];
+
+//         if (
+//           newRow >= 0 &&
+//           newRow < grid.length &&
+//           newCol >= 0 &&
+//           newCol < grid[0].length &&
+//           grid[newRow][newCol] === 1 &&
+//           dist + 1 < distance[newRow][newCol]
+//         ) {
+//           distance[newRow][newCol] = dist + 1;
+//           if (newRow === destiny[0] && newCol === destiny[1]) return dist + 1;
+//           queue.push([dist + 1, newRow, newCol]);
+//         }
+//       }
+//     }
+//     return -1;
+//   }
+// }
+
+// let board = [
+//   [1, 1, 1, 1],
+//   [1, 1, 0, 1],
+//   [1, 1, 1, 1],
+//   [1, 1, 0, 0],
+//   [1, 0, 0, 1],
+// ];
+// let source = [0, 1];
+// let destination = [2, 2];
+// // our task is find the shortest distance between a given source cell to a destination cell
+
+// let data = new Solution();
+// let output = data.binaryMaze(source, destination, board);
+// console.log(output, "this is your shortest distance");
+
+// ---------------------------------------------------------------------------------
