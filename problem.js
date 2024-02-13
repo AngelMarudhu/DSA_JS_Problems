@@ -299,7 +299,7 @@
 //   } else {
 //     false;
 //   }
-// }
+// }st
 
 // console.log(stringVerify('Marudhu', 'a'));
 
@@ -1889,6 +1889,8 @@
 
 // console.log(generateParenthesis(3));
 
+// =----------------------------------- back tracking
+
 // const board = [
 //   [5, 3, 0, 0, 7, 0, 0, 0, 0],
 //   [6, 0, 0, 1, 9, 5, 0, 0, 0],
@@ -1980,6 +1982,7 @@
 // }
 
 // -----------------------------------------------------------------------------------------
+// // dynamic programming
 // function knapsackTopDown(weights, values, capacity) {
 //   const memo = {}; // Memoization table
 
@@ -2714,19 +2717,19 @@
 //   let n = arr.length;
 //   let max = Number.MIN_VALUE;
 //   let sum = 0;
-//   // let start = -1;
-//   // let subStart = -1;
-//   // let subEnd = -1;
-//   // let maxArray = [];
+//   let start = -1;
+//   let subStart = -1;
+//   let subEnd = -1;
+//   let maxArray = [];
 
 //   for (let i = 0; i < n; i++) {
-//     // if (sum === 0) start = i; // if sum became 0 we start a new subarray that's why
+//     if (sum === 0) start = i; // if sum became 0 we start a new subarray that's why
 //     sum = sum + arr[i];
 
 //     if (sum > max) {
-//       // subStart = start;
-//       // subEnd = i;
-//       // maxArray = arr.slice(start, subEnd); // subarray value all printing why do we slice here ? simple slice car return new array it can extract the value from the original array
+//       subStart = start;
+//       subEnd = i;
+//       maxArray = arr.slice(start, subEnd); // subarray value all printing why do we slice here ? simple slice car return new array it can extract the value from the original array
 //       max = sum;
 //     }
 
@@ -2734,15 +2737,15 @@
 //       sum = 0;
 //     }
 //   }
-//   // console.log(maxArray);
-//   // console.log(`array of ${subStart} to ${subEnd}`)
+//   console.log(maxArray);
+//   console.log(`array of ${subStart} to ${subEnd}`);
 //   return max;
 // }
 
 // let arrays = [-2, -3, 4, -1, -2, 1, 5, -3];
 // let totalLength = arrays.length;
 
-// let data = maxArray(arrays, totalLength);
+// let data = maxArray(arrays);
 // console.log(data);
 
 // --------------------------------------------------------------------------------------
@@ -2827,3 +2830,396 @@
 // console.log(data);
 
 // --------------------------------------------------------------------------------------
+// minimum spanning tree with edges but doesn't work
+// class Solution {
+//   priorityQueue() {
+//     // step two
+//     let queue = [];
+
+//     function enqueue(distan, node) {
+//       queue.push([distan, node]);
+//     }
+
+//     function dequeue() {
+//       sortQueue();
+//       return queue.shift();
+//     }
+
+//     function sortQueue() {
+//       queue.sort((a, b) => {
+//         if (a[0] !== b[0]) {
+//           return a[0] - b[0];
+//         } else {
+//           return a[1] - b[1];
+//         }
+//       });
+//     }
+//     function isEmpty() {
+//       return queue.length === 0;
+//     }
+
+//     return { enqueue, dequeue, sortQueue, isEmpty };
+//   }
+
+//   primsalgo(arr, V) {
+//     // let graph = new Array(V).fill().map(() => []);
+
+//     // for (let edges of arr) {
+//     //   graph[edges[0]].push([edges[1], edges[2]]);
+//     //   graph[edges[1]].push([edges[0], edges[2]]);
+//     // }
+
+//     // console.log(arr);
+//     // console.log(graph);
+
+//     let visited = new Array(V).fill(false);
+//     let pq = this.priorityQueue();
+
+//     pq.enqueue(0, 0);
+
+//     let sum = 0;
+
+//     while (!pq.isEmpty()) {
+//       let extract = pq.dequeue();
+//       let node = extract[1];
+//       let dist = extract[0];
+//       // if someone alrady visted the node already we don't want to do any more that's why
+//       if (visited[node]) {
+//         continue;
+//       }
+
+//       visited[node] = true;
+
+//       sum = sum + parseInt(dist);
+
+//       for (let edge of arr) {
+//         let [u, v, w] = edge;
+
+//         if (u == node && !visited[v]) {
+//           pq.enqueue(w, v);
+//         } else if (v == node && !visited[u]) {
+//           pq.enqueue(w, u);
+//         }
+//       }
+//     }
+//     return sum;
+//   }
+// }
+// const graphInput = [
+//   ["0", "1", "5"],
+//   ["1", "2", "3"],
+//   ["0", "2", "1"],
+// ];
+// let v = 3;
+
+// let data = new Solution();
+// let output = data.primsalgo(graphInput, v);
+// console.log(output, "your MST weight");
+
+/////////////////////////////////////////////////////////////
+
+// class DisJointSet {
+//   constructor(n) {
+//     this.rank = [];
+//     this.parent = [];
+//     this.size = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.rank.push(0);
+//       this.parent.push(i);
+//       this.size.push(1); // intially all the nodes has 1 size of data
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   //   DisjointUnionRank(u, v) {
+//   //     this.ult_U = this.findUltimateParent(u);
+//   //     this.ult_V = this.findUltimateParent(v);
+
+//   //     if (this.ult_U === this.ult_V) return; // if your u and v belonging to same union return dont noeed to do anyting below
+
+//   //     if (this.rank[this.ult_V] < this.rank[this.ult_U]) {
+//   //       this.parent[this.ult_U] = this.ult_U;
+//   //     } else if (this.rank[this.ult_V] < this.rank[this.ult_U]) {
+//   //       this.parent[this.ult_U] = this.ult_V;
+//   //     } else {
+//   //       this.parent[this.ult_V] = this.ult_U;
+//   //       this.rank[this.ult_U]++;
+//   //     }
+
+//   //     console.log(this.parent, "dasfdf");
+//   //   }
+
+//   DisJointUnionSize(u, v) {
+//     this.ult_U = this.findUltimateParent(u);
+//     this.ult_V = this.findUltimateParent(v);
+
+//     if (this.ult_U === this.ult_V) return;
+
+//     if (this.size[this.ult_U] < this.size[this.ult_V]) {
+//       this.parent[this.ult_U] = this.ult_V;
+//       this.size[this.ult_V] += this.size[this.ult_U];
+//     } else {
+//       this.parent[this.ult_V] = this.ult_U;
+//       this.size[this.ult_V] += this.size[this.ult_U];
+//     }
+
+//     console.log(this.parent);
+//   }
+// }
+
+// let data = new DisJointSet(9);
+// // console.log(data);
+
+// data.DisJointUnionSize(1, 2);
+// data.DisJointUnionSize(2, 3);
+// data.DisJointUnionSize(4, 5);
+// data.DisJointUnionSize(6, 7);
+// data.DisJointUnionSize(5, 6);
+// data.DisJointUnionSize(8, 9);
+
+// if (data.findUltimateParent(3) === data.findUltimateParent(9)) {
+//   console.log("same", "before");
+// } else {
+//   console.log("Not Same", "before");
+// }
+
+// data.DisJointUnionSize(3, 9);
+
+// if (data.findUltimateParent(3) === data.findUltimateParent(9)) {
+//   console.log("same", "after");
+// } else {
+//   console.log("Not Same", "after");
+// }
+
+// // ------------> ---------------> -------------->
+
+// size is my choice why because we've already we've done a similar problem number of ways to reach destination that's why you can choose rank also whatever
+
+// class DisJointSet {
+//   constructor(n) {
+//     this.size = [];
+//     // everyone has a individual node the size of the node 1 as well as we know
+//     // like 1, 2, 3, 4 means 1-> 1 size of node 2-> 1 size of node so that's we initially mentioned always the size of the all nodes 1
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//     // console.log(this.size, this.parent);
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+//   disjointSetSize(u, v) {
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+//     // now we are goint to join some node ex 2 and 3 okay the 2 and 3 are belonging to same component already so don't want to do anything
+//     if (ult_u === ult_v) return;
+
+//     // if not they are not belonging to the same component let's connect with smaller to larger always...
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       // if will there is equal size or grather of the ultu case you don't need to compare anything
+//       // this means v oda parent ippo u equal ah iruntha neenga eppudi vena mathikkalam
+//       // example 1, 2 both ultimate parent size array values are same 2 oda parent 1 like that based on the ultimate parent size buddy don't confuse
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//     console.log(this.parent, "parent");
+//     console.log(this.size, "size of the value");
+//   }
+
+//   comparing(u, v) {
+//     if (this.findUltimateParent(u) === this.findUltimateParent(v)) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
+// }
+
+// let data = new DisJointSet(7);
+
+// data.disjointSetSize(1, 2);
+// data.disjointSetSize(2, 3);
+// data.disjointSetSize(4, 5);
+// data.disjointSetSize(6, 7);
+// data.disjointSetSize(5, 7);
+
+// let out = data.comparing(3, 7);
+
+// if (out) console.log("Same Component");
+// else console.log("Not same ");
+
+// data.disjointSetSize(3, 7);
+
+// let after = data.comparing(3, 7);
+
+// if (after) console.log("After Same Component");
+// else console.log(" After Not same ");
+
+// // -------------------------------------------------------------------------------
+
+// Kruskal's Algorithm with disjoint set data structure let's decode,,, this one is the correct code but we got TLE i think the gfg has js node version of 12
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//     console.log(this.parent, "paren");
+//   }
+
+//   kruskal(edges, v) {
+//     let sortedEdges = edges.sort((a, b) => a[2] - b[2]); // Sort based on weight
+//     let mstWeight = 0;
+//     this.disConstructor(v);
+
+//     for (let extract of sortedEdges) {
+//       let [u, v, weight] = extract;
+
+//       let ult_u = this.findUltimateParent(u);
+//       let ult_v = this.findUltimateParent(v);
+
+//       if (ult_u !== ult_v) {
+//         mstWeight += parseInt(weight);
+//         this.disjointsize(u, v);
+//       }
+//     }
+
+//     return mstWeight;
+//   }
+// }
+
+// const graphInput = [
+//   ["0", "1", "5"],
+//   ["1", "2", "3"],
+//   ["0", "2", "1"],
+// ];
+// let v = 3;
+
+// let data = new Solution();
+// let out = data.kruskal(graphInput, v);
+// console.log(out, "your minimum tree edges");
+
+// ------------------------------------------------------------------
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     console.log(u, v);
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//     console.log(this.parent, "paren");
+//   }
+// }
+// function accountsMerge(accounts) {
+//   let dss = new Solution();
+//   const n = accounts.length;
+//   let mapwithemail = new Map();
+//   dss.disConstructor(n);
+//   for (let i = 0; i < n; i++) {
+//     for (let j = 1; j < accounts[i].length; j++) {
+//       let emails = accounts[i][j];
+//       console.log(emails, "emails");
+//       if (!mapwithemail.has(emails)) {
+//         mapwithemail.set(emails, i);
+//       } else {
+//         dss.disjointsize(i, emails);
+//       }
+//     }
+//   }
+
+//   console.log(node, "afadsfadsfadsfadsf");
+// }
+
+// // console.log(mapwithemail, "map with mail");
+
+// let input = [
+//   ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+//   ["John", "johnsmith@mail.com", "john00@mail.com"],
+//   ["Mary", "mary@mail.com"],
+//   ["John", "johnnybravo@mail.com"],
+// ];
+// let output = accountsMerge(input);
+// console.log(output, "your console");
+
+// [["Ethan","Ethan0@m.co","Ethan4@m.co","Ethan5@m.co"],
+// ["Gabe","Gabe0@m.co","Gabe1@m.co","Gabe3@m.co"],
+// ["Hanzo","Hanzo0@m.co","Hanzo1@m.co","Hanzo3@m.co"],
+// ["Kevin","Kevin0@m.co","Kevin3@m.co","Kevin5@m.co"],
+// ["Fern","Fern0@m.co","Fern1@m.co","Fern5@m.co"]]
+
+// let expect = [
+//   ["John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com"],
+//   ["Mary", "mary@mail.com"],
+//   ["John", "johnnybravo@mail.com"],
+// ];

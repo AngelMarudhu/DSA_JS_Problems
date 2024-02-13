@@ -34,3 +34,5 @@
 // };
 
 // hash("marudhu", 10);
+
+console.log("w".charCodeAt(0) - 97);

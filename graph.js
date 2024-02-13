@@ -5,9 +5,9 @@
 // 5) FLOOD FILL ALGORITHM MATRIX, LEETCODE
 // 6) ROTTEN ORANGES BFS , LEETCODE
 // 7) DETECT A CYCLE IN UNDIRECTED GRAPH BFS , GEEKS FOR GEEKS
-// 8) Distance of nearest cell having 1, geeks for geeks
+// 8) Distance of nearest cell having 1, BFS geeks for geeks
 // 9) Surrounded Regions replace o with x DFS technique leetcode question solved on leetcode
-// 10) Number of distince islands.... solved in gfg
+// 10) Number of distinct islands.... solved in gfg
 // 11) Topological sorting solved on GFG technique DFS datastructure STACK
 // 12) Topological sorting solved using khan's algorithm modified bfs technique solved gfg
 // 13) DETECT A CYCLE DIRECTED GRAPH WITH kahn's algorithm bfs IN DIRECTED GRAPH solved gfg
@@ -312,7 +312,7 @@
 //     return isLand;
 //   }
 // }
-
+// // who are connected within 4 direction that's all count single islands so don't mixed up
 // let input = [
 //   ["1", "1", "0", "0", "0"],
 //   ["1", "1", "0", "0", "0"],
@@ -325,7 +325,7 @@
 // console.log(`totally ${output} islands there `);
 
 //    0)   1)
-// 0) 0    1  // total 4 row 2 column output = 1... 0s means water 1s means land check with 8 direction
+// 0) 0    1  // total 4 row 2 column output = 1... 0s means water 1s means land check with 4 direction
 // 1) 1    0
 // 2) 1    1
 // 3) 1    0
@@ -477,6 +477,7 @@
 //   detectCycle(nvn, visited, adj) {
 //     let queue = [];
 //     visited[nvn] = true;
+// first value is not visited node and second one is parent of the node simple buddy...
 //     queue.push([nvn, -1]);
 
 //     while (queue.length !== 0) {
@@ -497,7 +498,7 @@
 //   cycleBfs(v, adj) {
 //     let visited = new Array(v).fill(false);
 //     for (let i = 0; i < v; i++) {
-//       // this one for broken component
+//       // this one if multiple component graph, for this code
 //       if (!visited[i]) {
 //         if (this.detectCycle(i, visited, adj)) return 1;
 //       }
@@ -527,7 +528,7 @@
 
 //     let distance = new Array(grid.length)
 //       .fill()
-//       .map(() => new Array(grid[0].length).fill(0));
+//       .map(() => new Array(grid[0].length).fill(Number.MAX_SAFE_INTEGER));
 
 //     for (let i = 0; i < grid.length; i++) {
 //       for (let j = 0; j < grid[0].length; j++) {
@@ -662,7 +663,7 @@
 // console.log(output, "this one is yours");
 
 // --------------------------------------------------------------------------------------
-// Number of distince islands.... solved in gfg becasuse leetcode want to make subscription
+// Number of distinct islands.... solved in gfg becasuse leetcode want to make subscription
 
 // class solution {
 //   dfs(row, col, visited, grid, list, baseRow, baseCol) {
@@ -784,6 +785,14 @@
 //         indegree[degreeIncreasing]++;
 //       }
 //     }
+//     // // both loops are same you can use anyone.// find indegree of each vertex
+//     // for (let i = 0; i < v; i++) {
+//     //   for (let j = 0; j < adj[i].length; j++) {
+//     //     let increasing = adj[i][j];
+//     //     indegree[increasing]++;
+//     //   }
+//     // }
+
 //     for (let j = 0; j < v; j++) {
 //       if (indegree[j] === 0) {
 //         queue.push(j);
@@ -957,17 +966,18 @@
 // Find Eventual Safe States in kahn's algorithm modified BFS technique solved on leetcode reversed graph indegree
 // class Solution {
 //   eventualStates(graph) {
+// // reverse edgess not adjlist
 //     let reversedAdj = new Array(graph.length).fill(null).map(() => []);
 
 //     let indegree = new Array(graph.length).fill(0);
-
+// /// /// reverse all the edges
 //     for (let i = 0; i < graph.length; i++) {
 //       for (let adj of graph[i]) {
 //         reversedAdj[adj].push(i);
 //         indegree[i]++;
 //       }
 //     }
-
+// /// after reversed edges just simple concept no chaos
 //     // console.log(reversedAdj, "reversed adj");
 //     // console.log(indegree);
 //     let safeNode = [];
@@ -1030,7 +1040,7 @@
 //   return true;
 // };
 
-// const words = ["hello", "leetcode"];
+// const words = ["word", "world", "row"];
 // // in alien order we assign 0 to 25 according to this h assigned 0 and l assigned 1 checking which one letter mismatch so we got initially mismatch the string h and l that's why i given to example this h---0 < l ---1 so true
 // const order = "hlabcdefgijkmnopqrstuvwxyz";
 // console.log(isAlienSorted(words, order));
@@ -1038,6 +1048,7 @@
 // ---------------------------------------------------------------------------------
 // Alien dictionary hard code using kahn's algorithm solved on GFG
 // class Solution {
+//   // usual Kahn's process if you don't know just go back read the kahn's blog.
 //   kahnsAlgo(v, adj) {
 //     let indegree = new Array(v).fill(0);
 //     let queue = []; // first in first out
@@ -1071,13 +1082,15 @@
 //     for (let i = 0; i < k; i++) {
 //       createAdjList[i] = [];
 //     }
-//     // console.log(createAdjList);
+//     console.log(createAdjList);
 
 //     for (let i = 0; i < n - 1; i++) {
+//       // loop for extract words from the array
 //       let strOne = dict[i];
 //       let strTwo = dict[i + 1];
 
 //       let len = Math.min(strOne.length, strTwo.length);
+//       // after extracted words fetch each words from that extracted words.
 //       for (let j = 0; j < len; j++) {
 //         if (strOne[j] != strTwo[j]) {
 //           createAdjList[strOne[j].charCodeAt(0) - 97].push(
@@ -1087,6 +1100,7 @@
 //         }
 //       }
 //     }
+//     // this one last process after doing all the kahn's process okay don't see at initially...
 //     let topo = this.kahnsAlgo(k, createAdjList);
 //     // this one more efficient method as well as you can directly change the string example this one escape from the error time limit exceeded
 //     let changeString = [];
@@ -1506,7 +1520,7 @@
 
 // ---------------------------------------------------------------------------------
 
-// Shortest Distance in a Binary Maze using queue data structure solved on gfg
+// Shortest Distance in a Binary Maze using bfs  queue data structure solved on gfg
 
 // class Solution {
 //   binaryMaze(src, destiny, grid) {
@@ -1552,6 +1566,7 @@
 //           dist + 1 < distance[newRow][newCol]
 //         ) {
 //           distance[newRow][newCol] = dist + 1;
+//                //   met your destination
 //           if (newRow === destiny[0] && newCol === destiny[1]) return dist + 1;
 //           queue.push([dist + 1, newRow, newCol]);
 //         }
@@ -1577,3 +1592,1194 @@
 // console.log(output, "this is your shortest distance");
 
 // ---------------------------------------------------------------------------------
+
+// Cheapest flight within k stops solved on leetcode using dijkstra set data structure
+
+// class Solution {
+//   cheapestFlight(n, flights, src, destiny, k) {
+//     let adjList = new Array(n).fill().map(() => []);
+//     // make adjacancy list of directed graph
+//     for (let edge of flights) {
+//       adjList[edge[0]].push([edge[1], edge[2]]);
+//     }
+
+//     let setDs = new Set();
+//     let distance = new Array(n).fill(Infinity);
+
+//     distance[src] = 0;
+//     setDs.add([0, src, 0]);
+
+//     while (setDs.size !== 0) {
+//       let extract = setDs.values().next().value;
+
+//       let stops = extract[0];
+//       let node = extract[1];
+//       let cost = extract[2];
+
+//       setDs.delete(extract);
+
+//       for (let adjacent of adjList[node]) {
+//         let adjNode = adjacent[0];
+//         let adjCost = adjacent[1];
+
+//         if (stops > k) break;
+
+//         if (cost + adjCost < distance[adjNode] && stops <= k) {
+//           if (distance[adjNode] !== Infinity) {
+//             setDs.delete(stops, adjNode, cost + adjCost);
+//           }
+
+//           distance[adjNode] = cost + adjCost;
+//           setDs.add([stops + 1, adjNode, cost + adjCost]);
+//         }
+//       }
+
+//       //   console.log(stops, node, dist);
+//     }
+
+//     // console.log(distance);
+
+//     if (distance[destiny] === Infinity) return -1;
+//     return distance[destiny];
+//   }
+// }
+
+// let graph = [
+//   [0, 1, 100],
+//   [1, 2, 100],
+//   [2, 0, 100],
+//   [1, 3, 600],
+//   [2, 3, 200],
+// ];
+
+// let src = 0;
+// let destination = 3;
+// let numberOfStops = 1;
+// let totalNodes = 4;
+
+// let data = new Solution();
+// let ouput = data.cheapestFlight(
+//   totalNodes,
+//   graph,
+//   src,
+//   destination,
+//   numberOfStops
+// );
+
+// console.log(ouput, "Your cheapest flight");
+
+// ---------------------------------------------------------------------------------
+
+// Number of ways to reach destination but in the leecode we got large input something but this one is correct code
+
+// class Solution {
+//   numberOfWaysToReachDestination(n, roads) {
+//     let adjList = new Array(n).fill().map(() => []);
+
+//     for (let edge of roads) {
+//       adjList[edge[0]].push([edge[1], edge[2]]);
+//       adjList[edge[1]].push([edge[0], edge[2]]);
+//     }
+
+//     // console.log(adjList);
+
+//     let distance = new Array(n).fill(Infinity);
+//     let ways = new Array(n).fill(0);
+//     let setDs = new Set();
+//     let modulo = 10 ** 9 + 7;
+
+//     distance[0] = 0;
+//     ways[0] = 1;
+
+//     setDs.add([0, 0]); // 0th index is distance of edges 1st index that node
+
+//     while (setDs.size > 0) {
+//       let extract = setDs.values().next().value;
+//       let node = extract[1];
+//       let dist = extract[0];
+
+//       // console.log(node, dist, "this extracted values");
+
+//       setDs.delete(extract);
+
+//       for (let adjacent of adjList[node]) {
+//         let adjNode = adjacent[0];
+//         let adjWeight = adjacent[1];
+
+//         if (dist + adjWeight < distance[adjNode]) {
+//           if (distance[adjNode] !== Infinity) {
+//             setDs.delete([distance[adjNode], adjNode]);
+//           }
+
+//           distance[adjNode] = dist + adjWeight;
+//           setDs.add([dist + adjWeight, adjNode]);
+//           ways[adjNode] = ways[node]; //  we are fill the values from the node
+//         } else if (dist + adjWeight === distance[adjNode]) {
+//           ways[adjNode] = (ways[adjNode] + ways[node]) % modulo;
+//           // console.log(`Ways[${adjNode}] updated to ${ways[adjNode]}`);
+//         }
+//       }
+//     }
+//     return ways[n - 1] % modulo;
+//   }
+// }
+
+// class Solution {
+//   numberOfWaysToReachDestination(n, roads) {
+//     let adjList = new Array(n).fill().map(() => []);
+
+//     for (let edges of roads) {
+//       adjList[edges[0]].push([edges[1], edges[2]]);
+//       adjList[edges[1]].push([edges[0], edges[2]]);
+//     }
+
+//     // console.log(adjList);
+
+//     let setDs = new Set();
+//     let distance = new Array(n).fill(1e9);
+//     let ways = new Array(n).fill(0);
+
+//     distance[0] = 0; // as usual same as distance of itself node
+//     ways[0] = 1; // you only one way to reach itself that's we fill with 1
+
+//     setDs.add([0, 0]);
+
+//     let modulo = 1e9 + 7;
+
+//     while (setDs.size > 0) {
+//       //  console.log(setDs, "setds value");
+//       //  console.log(ways, "ways");
+//       let extraction = setDs.values().next().value;
+
+//       let dist = extraction[0];
+//       let node = extraction[1];
+
+//       // console.log(extraction, "ext");
+
+//       setDs.delete(extraction);
+
+//       for (let adjacent of adjList[node]) {
+//         //  console.log(adjacent, "adjacent of the node");
+//         let adjnode = adjacent[0];
+//         let adjweight = adjacent[1];
+
+//         //  console.log(adjnode, adjweight);
+
+//         if (dist + adjweight < distance[adjnode]) {
+//           let temp = [distance[adjnode], adjnode];
+//           if (distance[adjnode] !== 1e9) {
+//             console.log(temp, "temp");
+//             setDs.delete(temp);
+//           }
+
+//           distance[adjnode] = dist + adjweight;
+//           setDs.add([dist + adjweight, adjnode]);
+//           ways[adjnode] = ways[node];
+//         } else if (dist + adjweight == distance[adjnode]) {
+//           // ways[adjnode] += ways[node];
+//           // ways[adjnode] %= modulo;
+//           ways[adjnode] = ways[adjnode] + ways[node];
+//         }
+//       }
+//     }
+//     return ways[n - 1] % modulo;
+//   }
+// }
+
+// function priorityQueue() {
+//   let queue = [];
+
+//   function enqueue(distan, node) {
+//     queue.push([distan, node]);
+//     sortQueue();
+//   }
+
+//   function dequeue() {
+//     return queue.shift();
+//   }
+
+//   function sortQueue() {
+//     queue.sort((a, b) => {
+//       if (a[0] !== b[0]) {
+//         return a[0] - b[0];
+//       } else {
+//         return a[1] - b[1];
+//       }
+//     });
+//   }
+//   function isEmpty() {
+//     return queue.length === 0;
+//   }
+
+//   return { enqueue, dequeue, sortQueue, isEmpty };
+// }
+
+// function numberOfWaysToReachDestination(n, roads) {
+//   let adjList = new Array(n).fill(null).map(() => []);
+
+//   for (let edges of roads) {
+//     adjList[edges[0]].push([edges[1], edges[2]]);
+//     adjList[edges[1]].push([edges[0], edges[2]]);
+//   }
+
+//   let priority = priorityQueue();
+//   let distance = new Array(n).fill(Infinity);
+//   let ways = new Array(n).fill(0);
+//   let modulo = 10 ** 9 + 7;
+
+//   distance[0] = 0;
+//   ways[0] = 1;
+
+//   priority.enqueue(0, 0);
+
+//   while (!priority.isEmpty()) {
+//     let extraction = priority.dequeue();
+//     let node = extraction[1];
+//     let dist = extraction[0];
+
+//     console.log(node, dist);
+
+//     for (let adjacent of adjList[node]) {
+//       let adjnode = adjacent[0];
+//       let adjweight = adjacent[1];
+
+//       if (dist + adjweight < distance[adjnode]) {
+//         distance[adjnode] = dist + adjweight;
+//         priority.enqueue(distance[adjnode], adjnode);
+//         ways[adjnode] = ways[node] % modulo;
+//       } else if (dist + adjweight === distance[adjnode]) {
+//         ways[adjnode] = (ways[adjnode] + ways[node]) % modulo;
+//       }
+//     }
+//   }
+//   return ways[n - 1] % modulo;
+// }
+
+// let roads = [
+//   //// 12
+//   [1, 0, 2348],
+//   [2, 1, 2852],
+//   [2, 0, 5200],
+//   [3, 1, 12480],
+//   [2, 3, 9628],
+//   [4, 3, 7367],
+//   [4, 0, 22195],
+//   [5, 4, 5668],
+//   [1, 5, 25515],
+//   [0, 5, 27863],
+//   [6, 5, 836],
+//   [6, 0, 28699],
+//   [2, 6, 23499],
+//   [6, 3, 13871],
+//   [1, 6, 26351],
+//   [5, 7, 6229],
+//   [2, 7, 28892],
+//   [1, 7, 31744],
+//   [3, 7, 19264],
+//   [6, 7, 5393],
+//   [2, 8, 31998],
+//   [8, 7, 3106],
+//   [3, 8, 22370],
+//   [8, 4, 15003],
+//   [8, 6, 8499],
+//   [8, 5, 9335],
+//   [8, 9, 5258],
+//   [9, 2, 37256],
+//   [3, 9, 27628],
+//   [7, 9, 8364],
+//   [1, 9, 40108],
+//   [9, 5, 14593],
+//   [2, 10, 45922],
+//   [5, 10, 23259],
+//   [9, 10, 8666],
+//   [10, 0, 51122],
+//   [10, 3, 36294],
+//   [10, 4, 28927],
+//   [11, 4, 25190],
+//   [11, 9, 4929],
+//   [11, 8, 10187],
+//   [11, 6, 18686],
+//   [2, 11, 42185],
+//   [11, 3, 32557],
+//   [1, 11, 45037],
+// ];
+
+// let roads = [
+//   // //7
+//   [0, 6, 7],
+//   [0, 1, 2],
+//   [1, 2, 3],
+//   [1, 3, 3],
+//   [6, 3, 3],
+//   [3, 5, 1],
+//   [6, 5, 1],
+//   [2, 5, 1],
+//   [0, 4, 5],
+//   [4, 6, 2],
+// ];
+
+// let roads = [
+//   //// 5
+//   [0, 1, 1],
+//   [1, 2, 4],
+//   [0, 4, 3],
+//   [3, 2, 5],
+//   [3, 4, 1],
+//   [3, 0, 5],
+//   [1, 3, 1],
+// ];
+
+// let numberOfNodes = 7;
+
+// console.log(numberOfWaysToReachDestination(numberOfNodes, roads), "your ways");
+
+// ---------------------------------------------------------------------------------
+
+// floyd warshall algorithm for find all the shortest path algorithm, solved on gfg
+
+// class Solution {
+//   floydWarshall(matrix) {
+//     let n = matrix.length;
+//     // first if any cell has -1 you fill with 1e9 Infinity value// not necessory to do this for understanding guyz simple don't panic
+//     for (let i = 0; i < n; i++) {
+//       for (let j = 0; j < n; j++) {
+//         if (matrix[i][j] === -1) {
+//           matrix[i][j] = 1e9;
+//         }
+//         if (i === j) matrix[i][j] = 0;
+//       }
+//     }
+
+//     for (let k = 0; k < n; k++) {
+//       for (let i = 0; i < n; i++) {
+//         for (let j = 0; j < n; j++) {
+//           matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+//         }
+//       }
+//     }
+
+//     for (let i = 0; i < n; i++) {
+//       for (let j = 0; j < n; j++) {
+//         if (matrix[i][j] === 1e9) {
+//           matrix[i][j] = -1;
+//         }
+//       }
+//     }
+//     return matrix;
+//   }
+// }
+
+// let grid = [
+//   [0, 2, -1, -1],
+//   [1, 0, 3, -1],
+//   [-1, -1, 0, -1],
+//   [3, 5, 4, 0],
+// ];
+
+// let data = new Solution();
+// let output = data.floydWarshall(grid);
+// console.log(output, "your all pairs shortest paths");
+
+// ---------------------------------------------------------------------------------
+
+// Find the City With the Smallest Number of Neighbors at a Threshold Distance uding dijkstra algorithm priority queue own code solved on leetcode and gfg as well as...
+
+// class Solution {
+//   priorityQueue() {
+//     // step two
+//     let queue = [];
+
+//     function enqueue(distan, node) {
+//       queue.push([distan, node]);
+//       sortQueue();
+//     }
+
+//     function dequeue() {
+//       return queue.shift();
+//     }
+
+//     function sortQueue() {
+//       queue.sort((a, b) => {
+//         if (a[0] !== b[0]) {
+//           return a[0] - b[0];
+//         } else {
+//           return a[1] - b[1];
+//         }
+//       });
+//     }
+//     function isEmpty() {
+//       return queue.length === 0;
+//     }
+
+//     return { enqueue, dequeue, sortQueue, isEmpty };
+//   }
+
+//   dijkstra(graph, start) {
+//     // step three
+//     let distance = new Array(graph.length).fill(Number.MAX_SAFE_INTEGER);
+
+//     let pq = this.priorityQueue();
+//     distance[start] = 0;
+//     pq.enqueue(start, 0);
+
+//     while (!pq.isEmpty()) {
+//       let extract = pq.dequeue();
+//       let node = extract[0];
+//       let dist = extract[1];
+
+//       for (let adjacent of graph[node]) {
+//         let adjNode = adjacent[0];
+//         let adjWeight = adjacent[1];
+
+//         if (dist + adjWeight < distance[adjNode]) {
+//           distance[adjNode] = dist + adjWeight;
+//           pq.enqueue(adjNode, dist + adjWeight);
+//         }
+//       }
+//     }
+//     return distance;
+//   }
+
+//   findTheCity(n, edges, thresh) {
+//     // step one
+//     let adjList = new Array(n).fill(null).map(() => []);
+//     let countCity = Infinity;
+//     let cityCount = -1;
+
+//     for (let createEdge of edges) {
+//       adjList[createEdge[0]].push([createEdge[1], createEdge[2]]);
+//       adjList[createEdge[1]].push([createEdge[0], createEdge[2]]);
+//     }
+
+//     for (let cities = 0; cities < n; cities++) {
+//       let distanceofNeighbor = this.dijkstra(adjList, cities);
+
+//       let count = 0;
+//       for (let adjCities = 0; adjCities < n; adjCities++) {
+//         if (distanceofNeighbor[adjCities] <= thresh) {
+//           count++;
+//         }
+//       }
+
+//       if (count <= countCity) {
+//         countCity = count;
+//         cityCount = cities;
+//       }
+//     }
+//     return cityCount;
+//   }
+// }
+
+// class Solution {
+//   findTheCity(n, edges, thresh) {
+//     let matrix = new Array(n).fill().map(() => new Array(n).fill(Infinity));
+
+//     let countCity = Infinity;
+//     let cityNo = -1;
+
+//     for (let edge of edges) {
+//       matrix[edge[0]][edge[1]] = edge[2];
+//       matrix[edge[1]][edge[0]] = edge[2];
+//     }
+
+//     for (let i = 0; i < n; i++) {
+//       matrix[i][i] = 0;
+//     }
+
+//     for (let k = 0; k < n; k++) {
+//       for (let i = 0; i < n; i++) {
+//         for (let j = 0; j < n; j++) {
+//           // // not necessory but it's easy to avoid some unnecessory combinations simple
+//           if (matrix[i][k] === Infinity || matrix[j][k] === Infinity) {
+//             continue;
+//           }
+
+//           matrix[i][j] = Math.min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+//         }
+//       }
+//     }
+
+//     for (let city = 0; city < n; city++) {
+//       let count = 0;
+//       for (let adjCities = 0; adjCities < n; adjCities++) {
+//         if (matrix[city][adjCities] <= thresh) {
+//           count++;
+//         }
+//       }
+
+//       if (count <= countCity) {
+//         countCity = count;
+//         cityNo = city;
+//       }
+//     }
+//     return cityNo;
+//   }
+// }
+
+// let edges = [
+//   [0, 1, 3],
+//   [1, 2, 1],
+//   [1, 3, 4],
+//   [2, 3, 1],
+// ];
+// let n = 4;
+// let threshHold = 4;
+
+// let data = new Solution();
+// let output = data.findTheCity(n, edges, threshHold);
+// console.log(output, "yours");
+
+// ----------------------------------------------------------------------------------
+
+// minimum spanning tree using prim's algorithm... this one is the correct version on the gfg no one haven't posted js solution everyone got some error but my code passed all testcases but this code takes more time let's see
+
+// class Solution {
+//   priorityQueue() {
+//     // step two
+//     let queue = [];
+
+//     function enqueue(distan, node) {
+//       queue.push([distan, node]);
+//     }
+
+//     function dequeue() {
+//       sortQueue();
+//       return queue.shift();
+//     }
+
+//     function sortQueue() {
+//       queue.sort((a, b) => {
+//         if (a[0] !== b[0]) {
+//           return a[0] - b[0];
+//         } else {
+//           return a[1] - b[1];
+//         }
+//       });
+//     }
+//     function isEmpty() {
+//       return queue.length === 0;
+//     }
+
+//     return { enqueue, dequeue, sortQueue, isEmpty };
+//   }
+
+//   primsalgo(arr, V) {
+//     let graph = new Array(V).fill().map(() => []);
+
+//     for (let edges of arr) {
+//       graph[edges[0]].push([edges[1], edges[2]]);
+//       graph[edges[1]].push([edges[0], edges[2]]);
+//     }
+
+//     console.log(graph);
+
+//     let visited = new Array(graph.length).fill(false);
+//     let pq = this.priorityQueue();
+
+//     pq.enqueue(0, 0);
+
+//     let sum = 0;
+
+//     while (!pq.isEmpty()) {
+//       let extract = pq.dequeue();
+//       let node = extract[1];
+//       let dist = extract[0];
+//       // if someone alrady visted the node already we don't want to do any more that'
+//       if (visited[node]) {
+//         continue;
+//       }
+
+//       visited[node] = true;
+
+//       sum = sum + parseInt(dist);
+
+//       for (let adjacent of graph[node]) {
+//         let adjnode = adjacent[0];
+//         let adjweight = adjacent[1];
+
+//         if (!visited[adjnode]) {
+//           pq.enqueue(adjweight, adjnode);
+//         }
+//       }
+//     }
+//     return sum;
+//   }
+// }
+
+// const graphInput = [
+//   ["0", "1", "5"],
+//   ["1", "2", "3"],
+//   ["0", "2", "1"],
+// ];
+// let v = 3;
+
+// let data = new Solution();
+// let output = data.primsalgo(graphInput, v);
+// console.log(output, "your MST weight");
+
+// ----------------------------------------------------------------------------------
+
+// class DisJointSet {
+//   constructor(n) {
+//     this.rank = [];
+//     this.parent = [];
+//     this.size = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.rank.push(0);
+//       this.parent.push(i);
+//       this.size.push(1); // intially all the nodes has 1 size of data
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   //   DisjointUnionRank(u, v) {
+//   //     this.ult_U = this.findUltimateParent(u);
+//   //     this.ult_V = this.findUltimateParent(v);
+
+//   //     if (this.ult_U === this.ult_V) return; // if your u and v belonging to same union return dont noeed to do anyting below
+
+//   //     if (this.rank[this.ult_V] < this.rank[this.ult_U]) {
+//   //       this.parent[this.ult_U] = this.ult_U;
+//   //     } else if (this.rank[this.ult_V] < this.rank[this.ult_U]) {
+//   //       this.parent[this.ult_U] = this.ult_V;
+//   //     } else {
+//   //       this.parent[this.ult_V] = this.ult_U;
+//   //       this.rank[this.ult_U]++;
+//   //     }
+
+//   //     console.log(this.parent, "dasfdf");
+//   //   }
+
+//   DisJointUnionSize(u, v) {
+//     this.ult_U = this.findUltimateParent(u);
+//     this.ult_V = this.findUltimateParent(v);
+
+//     if (this.ult_U === this.ult_V) return;
+
+//     if (this.size[this.ult_U] < this.size[this.ult_V]) {
+//       this.parent[this.ult_U] = this.ult_V;
+//       this.size[this.ult_V] += this.size[this.ult_U];
+//     } else {
+//       this.parent[this.ult_V] = this.ult_U;
+//       this.size[this.ult_V] += this.size[this.ult_U];
+//     }
+
+//     console.log(this.parent);
+//   }
+// }
+
+// let data = new DisJointSet(9);
+// // console.log(data);
+
+// data.DisJointUnionSize(1, 2);
+// data.DisJointUnionSize(2, 3);
+// data.DisJointUnionSize(4, 5);
+// data.DisJointUnionSize(6, 7);
+// data.DisJointUnionSize(5, 6);
+// data.DisJointUnionSize(8, 9);
+
+// if (data.findUltimateParent(3) === data.findUltimateParent(9)) {
+//   console.log("same", "before");
+// } else {
+//   console.log("Not Same", "before");
+// }
+
+// data.DisJointUnionSize(3, 9);
+
+// if (data.findUltimateParent(3) === data.findUltimateParent(9)) {
+//   console.log("same", "after");
+// } else {
+//   console.log("Not Same", "after");
+// }
+
+// // ------------> ---------------> -------------->
+
+// size is my choice why because we've already done a similar problem number of ways to reach destination that's why you can choose rank something your wish
+
+// class DisJointSet {
+//   constructor(n) {
+//     this.size = [];
+//     // everyone has a individual node the size of the node 1 as well as we know
+//     // like 1, 2, 3, 4 means 1-> 1 size of node 2-> 1 size of node so that's we initially mentioned always the size of the all nodes 1
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//     // console.log(this.size, this.parent);
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+//   disjointSetSize(u, v) {
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+//     // now we are goint to join some node ex 2 and 3 okay the 2 and 3 are belonging to same component already so don't want to do anything
+//     if (ult_u === ult_v) return;
+
+//     // if not they are not belonging to the same component let's connect with smaller to larger always...
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       // if will there is equal size or grather of the ultu case you don't need to compare anything
+//       // this means v oda parent ippo u equal ah iruntha neenga eppudi vena mathikkalam
+//       // example 1, 2 both ultimate parent size array values are same 2 oda parent 1 like that based on the ultimate parent size buddy don't confuse
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//     console.log(this.parent, "parent");
+//     console.log(this.size, "size of the value");
+//   }
+
+//   comparing(u, v) {
+//     if (this.findUltimateParent(u) === this.findUltimateParent(v)) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
+// }
+
+// let data = new DisJointSet(7);
+
+// data.disjointSetSize(1, 2);
+// data.disjointSetSize(2, 3);
+// data.disjointSetSize(4, 5);
+// data.disjointSetSize(6, 7);
+// data.disjointSetSize(5, 7);
+
+// let out = data.comparing(3, 7);
+
+// if (out) console.log("Same Component");
+// else console.log("Not same ");
+
+// data.disjointSetSize(3, 7);
+
+// let after = data.comparing(3, 7);
+
+// if (after) console.log("After Same Component");
+// else console.log(" After Not same ");
+
+// // -------------------------------------------------------------------------------
+
+// Kruskal's Algorithm with disjoint set data structure let's decode,,, this one is the correct code but we got TLE i think the gfg has js node version of 12
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//     console.log(this.parent, "paren");
+//   }
+
+//   kruskal(edges, v) {
+//     let sortedEdges = edges.sort((a, b) => a[2] - b[2]); // Sort based on weight
+//     let mstWeight = 0;
+//     this.disConstructor(v);
+
+//     for (let extract of sortedEdges) {
+//       let [u, v, weight] = extract;
+
+//       let ult_u = this.findUltimateParent(u);
+//       let ult_v = this.findUltimateParent(v);
+
+//       if (ult_u !== ult_v) {
+//         mstWeight += parseInt(weight);
+//         this.disjointsize(u, v);
+//       }
+//     }
+
+//     return mstWeight;
+//   }
+// }
+
+// const graphInput = [
+//   ["0", "1", "5"],
+//   ["1", "2", "3"],
+//   ["0", "2", "1"],
+// ];
+// let v = 3;
+
+// let data = new Solution();
+// let out = data.kruskal(graphInput, v);
+// console.log(out, "your minimum tree edges");
+
+// ------------------------------------------------------------------
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     //console.log(u, v);
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//   }
+// }
+// function accountsMerge(accounts) {
+//   let dss = new Solution();
+//   const n = accounts.length;
+//   let mapwithemail = new Map();
+//   dss.disConstructor(n);
+//   for (let i = 0; i < n; i++) {
+//     for (let j = 1; j < accounts[i].length; j++) {
+//       let emails = accounts[i][j];
+//       // console.log(emails, "emails");
+//       if (!mapwithemail.has(emails)) {
+//         mapwithemail.set(emails, i);
+//       } else {
+//         dss.disjointsize(i, mapwithemail.get(emails));
+//       }
+//     }
+//   }
+
+//   let mappingMail = new Array(n).fill(null).map(() => []);
+
+//   for (let extract of mapwithemail) {
+//     let mail = extract[0];
+//     let node = dss.findUltimateParent(extract[1]);
+//     mappingMail[node].push(mail);
+//   }
+//   let ans = [];
+//   //console.log(mappingMail, "before");
+//   for (let i = 0; i < n; i++) {
+//     if (mappingMail[i].length === 0) continue;
+//     mappingMail[i].sort();
+
+//     let temp = [];
+//     temp.push(accounts[i][0], ...mappingMail[i]);
+//     ans.push(temp);
+//   }
+//   return ans;
+// }
+
+// // console.log(mapwithemail, "map with mail");
+
+// let input = [
+//   ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+//   ["John", "johnsmith@mail.com", "john00@mail.com"],
+//   ["Mary", "mary@mail.com"],
+//   ["John", "johnnybravo@mail.com"],
+// ];
+// let output = accountsMerge(input);
+// console.log(output, "your console");
+
+// [["Ethan","Ethan0@m.co","Ethan4@m.co","Ethan5@m.co"],
+// ["Gabe","Gabe0@m.co","Gabe1@m.co","Gabe3@m.co"],
+// ["Hanzo","Hanzo0@m.co","Hanzo1@m.co","Hanzo3@m.co"],
+// ["Kevin","Kevin0@m.co","Kevin3@m.co","Kevin5@m.co"],
+// ["Fern","Fern0@m.co","Fern1@m.co","Fern5@m.co"]]
+
+// let expect = [
+//   ["John", "john00@mail.com", "john_newyork@mail.com", "johnsmith@mail.com"],
+//   ["Mary", "mary@mail.com"],
+//   ["John", "johnnybravo@mail.com"],
+// ];
+
+// ---------------------------------------------------------------------------------
+
+// number of islands 2 online query problem disjoint set() structure let's unwrap the problem solved on the gfg
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     // console.log(u, v, "uandv");
+//     //console.log(u, v);
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//   }
+// }
+// class Islands {
+//   isValid(newRow, newCol, n, m) {
+//     if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < m) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   }
+
+//   onlineQuery(n, m, operators) {
+//     let ds = new Solution();
+//     ds.disConstructor(n * m);
+//     let visited = new Array(n).fill(null).map(() => new Array(m).fill(false));
+//     let count = 0;
+//     let ans = [];
+
+//     for (let extractrc of operators) {
+//       let row = extractrc[0];
+//       let col = extractrc[1];
+//       if (visited[row][col]) {
+//         ans.push(count);
+//         continue;
+//       }
+//       visited[row][col] = true;
+//       count++;
+//       let directions = [
+//         [-1, 0],
+//         [1, 0],
+//         [0, -1],
+//         [0, 1],
+//       ];
+
+//       for (let i = 0; i < 4; i++) {
+//         let newRow = row + directions[i][0];
+//         let newCol = col + directions[i][1];
+
+//         if (this.isValid(newRow, newCol, n, m) === true) {
+//           // NodeNumber=(Row×Number of Columns)+Column find the node number value
+//           if (visited[newRow][newCol]) {
+//             let nodeNum = row * m + col;
+//             let adjNodeNum = newRow * m + newCol;
+
+//             if (
+//               ds.findUltimateParent(nodeNum) !=
+//               ds.findUltimateParent(adjNodeNum)
+//             ) {
+//               count--;
+//               ds.disjointsize(nodeNum, adjNodeNum);
+//             }
+//           }
+//         }
+//       }
+//       ans.push(count);
+//     }
+//     return ans;
+//   }
+// }
+
+// let n = 4; // row
+// let m = 5; // col
+// let A = [
+//   [1, 1],
+//   [0, 1],
+//   [3, 3],
+//   [3, 4],
+// ];
+
+// let chunk = new Islands();
+// let find = chunk.onlineQuery(n, m, A);
+
+// console.log(find, "your output");
+
+// -------------------------------------------------------------------------------------
+
+// Maximum store removed disjoint set union
+
+// const dfs = function (stone, visited, stones) {
+//   for (let i = 0; i < stones.length; i++) {
+//     if (!visited[i] && (stone[0] == stones[i][0] || stone[1] == stones[i][1])) {
+//       visited[i] = true;
+//       dfs(stones[i], visited, stones);
+//     }
+//   }
+// };
+
+// const removeStones = function (stones) {
+//   let n = stones.length;
+//   const visited = Array(n).fill(false);
+//   let count = 0;
+
+//   for (let i = 0; i < n; i++) {
+//     if (!visited[i]) {
+//       visited[i] = true;
+//       dfs(stones[i], visited, stones);
+//       count++;
+//     }
+//   }
+//   return n - count;
+// };
+
+// let stones = [
+//   [0, 0],
+//   [0, 1],
+//   [1, 0],
+//   [1, 2],
+//   [2, 1],
+//   [2, 2],
+// ];
+
+// let data = removeStones(stones);
+// console.log(data, "total stones removed");
+
+///// -----------------------------------------------------------------------------
+// // Maximum stones removed with disjoint set algorithm
+
+// class Solution {
+//   disConstructor(n) {
+//     this.size = [];
+//     this.parent = [];
+
+//     for (let i = 0; i <= n; i++) {
+//       this.size.push(1);
+//       this.parent.push(i);
+//     }
+//     // console.log(this.size);
+//     // console.log(this.parent);
+//   }
+
+//   findUltimateParent(node) {
+//     if (node === this.parent[node]) {
+//       return node;
+//     }
+
+//     return (this.parent[node] = this.findUltimateParent(this.parent[node]));
+//   }
+
+//   disjointsize(u, v) {
+//     console.log(u, v, "uandv");
+//     //console.log(u, v);
+
+//     let ult_u = this.findUltimateParent(u);
+//     let ult_v = this.findUltimateParent(v);
+
+//     if (ult_u === ult_v) return;
+//     // if they are not belonging to the same component do this
+//     if (this.size[ult_u] < this.size[ult_v]) {
+//       this.parent[ult_u] = ult_v;
+//       this.size[ult_v] += this.size[ult_u];
+//     } else {
+//       this.parent[ult_v] = ult_u;
+//       this.size[ult_u] += this.size[ult_v];
+//     }
+//   }
+// }
+
+// function removeStones(stones) {
+//   let n = stones.length;
+//   let maxRow = 0;
+//   let maxCol = 0;
+
+//   for (let [row, col] of stones) {
+//     maxRow = Math.max(maxRow, row);
+//     maxCol = Math.max(maxCol, col);
+//   }
+
+//   let total = maxRow + maxCol + 1;
+
+//   let ds = new Solution();
+
+//   ds.disConstructor(total);
+
+//   for (let [newRow, newCol] of stones) {
+//     let assignNewRow = newRow;
+//     let assignNewCol = newCol + maxRow + 1;
+
+//     ds.disjointsize(assignNewRow, assignNewCol);
+//   }
+
+//   let connectedGroups = new Set();
+
+//   for (let [newRow, newCol] of stones) {
+//     let newassignNewRow = newRow;
+//     let newassignNewCol = newCol + maxRow + 1;
+
+//     let root = ds.findUltimateParent(newassignNewRow);
+//     connectedGroups.add(root);
+//   }
+
+//   console.log(connectedGroups.size, "connected groups");
+
+//   return n - connectedGroups.size;
+// }
+
+// let stones = [
+//   [0, 1],
+//   [1, 0],
+//   [1, 1],
+// ];
+// let data = removeStones(stones);
+// console.log(data, "total stones removed");
+
+////--------------------------------------------------------------------------------------
