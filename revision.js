@@ -166,7 +166,7 @@
 
 // function subarray(arr, k) {
 //   let n = arr.length;
-
+//   let count = 0;
 //   let lenghtOftheSubArray = 0;
 //   for (let i = 0; i < n; i++) {
 //     let summation = 0;
@@ -176,10 +176,12 @@
 //         // simple j-i + 1 if answer want 0 based you just j - i more enough
 //         // but all the platform expect 1 based indext j - i + 1 that's the meaning of 1 okay
 //         // example assume i = 1; j = 4 okay 4 - 1 + 1 -----> 3 + 1 = 4 so total suarray length is 4..
+//         count++;
 //         lenghtOftheSubArray = Math.max(lenghtOftheSubArray, j - i + 1);
 //       }
 //     }
 //   }
+//   console.log(count);
 //   return lenghtOftheSubArray;
 // }
 
@@ -270,8 +272,33 @@
 //   }
 // };
 
-// let out = majorityElement([8, 8, 7, 7, 7]); // the output is because n / 2 = 3 here so > 3 element is 2
+// let out = majorityElement([2, 2, 1, 1, 1, 2, 2]); // the output is because n / 2 = 3 here so > 3 element is 2
 // console.log(out, "your majority element");
+
+// var majorityElement = function (nums) {
+//   let screen = [];
+//   let hash = new Map();
+//   let minimum = Math.floor(nums.length / 3) + 1;
+
+//   for (let i = 0; i < nums.length; i++) {
+//     if (hash.has(nums[i])) {
+//       hash.set(nums[i], hash.get(nums[i]) + 1);
+//     } else {
+//       hash.set(nums[i], 1);
+//     }
+
+//     if (hash.get(nums[i]) === minimum) {
+//       screen.push(nums[i]);
+//     }
+//// they never specifically mentioned how many elements we want so 2 is more enough for limiting
+//     if (screen.length === 2) break;
+//   }
+
+//   return screen;
+// };
+
+// let out = majorityElement([11, 33, 33, 11, 33, 11]);
+// console.log(out);
 
 // --------------------------------------------------
 
@@ -476,3 +503,156 @@
 // console.log(out);
 
 ////------------------------------------------------------------------
+
+// var sorting = function (arr) {
+//   arr.sort((a, b) => {
+//     if (a[0] !== b[0]) {
+//       return a[0] - b[0];
+//     } else {
+//       return a[1] - b[1];
+//     }
+//   });
+// };
+
+// var merge = function (intervals) {
+// optimal and better o(n)
+//   let n = intervals.length;
+//   sorting(intervals);
+//   let screen = [];
+//   for (let i = 0; i < n; i++) {
+//     if (screen.length === 0 || intervals[i][0] > screen[screen.length - 1][1]) {
+//       screen.push(intervals[i]);
+//     } else {
+//       screen[screen.length - 1][1] = Math.max(
+//         screen[screen.length - 1][1],
+//         intervals[i][1]
+//       );
+//     }
+//   }
+//   return screen;
+/////---------------------------------------
+//// brute force approach
+//   let n = intervals.length;
+//   sorting(intervals);
+//   let screen = [];
+
+//   for (let i = 0; i < n; i++) {
+//     let start = intervals[i][0];
+//     let end = intervals[i][1];
+//     //// skip unwanted comparison do the dry run you will understood what's happening
+//     if (screen.length !== 0) {
+//       if (end <= screen[screen.length - 1][1]) {
+//         continue;
+//       }
+//     }
+
+//     for (let j = i + 1; j < n; j++) {
+//       if (intervals[j][0] <= end) {
+//         end = Math.max(intervals[j][1], end);
+//       } else {
+//         break;
+//       }
+//     }
+//     screen.push([start, end]);
+//   }
+//   return screen;
+// };
+
+// let out = merge([
+//   [1, 3],
+//   [2, 6],
+//   [8, 9],
+//   [9, 11],
+//   [8, 10],
+//   [2, 4],
+//   [15, 18],
+// ]);
+
+// console.log(out, "merged");
+
+//////--------------------------------------------------------
+
+/////  Find Missing And Repeating solved gfg
+
+// let findTwoElements = (arr, n) => {
+//   let hashArray = new Array(n + 1).fill(0);
+//   for (let i = 0; i < n; i++) {
+//     hashArray[arr[i]]++;
+//   }
+//   /// initially the reapeting and mission has -
+//   let repe = -1;
+//   let miss = -1;
+
+//   for (let i = 1; i <= n; i++) {
+//     if (hashArray[i] === 2) {
+//       repe = i;
+//     } else if (hashArray[i] === 0) {
+//       miss = i;
+//     }
+
+//     if (repe !== -1 && miss !== -1) {
+//       break;
+//     }
+//   }
+//   return [repe, miss];
+// };
+
+// let arr = [4, 3, 6, 2, 1, 1];
+// let n = arr.length;
+
+// let out = findTwoElements(arr, n);
+
+// console.log(out);
+
+//////--------------------------------------------------------
+////Count Inversions
+//// brute force approach got TLE let's apply optimized approach
+// let count = 0;
+
+// const mergeCallback = (arr, low, mid, high) => {
+//   let screen = [];
+//   let left = low;
+//   let right = mid + 1;
+
+//   while (left <= mid && right <= high) {
+//     if (arr[left] <= arr[right]) {
+//       screen.push(arr[left]);
+//       left++;
+//     } else {
+//       screen.push(arr[right]);
+//       right++;
+//       count = count + mid - left + 1;
+//     }
+//   }
+
+//   while (left <= mid) {
+//     screen.push(arr[left]);
+//     left++;
+//   }
+//   while (right <= high) {
+//     screen.push(arr[right]);
+//     right++;
+//   }
+
+//   for (let i = low; i <= high; i++) {
+//     arr[i] = screen[i - low];
+//   }
+// };
+
+// const mergeSort = (arr) => {
+//   if (low >= high) return;
+
+//   let mid = Math.floor((low + high) / 2);
+//   mergeSort(arr, low, mid);
+//   mergeSort(arr, mid + 1, high);
+//   mergeCallback(arr, low, mid, high);
+//   return count;
+// };
+
+// const merging = [2, 4, 1, 3, 5];
+// let low = 0;
+// let high = merging.length - 1;
+
+// console.log(mergeSort(merging, low, high));
+
+//// ----------------------------------------------------

@@ -1153,7 +1153,7 @@
 //         this.topoDfs(i, visited, stack, adj);
 //       }
 //     }
-//     console.log(stack);
+//     console.log(stack, "stack");
 
 //     let distance = new Array(n).fill(Infinity);
 //     distance[0] = 0;
@@ -1189,7 +1189,7 @@
 // let data = new Solution();
 // let output = data.Graph(m, n, edges);
 // console.log(output, "your shortest path");
-// output of this problem before write code 0 2 3 6 1 5
+//// output of this problem before write code 0 2 3 6 1 5
 
 // ---------------------------------------------------------------------------------
 

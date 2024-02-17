@@ -384,7 +384,7 @@
 
 // MERGE SORT IT'S ONE OF THE SPEED SORTING WAY... ANDRIE NEAGOIE... THIS IS ALSO MY FAVOURITE IN SORTING ALGORITHM.... IN THE REAL WORLD...
 
-// const merging = [1, 4, 2, 89, 45, 3, 6, 23, 54, 34, 66, 7, 9, 0];
+// const merging = [2, 4, 1, 3, 5];
 
 // const mergeSort = (arr) => {
 //   if (arr.length === 1) {
@@ -399,7 +399,9 @@
 //   console.log(leftSide, "left");
 //   console.log(rightSide, "right");
 //   // this is recursion.. don't be weird...
-//   return mergeCallback(mergeSort(leftSide), mergeSort(rightSide));
+//   let da1 = mergeSort(leftSide);
+//   let da2 = mergeSort(rightSide);
+//   return mergeCallback(da1, da2);
 // };
 
 // const mergeCallback = (left, right) => {
@@ -419,7 +421,17 @@
 //   //   console.log(left, "left");
 //   //   console.log(right, "right");
 //   // this means anything balance in the index just concat the value of the result of the array .... don't be confuse okay....
-//   return result.concat(left.slice(leftindex)).concat(right.slice(rightindex));
+//   while (leftindex < left.length) {
+//     result.push(left[leftindex]);
+//     leftindex++;
+//   }
+
+//   // Merge the remaining elements of right array
+//   while (rightindex < right.length) {
+//     result.push(right[rightindex]);
+//     rightindex++;
+//   }
+// return result
 // };
 
 // console.log(mergeSort(merging));
