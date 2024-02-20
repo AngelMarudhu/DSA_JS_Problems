@@ -655,4 +655,135 @@
 
 // console.log(mergeSort(merging, low, high));
 
-//// ----------------------------------------------------
+//// ---------------------------------------------------
+//// kadane's algorithm
+// var maxProduct = function (nums) {
+//   let maxValue = nums[0];
+//   let minValue = nums[0];
+//   let maxProductValue = nums[0];
+
+//   for (let i = 1; i < nums.length; i++) {
+//     //  we need to keep track of both the maximum and minimum product because multiplying two negative numbers gives a positive result.
+//     let temp = Math.max(nums[i], maxValue * nums[i], minValue * nums[i]);
+//     minValue = Math.min(nums[i], maxValue * nums[i], minValue * nums[i]);
+//     maxValue = temp;
+//     maxProductValue = Math.max(maxProductValue, maxValue);
+//   }
+//   return maxProductValue;
+// };
+
+// let out = maxProduct([2, 3, -2, 4]);
+// console.log(out);
+
+//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+//// BINARY SEARCH TREE PROBLEMS AND TECHNIQUES EVERYTHING
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+class Node {
+  // this is also called template...// prototype just focus where do we instantiante the node based
+  // this one executed
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+class Binary {
+  constructor() {
+    this.root = null;
+  }
+  insert(value) {
+    let newNode = new Node(value);
+
+    if (this.root === null) {
+      /// we assigned the template into the root node so this time what happened
+      /// our template value and left and right which is value = your value; left : null, right : null
+      this.root = newNode;
+    } else {
+      let currentNode = this.root;
+
+      while (true) {
+        if (value < currentNode.value) {
+          if (!currentNode.left) {
+            currentNode.left = newNode;
+            return this; // Return the Binary tree after inserting the new node
+          }
+          currentNode = currentNode.left;
+        } else {
+          // value >= currentNode.value
+          if (!currentNode.right) {
+            currentNode.right = newNode;
+            return this; // Return the Binary tree after inserting the new node
+          }
+          currentNode = currentNode.right;
+        }
+      }
+    }
+  }
+}
+
+function preOrder(node, pre = []) {
+  //console.log(node, "inside preorder");
+
+  if (node === null) {
+    return pre;
+  }
+
+  pre.push(node.value);
+  preOrder(node.left, pre);
+  preOrder(node.right, pre);
+
+  return pre;
+}
+
+function inOrder(node, pre = []) {
+  //console.log(node, "inside preorder");
+
+  if (node === null) {
+    return pre;
+  }
+
+  preOrder(node.left, pre);
+  pre.push(node.value);
+  preOrder(node.right, pre);
+
+  return pre;
+}
+
+function postOrder(node, pre = []) {
+  //console.log(node, "inside preorder");
+
+  if (node === null) {
+    return pre;
+  }
+  preOrder(node.left, pre);
+  preOrder(node.right, pre);
+
+  pre.push(node.value);
+
+  return pre;
+}
+
+//           50
+//        /     \
+//      30       70
+//     /  \     /   \
+//    20  40   60   80
+
+let adding = new Binary();
+adding.insert(50);
+adding.insert(30);
+adding.insert(20);
+adding.insert(40);
+adding.insert(70);
+adding.insert(60);
+adding.insert(80);
+
+console.log(preOrder(adding.root));
+console.log(inOrder(adding.root));
+console.log(postOrder(adding.root));
