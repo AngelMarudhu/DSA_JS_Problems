@@ -241,7 +241,7 @@
 //   for (let i = 0; i < nums.length; i++) {
 //     let current = nums[i];
 //     let findOutMore = target - current;
-//// instead of find you can use get method in c++ find but in js has get method to find your data......
+//     // instead of find you can use get method in c++ find but in js has get method to find your data......
 //     let extract = hash.get(findOutMore);
 //     if (extract !== undefined) {
 //       return [extract, i];
@@ -727,48 +727,200 @@ class Binary {
   }
 }
 
-function preOrder(node, pre = []) {
-  //console.log(node, "inside preorder");
+// function preOrder(node, pre = []) {
+//   //console.log(node, "inside preorder");
 
-  if (node === null) {
-    return pre;
+//   if (node === null) {
+//     return pre;
+//   }
+
+//   pre.push(node.value);
+//   preOrder(node.left, pre);
+//   preOrder(node.right, pre);
+
+//   return pre;
+// }
+
+// function inOrder(node, ino = []) {
+//   //console.log(node, "inside preorder");
+
+//   if (node === null) {
+//     return ino;
+//   }
+
+//   inOrder(node.left, ino);
+//   ino.push(node.value);
+//   inOrder(node.right, ino);
+
+//   return ino;
+// }
+
+// function postOrder(node, post = []) {
+//   //console.log(node, "inside preorder");
+
+//   if (node === null) {
+//     return post;
+//   }
+//   postOrder(node.left, post);
+//   postOrder(node.right, post);
+//   post.push(node.value);
+
+//   return post;
+// }
+
+//// in pre post at single loop traversal
+
+// function traversal(root) {
+//   let stack = [];
+//   stack.push({ node: root, num: 1 });
+//   let result = { pre: [], ino: [], post: [] };
+
+//   if (root === null) return;
+
+//   while (stack.length > 0) {
+//     let { node, num } = stack.pop();
+
+//     if (num === 1) {
+//       result.pre.push(node.value);
+//       num++;
+//       stack.push({ node, num });
+
+//       if (node.left !== null) {
+//         stack.push({ node: node.left, num: 1 });
+//       }
+//     } else if (num === 2) {
+//       result.ino.push(node.value);
+//       num++;
+//       stack.push({ node, num });
+
+//       if (node.right !== null) {
+//         stack.push({ node: node.right, num: 1 });
+//       }
+//     } else {
+//       result.post.push(node.value);
+//     }
+//   }
+
+//   return result;
+// }
+
+//// ------------------------------------------------------
+
+// var isBalance = function (root) {
+//   return maxDepth !== -1;
+// };
+
+// var maxDepth = function (root) {
+//   if (root === null) return 0;
+
+//   let lef = maxDepth(root.left);
+//   if (let === -1) return -1;
+//   let rig = maxDepth(root.right);
+//   if (rig === -1) return -1;
+//   if (Math.abs(lef - rig) > 1) return -1;
+//   return Math.max(lef, rig) + 1;
+// };
+
+//// ------------------------------------------------------
+
+// var diameterOfBinaryTree = function (root) {
+//   let dia = 0;
+//   function depth(node) {
+//     if (!node) return 0;
+//     let left = depth(node.left);
+//     let right = depth(node.right);
+
+//     dia = Math.max(dia, left + right);
+//     return Math.max(left, right) + 1;
+//   }
+
+//   depth(root);
+//   return dia;
+// };
+
+//// ------------------------------------------------------
+// var maxPathSum = function (root) {
+//   let maxSum = -Infinity; // first and most intialize the too small value
+
+//   //      10
+//   //    /   \
+//   //  -2     3
+//   //  / \   / \
+//   // 8  -4 5   6 this time 8 and -4 leaf node there no more path with the leaf node that time
+//   // we want to return that current node that time 8 is okay you can return to the top but
+//   // -4 you don't share with the top of the node that's the negative sum are not included so instead
+//   // instead of you should return 0 that's the line max(0, pathSum.right or left what ever subtree node)
+
+//   function pathSum(node) {
+//     if (!node) return 0;
+//     let leftHand = Math.max(0, pathSum(node.left)); // negative sums are not included
+//     let rightHand = Math.max(0, pathSum(node.right)); // negative sums are not included
+//     maxSum = Math.max(maxSum, leftHand + rightHand + node.value); // Update maxSum if needed
+//     return Math.max(leftHand, rightHand) + node.value; // Return the maximum path sum starting from the current node
+//   }
+
+//   pathSum(root); // Start calculating the path sum from the root node
+//   return maxSum;
+// };
+//// ------------------------------------------------------
+// /// identical treee problem.....
+// var isSameTree = function (p, q) {
+//   if (p === null && q === null) return true;
+//   if (p === null || q === null) return false;
+
+//   if (p.val !== q.val) return false;
+//   // pre order traversal......
+//   return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+// };
+
+//// ------------------------------------------------------
+
+var verticalTraversal = function (root) {
+  let keyMap = new Map();
+
+  function dfs(node, dist, level) {
+    // first and most write a base case for if there's no node just return
+    if (!node) return;
+
+    // first check there is distance in the map
+    if (!keyMap.has(dist)) {
+      keyMap.set(dist, new Map());
+    }
+    // now check in the dist has particular level is already entered of not if it is not entered create an array
+    if (!keyMap.get(dist).has(level)) {
+      keyMap.get(dist).set(level, []);
+    }
+    // asssign the node that particular level of the node
+    keyMap.get(dist).get(level).push(node.value);
+
+    dfs(node.left, dist - 1, level + 1);
+
+    dfs(node.right, dist + 1, level + 1);
   }
 
-  pre.push(node.value);
-  preOrder(node.left, pre);
-  preOrder(node.right, pre);
+  dfs(root, 0, 0);
+  // then preorder traverse we got always root node in the top of the list so sorting the key first
+  let sortedKeys = [...keyMap.keys()].sort((a, b) => a - b);
 
-  return pre;
-}
+  let list = [];
 
-function inOrder(node, pre = []) {
-  //console.log(node, "inside preorder");
+  // Loop through the sorted keys to extract the data
+  for (let dist of sortedKeys) {
+    let levels = keyMap.get(dist);
+    let temp = [];
 
-  if (node === null) {
-    return pre;
+    // Extract data for each level and flatten the array
+    for (let [level, nodes] of levels) {
+      temp.push(...nodes);
+    }
+
+    list.push(temp);
   }
 
-  preOrder(node.left, pre);
-  pre.push(node.value);
-  preOrder(node.right, pre);
+  return list;
+};
 
-  return pre;
-}
-
-function postOrder(node, pre = []) {
-  //console.log(node, "inside preorder");
-
-  if (node === null) {
-    return pre;
-  }
-  preOrder(node.left, pre);
-  preOrder(node.right, pre);
-
-  pre.push(node.value);
-
-  return pre;
-}
-
+// TREE REPLICATION IN VISUALLY
 //           50
 //        /     \
 //      30       70
@@ -784,6 +936,11 @@ adding.insert(70);
 adding.insert(60);
 adding.insert(80);
 
-console.log(preOrder(adding.root));
-console.log(inOrder(adding.root));
-console.log(postOrder(adding.root));
+// // console.log(preOrder(adding.root));
+// // console.log(inOrder(adding.root));
+// // console.log(postOrder(adding.root));
+// console.log(traversal(adding.root), "final");
+// console.log(isBalance(adding.root));
+// console.log(diameterOfBinaryTree(adding.root));
+// console.log(maxPathSum(adding.root));
+console.log(verticalTraversal(adding.root));

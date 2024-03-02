@@ -1215,7 +1215,7 @@
 //       let node = queue.shift();
 //       console.log(node, "this is node ");
 //       for (let neighbor of adj[node]) {
-//         // +1 means unit distance of weight
+//         // +1 means all the edges has unit distance or weights you can assume
 //         if (distance[node] + 1 < distance[neighbor]) {
 //           distance[neighbor] = 1 + distance[node];
 //           queue.push(neighbor);
@@ -1260,50 +1260,51 @@
 
 // Word Ladder one using BFG traversal technique....My own code more time reduce using array solved on leetcode and gfg both platform
 
-// var ladderLength = function (beginWord, endWord, wordList) {
-//   let queue = [];
-//   queue.push([beginWord, 1]);
-//   let setDs = new Set();
-//   for (let i = 0; i < wordList.length; i++) {
-//     setDs.add(wordList[i]);
-//   }
-//   setDs.delete(beginWord);
+var ladderLength = function (beginWord, endWord, wordList) {
+  let queue = [];
+  queue.push([beginWord, 1]); // first one currentword, another one is more important steps how many /// //
+  /////// sequence we made it.... simple steps monitering .....
+  let setDs = new Set();
+  for (let i = 0; i < wordList.length; i++) {
+    setDs.add(wordList[i]);
+  }
 
-//   while (queue.length > 0) {
-//     let [currentWord, steps] = queue.shift();
-//     let outputLoop = [];
-//     // for (let i = 0; i < individualWords.length; i++) {
-//     if (currentWord === endWord) return steps;
-//     // }
-//     for (let i = 0; i < currentWord.length; i++) {
-//       //   let extractFirstLetter = individualWords[word];
-//       for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
-//         let data = currentWord.split("");
-//         data[i] = String.fromCharCode(j);
-//         let updated = data.join("");
-//         outputLoop.push(updated);
-//       }
-//     }
+  setDs.delete(beginWord);
+  while (queue.length > 0) {
+    let [currentWord, steps] = queue.shift();
+    let outputLoop = [];
+    // for (let i = 0; i < individualWords.length; i++) {
+    if (currentWord === endWord) return steps;
+    // }
+    for (let i = 0; i < currentWord.length; i++) {
+      //   let extractFirstLetter = individualWords[word];
+      for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
+        let data = currentWord.split("");
+        data[i] = String.fromCharCode(j);
+        let updated = data.join("");
+        outputLoop.push(updated);
+      }
+    }
+    // huge consolde entire transformaton ....... console.log(outputLoop);
+    for (let i = 0; i < outputLoop.length; i++) {
+      if (setDs.has(outputLoop[i])) {
+        setDs.delete(outputLoop[i]);
+        queue.push([outputLoop[i], steps + 1]);
+      }
+    }
+  }
 
-//     for (let i = 0; i < outputLoop.length; i++) {
-//       if (setDs.has(outputLoop[i])) {
-//         setDs.delete(outputLoop[i]);
-//         queue.push([outputLoop[i], steps + 1]);
-//       }
-//     }
-//   }
+  return 0;
+};
 
-//   return 0;
-// };
+let beginWord = "hit";
+let endWord = "cog";
+let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
 
-// let beginWord = "hit";
-// let endWord = "cog";
-// let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
-
-// console.log(
-//   ladderLength(beginWord, endWord, wordList),
-//   "your transformation sequence"
-// );
+console.log(
+  ladderLength(beginWord, endWord, wordList),
+  "your transformation sequence"
+);
 
 // ---------------------------------------------------------------------------------
 
