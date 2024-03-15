@@ -806,20 +806,22 @@ class Binary {
 
 //// ------------------------------------------------------
 
-// var isBalance = function (root) {
-//   return maxDepth !== -1;
-// };
-
 // var maxDepth = function (root) {
 //   if (root === null) return 0;
 
 //   let lef = maxDepth(root.left);
-//   if (let === -1) return -1;
 //   let rig = maxDepth(root.right);
-//   if (rig === -1) return -1;
-//   if (Math.abs(lef - rig) > 1) return -1;
-//   return Math.max(lef, rig) + 1;
+//   if (lef === -1 || rig === -1) return -1; // Return -1 to indicate unbalanced
+//   if (Math.abs(lef - rig) > 1) return -1; // Return -1 to indicate unbalanced
+//   return Math.max(lef, rig) + 1; // Return the depth of the current node
 // };
+// var isBalanced = function (root) {
+//   return maxDepth(root) !== -1;
+// };
+
+////// +1 means current node which means namakku therium left illana right than max ah irukkapodhu appudina
+/// namma antha node oda parent kku left illana right mattum anuppuna podhadhu current node um consider
+/// pannanum illaya appodhan adhoda parent node kku idhuvum sendhu value add aaagum adhan concept
 
 //// ------------------------------------------------------
 
@@ -829,7 +831,7 @@ class Binary {
 //     if (!node) return 0;
 //     let left = depth(node.left);
 //     let right = depth(node.right);
-
+//// why this left + right means our dia path can be passed via root some times it can't via root
 //     dia = Math.max(dia, left + right);
 //     return Math.max(left, right) + 1;
 //   }
@@ -875,52 +877,606 @@ class Binary {
 
 //// ------------------------------------------------------
 
-var verticalTraversal = function (root) {
-  let keyMap = new Map();
+// var verticalTraversal = function (root) {
+//   let keyMap = new Map();
 
-  function dfs(node, dist, level) {
-    // first and most write a base case for if there's no node just return
-    if (!node) return;
+//   function dfs(node, dist, level) {
+//     // first and most write a base case for if there's no node just return
+//     if (!node) return;
 
-    // first check there is distance in the map
-    if (!keyMap.has(dist)) {
-      keyMap.set(dist, new Map());
-    }
-    // now check in the dist has particular level is already entered of not if it is not entered create an array
-    if (!keyMap.get(dist).has(level)) {
-      keyMap.get(dist).set(level, []);
-    }
-    // asssign the node that particular level of the node
-    keyMap.get(dist).get(level).push(node.value);
+//     // first check there is distance in the map
+//     if (!keyMap.has(dist)) {
+//       keyMap.set(dist, new Map());
+//     }
+//     // now check in the dist has particular level is already entered of not if it is not entered create an array
+//     if (!keyMap.get(dist).has(level)) {
+//       keyMap.get(dist).set(level, []);
+//     }
+//     // asssign the node that particular level of the node
+//     keyMap.get(dist).get(level).push(node.value);
 
-    dfs(node.left, dist - 1, level + 1);
+//     dfs(node.left, dist - 1, level + 1);
 
-    dfs(node.right, dist + 1, level + 1);
+//     dfs(node.right, dist + 1, level + 1);
+//   }
+
+//   dfs(root, 0, 0);
+//   // then preorder traverse we got always root node in the top of the list so sorting the key first
+//   let sortedKeys = [...keyMap.keys()].sort((a, b) => a - b);
+
+//   let list = [];
+
+//   // Loop through the sorted keys to extract the data
+//   for (let dist of sortedKeys) {
+//     let levels = keyMap.get(dist);
+//     let temp = [];
+
+//     // Extract data for each level and flatten the array
+//     for (let [level, nodes] of levels) {
+//       temp.push(...nodes);
+//     }
+
+//     list.push(temp);
+//   }
+
+//   return list;
+// };
+
+///// -------------------------------------------------------
+// top view of the binary tree
+
+// var topView = function (root) {
+//   let keyMap = new Map();
+
+//   let dfs = (node, dis) => {
+//     if (!node) return;
+
+//     if (!keyMap.has(dis)) {
+//       keyMap.set(dis, node.value);
+//     }
+
+//     dfs(node.left, dis - 1);
+//     dfs(node.right, dis + 1);
+//   };
+
+//   dfs(root, 0);
+//   let sortedKeys = [...keyMap.keys()].sort((a, b) => a - b);
+
+//   let list = [];
+
+//   for (let data of sortedKeys) {
+//     list.push(keyMap.get(data));
+//   }
+
+//   return list;
+// };
+
+////------------------- bottom view of the binary tree
+
+// var bottomView = function (root) {
+//   let keyMap = new Map();
+
+//   let dfs = (node, dist) => {
+//     if (!node) return;
+
+//     // Always update the value in the map for the current horizontal distance
+//     keyMap.set(dist, node.value);
+
+//     // Traverse left child
+//     dfs(node.left, dist - 1);
+
+//     // Traverse right child
+//     dfs(node.right, dist + 1);
+//   };
+//   dfs(root, 0);
+
+//   let sorting = [...keyMap.keys()].sort((a, b) => a - b);
+
+//   let list = [];
+
+//   for (let data of sorting) {
+//     list.push(keyMap.get(data));
+//   }
+//   return list;
+// };
+
+////------------------- right view of the binary tree
+
+// var rightView = function (root) {
+//   let list = [];
+
+//   let preOrder = (node, level) => {
+//     if (node === null) return;
+
+//     if (list.length === level) {
+//       list.push(node.value);
+//     }
+
+//     preOrder(node.right, level + 1);
+//     preOrder(node.left, level + 1);
+//   };
+
+///// as it is left side view just interchange the preorder recurion simple left 1st and right 2nd done
+
+//   preOrder(root, 0);
+
+//   return list;
+// };
+
+/// ----------------------------------------------------
+////// symmetric binary tree problem solved on leetcode
+
+// var isSymmetric = function (root) {
+//   let dfs = (left, right) => {
+//     if (left === null && right === null) return true;
+//     if (left === null || right === null) return false;
+
+//     if (left.val !== right.val) return false;
+
+//     return dfs(left.left, right.right) && dfs(left.right, right.left);
+//   };
+
+//   return dfs(root.left, root.right);
+// };
+
+///// --------------------------------------------
+//// root to node path the node can be anything doesn't matter we need to find the path
+
+// var rootToNode = function (root, target) {
+//   let paths = [];
+
+//   let inorder = (node, target) => {
+//     if (!node) return false;
+
+//     paths.push(node.value);
+
+//     if (node.value === target) {
+//       return true;
+//     }
+//// simultanious movement left tree and right tree
+//     if (inorder(node.left, target) || inorder(node.right, target)) {
+//       return true;
+//     }
+
+//     paths.pop();
+//     return false;
+//   };
+
+//   if (inorder(root, target)) {
+//     return paths;
+//   } else {
+//     return "Not Found Path";
+//   }
+// };
+
+///// --------------------------------------------
+// 236. Lowest Common Ancestor of a Binary Tree solved on leetcode
+
+// var lowestCommonAncestor = function (root, p, q) {
+//   // base case
+//   if (!root || root.value === p || root.value === q) {
+//     return root;
+//   }
+
+//   // Recursive calls
+//   let left = lowestCommonAncestor(root.left, p, q);
+//   let right = lowestCommonAncestor(root.right, p, q);
+
+//   // Handle results
+//   if (left !== null && right !== null) {
+//     // Nodes p and q found in different subtrees, so root is LCA
+//     return root.value;
+//   } else if (left !== null) {
+//     // Node p or q found in left subtree
+//     return left;
+//   } else if (right !== null) {
+//     // Node p or q found in right subtree
+//     return right;
+//   } else {
+//     // Neither p nor q found in this subtree
+//     return null;
+//   }
+// };
+
+///// --------------------------------------------
+//// children sum property
+
+// You are given the root of a binary tree that consists of exactly 3 nodes: the root, its left child, and its right child.
+
+// Return true if the value of the root is equal to the sum of the values of its two children, or false otherwise.
+
+// var checkTree = function (root) {
+//   let dfs = (node) => {
+//     if (!node) return null;
+
+//     let left = dfs(node.left);
+//     let right = dfs(node.right);
+
+//     if (left === null && right === null) {
+//       return node.value;
+//     }
+
+//     if (left != null && right != null) {
+//       return node.value === left + right;
+//     }
+//     return false;
+//   };
+
+//   return dfs(root);
+// };
+
+/// lever order traversal BFS simple queue data structure
+
+// var leverOrder = function (root) {
+//   let screen = [];
+//   let queue = [];
+//   if (!root) return screen;
+
+//   queue.push(root);
+
+//   while (queue.length !== 0) {
+//     let size = queue.length;
+//     // every time create new empty array once the loop will end so don't cofuse
+//     let individualLevel = [];
+
+//     for (let i = 0; i < size; i++) {
+//       let node = queue.shift();
+//       if (node.left !== null) queue.push(node.left);
+//       if (node.right !== null) queue.push(node.right);
+
+//       individualLevel.push(node.value);
+//     }
+
+//     screen.push(individualLevel);
+//   }
+//   return screen;
+// };
+
+////------------------------------------------------------
+////All Nodes Distance K in Binary Tree level order bfs
+// var parentMap = new Map();
+// var preOrder = function (node, pare) {
+//   // initially root node parent always null i hope you know
+//   if (!node) return;
+
+//   parentMap.set(node, pare);
+
+//   preOrder(node.left, node);
+//   preOrder(node.right, node);
+// };
+
+// var distanceK = function (root, target, k) {
+//   preOrder(root, null);
+//   let visited = new Set();
+//   let queue = [];
+
+//   console.log(parentMap);
+
+//   let targetNode = null;
+//   /// why this loop marudhu very simple buddy because the target is just simple value not a one of the node so
+//   /// first find the node of instance then traverse equally which means radially out...
+//   for (let node of parentMap.keys()) {
+//     if (node.value === target) {
+//       targetNode = node;
+//       break;
+//     }
+//   }
+
+//   queue.push(targetNode);
+//   visited.add(targetNode);
+//   let level = 0;
+
+//   while (queue.length !== 0) {
+//     let size = queue.length;
+
+//     if (level++ === k) break;
+
+//     for (let i = 0; i < size; i++) {
+//       let node = queue.shift();
+//       if (node.left && !visited.has(node.left)) {
+//         queue.push(node.left);
+//         visited.add(node.left);
+//       }
+//       if (node.right && !visited.has(node.right)) {
+//         queue.push(node.right);
+//         visited.add(node.right);
+//       }
+//       let parent = parentMap.get(node);
+//       if (parent && !visited.has(parent)) {
+//         queue.push(parent);
+//         visited.add(parent);
+//       }
+//     }
+//   }
+//   let results = [];
+//   while (queue.length !== 0) {
+//     let node = queue.shift();
+//     results.push(node.value);
+//   }
+//   return results;
+// };
+
+////// --------------------------------Amount of Time for Binary Tree to Be Infected
+
+// var amountOfTime = function (root, start) {
+//   let childParent = new Map();
+//   var preOrder = function (node, pare) {
+//     if (!node) return;
+
+//     childParent.set(node, pare);
+
+//     preOrder(node.left, node);
+//     preOrder(node.right, node);
+//   };
+
+//   preOrder(root, null);
+
+//   let targetNode = null;
+
+//   for (let node of childParent.keys()) {
+//     if (node.value === start) {
+//       targetNode = node;
+//       break;
+//     }
+//   }
+
+//   let queue = [];
+//   let visited = new Set();
+//   let burning = 0;
+//   queue.push(targetNode);
+//   visited.add(targetNode);
+
+//   while (queue.length !== 0) {
+//     let size = queue.length;
+//     // just following if any new node added in the bag if that is case only burning++ or assume we end of the loop
+//     let flag = false;
+//     for (let i = 0; i < size; i++) {
+//       let node = queue.shift();
+
+//       if (node.left && !visited.has(node.left)) {
+//         // you can placed flag anywhere in the if conditions first or mid or last wherever
+//         flag = true;
+//         queue.push(node.left);
+//         visited.add(node.left);
+//       }
+
+//       if (node.right && !visited.has(node.right)) {
+//         flag = true;
+//         queue.push(node.right);
+//         visited.add(node.right);
+//       }
+
+//       let parent = childParent.get(node);
+
+//       if (parent !== null && !visited.has(parent)) {
+//         flag = true;
+//         queue.push(parent);
+//         visited.add(parent);
+//       }
+//     }
+//     if (flag) burning++;
+//   }
+//   return burning;
+// };
+
+/////--------------------------------- Count complete nodes in binary treee
+// let leftHeight = (node) => {
+//   let left = 0;
+//   while (node) {
+//     left++;
+//     node = node.left;
+//   }
+//   return left;
+// };
+
+// let rightHeight = (node) => {
+//   let right = 0;
+//   while (node) {
+//     right++;
+//     node = node.right;
+//   }
+
+//   return right;
+// };
+
+// var countNodes = function (root) {
+//   if (!root) return 0;
+
+//   let lh = leftHeight(root);
+//   let rh = rightHeight(root);
+
+//   if (lh === rh) {
+//     return Math.pow(2, lh) - 1;
+//   } else {
+//     return countNodes(root.left) + countNodes(root.right) + 1;
+//   }
+// };
+
+///// ----------------------------- num of trees create unique tree catalon reference and GFG
+
+// var numTrees = function (n) {
+//   let memo = new Array(n + 1).fill(0);
+//   memo[0] = 1;
+//   memo[1] = 1;
+//   /// top down approach which means looop
+//   for (let i = 2; i <= n; i++) {
+//     for (let j = 1; j <= i; j++) {
+//       memo[i] += memo[j - 1] * memo[i - j];
+//     }
+//   }
+//   return memo[n];
+// };
+
+/////------------------------------------------------
+///// morris traversal inorder o(1) space complexity....
+
+// var morris = function (root) {
+//   let list = [];
+//   let current = root;
+
+//   while (current !== null) {
+//     if (current.left === null) {
+//       list.push(current.value);
+//       current = current.right;
+//     } else {
+//       let findRighMostNode = current.left;
+//       while (
+//         findRighMostNode.right !== null &&
+//         findRighMostNode.right !== current
+//       ) {
+//         findRighMostNode = findRighMostNode.right;
+//       }
+
+//       if (findRighMostNode.right === null) {
+//         findRighMostNode.right = current;
+//         current = current.left;
+//       } else {
+//         findRighMostNode.right = null;
+//         list.push(current.value);
+//         current = current.right;
+//       }
+//     }
+//   }
+//   return list;
+// };
+/////-------------------------------------------------------------------------------------
+
+///// flatten binary tree to linked list
+
+// var flatten = function (root) {
+//   let previous = null;
+//   var flat = function (root) {
+//     if (root === null) return;
+
+//     /////reversed post order right left root method..don't worry i made a drawing for all those trees
+//     flat(root.right);
+//     flat(root.left);
+
+//     root.right = previous;
+//     root.left = null;
+//     previous = root;
+//   };
+//   flat(root);
+//   return root;
+// };
+
+/////-------------------------------------------------------------------------------------
+
+///// binary search tree problem above problem are binary tree......
+
+//// ceil of the binary treee problem first
+
+// var ceil = function (root, key) {
+//   let ceiling = Infinity;
+
+//   var findCeil = function (root, key) {
+//     while (root) {
+//       if (root.value === key) {
+//         ceiling = root.value;
+//         return ceiling;
+//       }
+
+//       if (key > root.value) {
+//         root = root.right;
+//       } else {
+//         ceiling = root.value;
+//         root = root.left;
+//       }
+//     }
+//   };
+//   findCeil(root, key);
+//   return ceiling;
+// };
+
+//// floor of the binary treee problem first
+
+// var findfloor = function (root, key) {
+//   let flooring = -1;
+
+//   var floor = function (root, key) {
+//     while (root) {
+//       if (root.value === key) {
+//         flooring = root.value;
+//         return flooring;
+//       }
+
+//       if (root.value < key) {
+//         root = root.right;
+//       } else {
+//         root = root.left;
+//         flooring = root.value;
+//       }
+//     }
+//   };
+
+//   floor(root, key);
+//   return flooring;
+// };
+
+///////////---------------------------------------------------
+///// delete the node BST
+
+var findRighMostNode = function (node) {
+  /// node oda left tree oda right most node kku poittu then andha rightchild ah preserve panni vachirukkomla adha assign pannanum
+
+  if (node.right === null) {
+    return node;
   }
 
-  dfs(root, 0, 0);
-  // then preorder traverse we got always root node in the top of the list so sorting the key first
-  let sortedKeys = [...keyMap.keys()].sort((a, b) => a - b);
-
-  let list = [];
-
-  // Loop through the sorted keys to extract the data
-  for (let dist of sortedKeys) {
-    let levels = keyMap.get(dist);
-    let temp = [];
-
-    // Extract data for each level and flatten the array
-    for (let [level, nodes] of levels) {
-      temp.push(...nodes);
-    }
-
-    list.push(temp);
-  }
-
-  return list;
+  return findRighMostNode(node.right);
 };
 
-// TREE REPLICATION IN VISUALLY
+/// once the fucntion you see in the code you got the right node of your travrsal that means our node is there
+var checking = function (node) {
+  /// ungaloda key node left vandhu null ah iruntha you don't need to do anything just return the right
+  if (node.left === null) {
+    return node.right;
+  } else if (node.right === null) {
+    return node.left;
+  }
+
+  /// first preserving the right child of that node
+  let rightChildOfNode = node.right;
+  ///// node oda left tree oda right most node
+  let leftTreeLastRightNode = findRighMostNode(node.left);
+
+  leftTreeLastRightNode.right = rightChildOfNode;
+  return node.left;
+};
+
+var deleteNode = function (root, key) {
+  /// first base case
+  if (!root) return null;
+
+  if (root.value === key) {
+    return checking(root);
+  }
+  //// if our root is the key we need to do some changes that time the destroynode will help
+  let destroyNode = root;
+  //// searching the node first as we did before
+  while (root) {
+    if (root.value > key) {
+      if (root.left !== null && root.left.value === key) {
+        //// here we got the node so we need to do something here to change the edges between nodes
+        root.left = checking(root.left);
+        break;
+      } else {
+        root = root.left;
+      }
+    } else {
+      if (root.right !== null && root.right.value === key) {
+        root.right = checking(root.right);
+        break;
+      } else {
+        root = root.right;
+      }
+    }
+  }
+
+  return destroyNode;
+};
+
+// TREE REPLICATION IN VISUALLY 5
 //           50
 //        /     \
 //      30       70
@@ -928,6 +1484,14 @@ var verticalTraversal = function (root) {
 //    20  40   60   80
 
 let adding = new Binary();
+// let construct = (arr) => {
+//   for (let node of arr) {
+//     adding.insert(node);
+//   }
+// };
+
+// construct([8, 5, 1, 7, 10, 12]);
+
 adding.insert(50);
 adding.insert(30);
 adding.insert(20);
@@ -936,11 +1500,32 @@ adding.insert(70);
 adding.insert(60);
 adding.insert(80);
 
+// console.log(adding.root);
 // // console.log(preOrder(adding.root));
 // // console.log(inOrder(adding.root));
 // // console.log(postOrder(adding.root));
 // console.log(traversal(adding.root), "final");
-// console.log(isBalance(adding.root));
+// console.log(isBalanced(adding.root));
 // console.log(diameterOfBinaryTree(adding.root));
 // console.log(maxPathSum(adding.root));
-console.log(verticalTraversal(adding.root));
+// console.log(verticalTraversal(adding.root));
+// console.log(topView(adding.root));
+// console.log(bottomView(adding.root));
+// console.log(rightView(adding.root));
+// console.log(isSymmetric(adding.root));
+// console.log(rootToNode(adding.root, 40));
+// console.log(lowestCommonAncestor(adding.root, 40, 70));
+// console.log(checkTree(adding.root));
+// console.log(changeTree(adding.root));
+// console.log(leverOrder(adding.root));
+// console.log(distanceK(adding.root, 30, 2));
+// console.log(amountOfTime(adding.root, 40));
+// console.log(countNodes(adding.root));
+// console.log(numTrees(3));
+// console.log(morris(adding.root));
+// console.log(flatten(adding.root, "dafdfa"));
+///---------------------------------------------------------------
+// console.log(ceil(adding.root, 37)); // output is 40
+// console.log(findfloor(adding.root, 61));
+console.log(deleteNode(adding.root, 30), "consoling");
+//////// random binary trees creation like don't consider the rule of the binary treeees

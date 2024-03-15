@@ -1260,51 +1260,51 @@
 
 // Word Ladder one using BFG traversal technique....My own code more time reduce using array solved on leetcode and gfg both platform
 
-var ladderLength = function (beginWord, endWord, wordList) {
-  let queue = [];
-  queue.push([beginWord, 1]); // first one currentword, another one is more important steps how many /// //
-  /////// sequence we made it.... simple steps monitering .....
-  let setDs = new Set();
-  for (let i = 0; i < wordList.length; i++) {
-    setDs.add(wordList[i]);
-  }
+// var ladderLength = function (beginWord, endWord, wordList) {
+//   let queue = [];
+//   queue.push([beginWord, 1]); // first one currentword, another one is more important steps how many /// //
+//   /////// sequence we made it.... simple steps monitering .....
+//   let setDs = new Set();
+//   for (let i = 0; i < wordList.length; i++) {
+//     setDs.add(wordList[i]);
+//   }
 
-  setDs.delete(beginWord);
-  while (queue.length > 0) {
-    let [currentWord, steps] = queue.shift();
-    let outputLoop = [];
-    // for (let i = 0; i < individualWords.length; i++) {
-    if (currentWord === endWord) return steps;
-    // }
-    for (let i = 0; i < currentWord.length; i++) {
-      //   let extractFirstLetter = individualWords[word];
-      for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
-        let data = currentWord.split("");
-        data[i] = String.fromCharCode(j);
-        let updated = data.join("");
-        outputLoop.push(updated);
-      }
-    }
-    // huge consolde entire transformaton ....... console.log(outputLoop);
-    for (let i = 0; i < outputLoop.length; i++) {
-      if (setDs.has(outputLoop[i])) {
-        setDs.delete(outputLoop[i]);
-        queue.push([outputLoop[i], steps + 1]);
-      }
-    }
-  }
+//   setDs.delete(beginWord);
+//   while (queue.length > 0) {
+//     let [currentWord, steps] = queue.shift();
+//       let outputLoop = [];
+//     // for (let i = 0; i < individualWords.length; i++) {
+//     if (currentWord === endWord) return steps;
+//     // }
+//     for (let i = 0; i < currentWord.length; i++) {
+//       //   let extractFirstLetter = individualWords[word];
+//       for (let j = "a".charCodeAt(0); j <= "z".charCodeAt(0); j++) {
+//         let data = currentWord.split("");
+//         data[i] = String.fromCharCode(j);
+//         let updated = data.join("");
+//         outputLoop.push(updated);
+//       }
+//     }
+//     //// console.log(outputLoop);
+//     for (let i = 0; i < outputLoop.length; i++) {
+//       if (setDs.has(outputLoop[i])) {
+//         setDs.delete(outputLoop[i]);
+//         queue.push([outputLoop[i], steps + 1]);
+//       }
+//     }
+//   }
 
-  return 0;
-};
+//   return 0;
+// };
 
-let beginWord = "hit";
-let endWord = "cog";
-let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
+// let beginWord = "hit";
+// let endWord = "cog";
+// let wordList = ["hot", "dot", "dog", "lot", "log", "cog"];
 
-console.log(
-  ladderLength(beginWord, endWord, wordList),
-  "your transformation sequence"
-);
+// console.log(
+//   ladderLength(beginWord, endWord, wordList),
+//   "your transformation sequence"
+// );
 
 // ---------------------------------------------------------------------------------
 
@@ -1371,7 +1371,7 @@ console.log(
 // );
 
 // ---------------------------------------------------------------------------------
-
+///// dijstra uses BFS technique in before bfs used normal q but here optimized set() simple nothing else
 // class Solution {
 //   dijkstra(V, adj, S) {
 //     let setDs = new Set();
@@ -1389,7 +1389,7 @@ console.log(
 //       setDs.delete(extraction);
 
 //       for (let neighbor of adj[node]) {
-//         console.log(neighbor, "neighbor before extract");
+//         // console.log(neighbor, "neighbor before extract");
 //         let neighNode = neighbor[0];
 //         let neighWeight = neighbor[1];
 //         // 1 3
@@ -1434,90 +1434,90 @@ console.log(
 
 // ---------------------------------------------------------------------------------
 
-// Shortest Path in Weighted undirected graph, this is the correct code, you can convert into this code c++ or java or python, then you will apply geeks for geeks,,,,, using dijkstra algorithm we don't have any platform to check the code gfg doesn't provide js option leetcode has not this problem but this is the perfect code i'm using set but in the youtube only have priority queue format optimized problem
+// Shortest Path in Weighted undirected graph dijkstra algorithm , this is the correct code, you can convert into this code c++ or java or python, then you will apply geeks for geeks,,,,, using dijkstra algorithm we don't have any platform to check the code gfg doesn't provide js option leetcode has not this problem but this is the perfect code i'm using set but in the youtube only have priority queue format optimized problem
 
-// class Solution {
-//   dijkstraShortesPath(n, m, edges) {
-//     let adjList = new Array(n + 1).fill().map(() => []);
-//     console.log(adjList);
+class Solution {
+  dijkstraShortesPath(n, m, edges) {
+    let adjList = new Array(n + 1).fill().map(() => []);
+    // console.log(adjList);
 
-//     for (let makeEdgeConnection of edges) {
-//       adjList[makeEdgeConnection[0]].push([
-//         makeEdgeConnection[1],
-//         makeEdgeConnection[2],
-//       ]);
-//       adjList[makeEdgeConnection[1]].push([
-//         makeEdgeConnection[0],
-//         makeEdgeConnection[2],
-//       ]);
-//     }
-//     // console.log(adjList, "your final adjList");
+    for (let makeEdgeConnection of edges) {
+      adjList[makeEdgeConnection[0]].push([
+        makeEdgeConnection[1],
+        makeEdgeConnection[2],
+      ]);
+      adjList[makeEdgeConnection[1]].push([
+        makeEdgeConnection[0],
+        makeEdgeConnection[2],
+      ]);
+    }
+    // console.log(adjList, "your final adjList");
 
-//     let setDs = new Set();
-//     let distance = new Array(n + 1).fill(Infinity);
-//     let parent = new Array(n + 1);
+    let setDs = new Set();
+    let distance = new Array(n + 1).fill(Infinity);
+    let parent = new Array(n + 1);
 
-//     for (let i = 1; i <= n; i++) {
-//       parent[i] = i;
-//     }
+    for (let i = 1; i <= n; i++) {
+      parent[i] = i;
+    }
 
-//     distance[1] = 0;
-//     setDs.add([0, 1]); // here 1 position is call node and 0 position called distance or weight of the from this one
+    distance[1] = 0;
+    setDs.add([0, 1]); // here 1 position is call node and 0 position called distance or weight of the from this one
 
-//     while (setDs.size !== 0) {
-//       let extract = setDs.values().next().value;
-//       let node = extract[1];
-//       let dist = extract[0];
-//       setDs.delete(extract);
-//       console.log("Distance :", dist, "Node :", node);
+    while (setDs.size !== 0) {
+      let extract = setDs.values().next().value;
+      let node = extract[1];
+      let dist = extract[0];
+      setDs.delete(extract);
+      //  console.log("Distance :", dist, "Node :", node);
 
-//       for (let adjacent of adjList[node]) {
-//         let adjaNode = adjacent[0];
-//         let adjaWeight = adjacent[1];
+      for (let adjacent of adjList[node]) {
+        let adjaNode = adjacent[0];
+        let adjaWeight = adjacent[1];
 
-//         if (dist + adjaWeight < distance[adjaNode]) {
-//           if (distance[adjaNode] !== Infinity) {
-//             setDs.delete(distance[adjaNode], adjaNode);
-//           }
+        if (dist + adjaWeight < distance[adjaNode]) {
+          if (distance[adjaNode] !== Infinity) {
+            setDs.delete(distance[adjaNode], adjaNode);
+          }
 
-//           distance[adjaNode] = dist + adjaWeight;
-//           setDs.add([distance[adjaNode], adjaNode]);
-//           parent[adjaNode] = node;
-//         }
-//       }
-//     }
-//     if (distance[n] === Infinity) return -1;
-//     console.log(distance, "distance");
-//     console.log(parent, "Parent");
-//     let path = [];
-//     let node = n; // we are gonna check n means 5 where it is come from the parent of the node that's the code below here don't panic buddy
+          distance[adjaNode] = dist + adjaWeight;
+          setDs.add([distance[adjaNode], adjaNode]);
+          parent[adjaNode] = node;
+        }
+      }
+    }
+    if (distance[n] === Infinity) return -1;
+    // console.log(distance, "distance");
+    //  console.log(parent, "Parent");
+    let path = [];
+    let node = n; // we are gonna check n means 5 where it is come from the parent of the node that's the code below here don't panic buddy
 
-//     while (parent[node] !== node) {
-//       path.push(node);
-//       node = parent[node];
-//     }
-//     path.push(1);
-//     console.log(path, "path");
+    while (parent[node] !== node) {
+      path.push(node);
+      node = parent[node];
+    }
+    path.push(1);
+    // console.log(path, "path");
+    //// in the description they are mentioned whose firse element is the paths comes.....
+    let yourPath = path.reverse();
+    return yourPath;
+  }
+}
 
-//     let yourPath = path.reverse();
-//     return yourPath;
-//   }
-// }
+let n = 5;
+let m = 6;
+let edges = [
+  [1, 2, 2],
+  [2, 5, 5],
+  [2, 3, 4],
+  [1, 4, 1],
+  [4, 3, 3],
+  [3, 5, 1],
+];
 
-// let n = 5;
-// let m = 6;
-// let edges = [
-//   [1, 2, 2],
-//   [2, 5, 5],
-//   [2, 3, 4],
-//   [1, 4, 1],
-//   [4, 3, 3],
-//   [3, 5, 1],
-// ];
-
-// let data = new Solution();
-// let output = data.dijkstraShortesPath(n, m, edges);
-// console.log(output, "this is your shortest path");
+let data = new Solution();
+let output = data.dijkstraShortesPath(n, m, edges);
+console.log(output, "this is your shortest path");
 
 // ---------------------------------------------------------------------------------
 
