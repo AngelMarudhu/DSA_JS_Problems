@@ -1313,7 +1313,7 @@ class Binary {
 // var morris = function (root) {
 //   let list = [];
 //   let current = root;
-
+//   /// till last node that's meaning by current !== null
 //   while (current !== null) {
 //     if (current.left === null) {
 //       list.push(current.value);
@@ -1416,65 +1416,200 @@ class Binary {
 ///////////---------------------------------------------------
 ///// delete the node BST
 
-var findRighMostNode = function (node) {
-  /// node oda left tree oda right most node kku poittu then andha rightchild ah preserve panni vachirukkomla adha assign pannanum
+// var findRighMostNode = function (node) {
+//   /// node oda left tree oda right most node kku poittu then andha rightchild ah preserve panni vachirukkomla adha assign pannanum
 
-  if (node.right === null) {
-    return node;
-  }
+//   if (node.right === null) {
+//     return node;
+//   }
 
-  return findRighMostNode(node.right);
-};
+//   return findRighMostNode(node.right);
+// };
 
-/// once the fucntion you see in the code you got the right node of your travrsal that means our node is there
-var checking = function (node) {
-  /// ungaloda key node left vandhu null ah iruntha you don't need to do anything just return the right
-  if (node.left === null) {
-    return node.right;
-  } else if (node.right === null) {
-    return node.left;
-  }
+// /// once the fucntion you see in the code you got the right node of your travrsal that means our node is there
+// var checking = function (node) {
+//   /// ungaloda key node left vandhu null ah iruntha you don't need to do anything just return the right
+//   if (node.left === null) {
+//     return node.right;
+//   } else if (node.right === null) {
+//     return node.left;
+//   }
 
-  /// first preserving the right child of that node
-  let rightChildOfNode = node.right;
-  ///// node oda left tree oda right most node
-  let leftTreeLastRightNode = findRighMostNode(node.left);
+//   /// first preserving the right child of that node
+//   let rightChildOfNode = node.right;
+//   ///// node oda left tree oda right most node
+//   let leftTreeLastRightNode = findRighMostNode(node.left);
 
-  leftTreeLastRightNode.right = rightChildOfNode;
-  return node.left;
-};
+//   leftTreeLastRightNode.right = rightChildOfNode;
+//   return node.left;
+// };
 
-var deleteNode = function (root, key) {
-  /// first base case
-  if (!root) return null;
+// var deleteNode = function (root, key) {
+//   /// first base case
+//   if (!root) return null;
 
-  if (root.value === key) {
-    return checking(root);
-  }
-  //// if our root is the key we need to do some changes that time the destroynode will help
-  let destroyNode = root;
-  //// searching the node first as we did before
-  while (root) {
-    if (root.value > key) {
-      if (root.left !== null && root.left.value === key) {
-        //// here we got the node so we need to do something here to change the edges between nodes
-        root.left = checking(root.left);
-        break;
-      } else {
-        root = root.left;
-      }
-    } else {
-      if (root.right !== null && root.right.value === key) {
-        root.right = checking(root.right);
-        break;
-      } else {
-        root = root.right;
-      }
-    }
-  }
+//   if (root.value === key) {
+//     return checking(root);
+//   }
+//   //// if our root is the key we need to do some changes that time the destroynode will help
+//   let destroyNode = root;
+//   //// searching the node first as we did before
+//   while (root) {
+//     if (root.value > key) {
+//       if (root.left !== null && root.left.value === key) {
+//         //// here we got the node so we need to do something here to change the edges between nodes
+//         root.left = checking(root.left);
+//         break;
+//       } else {
+//         root = root.left;
+//       }
+//     } else {
+//       if (root.right !== null && root.right.value === key) {
+//         root.right = checking(root.right);
+//         break;
+//       } else {
+//         root = root.right;
+//       }
+//     }
+//   }
 
-  return destroyNode;
-};
+//   return destroyNode;
+// };
+
+//////---------------------------------------------------------
+
+///// kth smallest number finding bst leetcode
+
+// var kthSmallest = function (root, k) {
+//   let list = [];
+
+//   var finding = function (root) {
+//     if (root === null) {
+//       return null;
+//     }
+//     finding(root.left);
+//     list.push(root.value);
+//     finding(root.right);
+//   };
+
+//   finding(root);
+//   console.log(list);
+
+//   // Return the kth smallest element
+//   return list[k - 1];
+// };
+/////// --------------------------------------
+
+// var lowestCommonAncestor = function (root, p, q) {
+//   if (root === null) {
+//     return null;
+//   }
+//   //// very simple concept buddy nammaloda p and q orey tree la irukkum bodhu namakku problem illa oru vela
+//   //// pirium podhu rendumey fail aagidum enga piriyudho adhudhan nammaloda common ancestor ah irukkum
+//   //// oru vela starting root laye rendume pirinchudhuna anga edhu common ancestor root dhan done...
+//   if (root.value > p && root.value > q) {
+//     return lowestCommonAncestor(root.left, p, q);
+//   } else if (root.value < p && root.value < q) {
+//     return lowestCommonAncestor(root.right, p, q);
+//   }
+//   return root.value;
+// };
+
+//// -----------------------------------------------------------
+///// validate the binary search tree is bst or bt bt vs bst
+
+// var checking = function (root, minRange, maxRange) {
+//   if (root === null) return true;
+
+//   //// range forumula minrange < root value ----- root value < maxrange
+
+//   if (root.value <= minRange || root.value >= maxRange) return false;
+
+//   return (
+//     checking(root.left, minRange, root.value) &&
+//     checking(root.right, root.value, maxRange)
+//   );
+// };
+
+// var isValidBST = function (root) {
+//   return checking(root, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+// };
+
+/// -----------------------------------
+//// inorder successor finding ......
+
+//// this one iterative approach
+// var sucessor = function (root, key) {
+//   let successor = null;
+//   while (root !== null) {
+//     if (key >= root.value) {
+//       root = root.right;
+//     } else {
+//       successor = root.value;
+//       root = root.left;
+//     }
+//   }
+//   return successor;
+// };
+
+///// recursive approach
+// var sucessor = function (root, key) {
+//   let successor = null;
+
+//   let finding = function (node) {
+//     if (node === null) return;
+
+//     if (key >= node.value) {
+//       // Traverse right subtree
+//       finding(node.right);
+//     } else {
+//       // Update successor when moving to left subtree
+//       successor = node.value;
+//       // Traverse left subtree
+//       finding(node.left);
+//     }
+//   };
+
+//   finding(root);
+
+//   return successor;
+// };
+
+////---------------------------------------------------------
+//// largest binary tree problem last bst playlist
+
+// const maxVal = Number.MAX_VALUE;
+// const minVal = Number.MIN_VALUE;
+
+// class nodeInfo {
+//   constructor(size, max, min) {
+//     this.size = size;
+//     this.max = max;
+//     this.min = min;
+//   }
+// }
+
+// var largest = function (root) {
+//   var findLarge = function (root) {
+//     if (root === null) {
+//       return new nodeInfo(0, minVal, maxVal);
+//     }
+
+//     let left = findLarge(root.left);
+//     let right = findLarge(root.right);
+
+//     if (left.max < root.value && root.value < right.min) {
+//       return new nodeInfo(
+//         left.size + right.size + 1,
+//         Math.max(root.value, right.max),
+//         Math.max(root.value, left.min)
+//       );
+//     }
+//     return new nodeInfo(Math.max(left.size, right.size), minVal, maxVal);
+//   };
+
+//   return findLarge(root).size;
+// };
 
 // TREE REPLICATION IN VISUALLY 5
 //           50
@@ -1514,7 +1649,7 @@ adding.insert(80);
 // console.log(rightView(adding.root));
 // console.log(isSymmetric(adding.root));
 // console.log(rootToNode(adding.root, 40));
-// console.log(lowestCommonAncestor(adding.root, 40, 70));
+//console.log(lowestCommonAncestor(adding.root, 40, 70));
 // console.log(checkTree(adding.root));
 // console.log(changeTree(adding.root));
 // console.log(leverOrder(adding.root));
@@ -1527,5 +1662,141 @@ adding.insert(80);
 ///---------------------------------------------------------------
 // console.log(ceil(adding.root, 37)); // output is 40
 // console.log(findfloor(adding.root, 61));
-console.log(deleteNode(adding.root, 30), "consoling");
+// console.log(deleteNode(adding.root, 30), "consoling");
+// console.log(kthSmallest(adding.root, 3), "consoling");
+// console.log(lowestCommonAncestor(adding.root, 20, 40));
+// console.log(isValidBST(adding.root));
+// console.log(sucessor(adding.root, 40));
+// console.log(largest(adding.root));
 //////// random binary trees creation like don't consider the rule of the binary treeees
+
+//// ----------------------------------------------------------------
+//// construct binary tree with preorder array list
+
+// var makingTree = function (nodeList, index, maxRange) {
+//   if (index >= nodeList.length || nodeList[index] > maxRange) return null;
+
+//   let root = new Node(nodeList[index]);
+
+//   // Find the index of the first element greater than the current node's value
+//   let nextGreaterIndex = index + 1;
+//   while (
+//     nextGreaterIndex < nodeList.length &&
+//     nodeList[nextGreaterIndex] <= root.value
+//   ) {
+//     nextGreaterIndex++;
+//   }
+
+//   // Construct the left subtree using indices [index + 1, nextGreaterIndex)
+//   root.left = makingTree(nodeList, index + 1, root.value);
+
+//   // Construct the right subtree using indices [nextGreaterIndex, end of array)
+//   root.right = makingTree(nodeList, nextGreaterIndex, maxRange);
+
+//   return root;
+// };
+
+// var bstFromPreorder = function (preorder) {
+//   let i = 0;
+//   let node = makingTree(preorder, i, Number.MAX_SAFE_INTEGER);
+//   return node;
+// };
+
+// console.log(bstFromPreorder([50, 30, 20, 40, 70, 60, 80]));
+
+//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+//// heaps data structure let's see how it goes
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+///                1
+//              /     \
+//            50       60
+//           /  \     /   \
+//          30  40   20    10
+//
+
+class MaxHeap {
+  constructor() {
+    this.heap = [];
+  }
+
+  inserting(value) {
+    this.heap.push(value);
+
+    this.heapifyDownAdding(this.heap.length - 1);
+  }
+
+  heapifyDownAdding(index) {
+    let findParentIndex = Math.floor((index - 1) / 2); //// for replacing max heap we need keep track root always greater of current node
+
+    if (this.heap[findParentIndex] < this.heap[index]) {
+      let temp = this.heap[findParentIndex];
+
+      this.heap[findParentIndex] = this.heap[index];
+      this.heap[index] = temp;
+      /// just recursion if you don't how this is works just add the 4 nodes inserting then check you will understand
+      this.heapifyDownAdding(findParentIndex);
+    }
+  }
+
+  extractMax() {
+    if (this.heap.length === 0) return null;
+
+    const maxOfheap = this.heap[0];
+    // we just over write the heap values we need to rearranging as it is back to normal treee
+    this.heap[0] = this.heap.pop();
+    this.heapifyUprearranging(0);
+    return maxOfheap;
+  }
+
+  heapifyUprearranging(index) {
+    let heapSize = this.heap.length;
+    //// it's just formula
+    let leftChild = Math.floor(2 * index + 1);
+    let rightChild = Math.floor(2 * index + 2);
+    let maxIndex = index;
+    //// just check the boundary first you we did many times in a matrix problem 4 direction check
+    if (leftChild < heapSize && this.heap[leftChild] > this.heap[maxIndex]) {
+      maxIndex = leftChild;
+    }
+
+    if (rightChild < heapSize && this.heap[rightChild] > this.heap[maxIndex]) {
+      maxIndex = rightChild;
+    }
+
+    if (maxIndex !== index) {
+      let temp = this.heap[maxIndex];
+      this.heap[maxIndex] = this.heap[index];
+      this.heap[index] = temp;
+
+      this.heapifyUprearranging(maxIndex);
+    }
+  }
+
+  increaseKey(i, value) {
+    let list = this.heap;
+  }
+
+  printHeaps() {
+    return this.heap;
+  }
+}
+
+let heaps = new MaxHeap();
+
+var arraytoheap = function (values) {
+  for (let i = 0; i < values.length; i++) {
+    heaps.inserting(values[i]);
+  }
+};
+
+arraytoheap([100, 50, 60, 30, 40, 20, 10, 1]);
+
+// console.log(heaps.extractMax());
+
+heaps.increaseKey(2, 150);
+
+console.log(heaps.printHeaps());
