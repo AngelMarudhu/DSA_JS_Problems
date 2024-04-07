@@ -16,7 +16,7 @@
 
 // class LinkedList {
 //   constructor(value) {
-//     this.head = {
+//     this.head = {s
 //       value: value,
 //       next: null,
 //     };

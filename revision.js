@@ -1718,85 +1718,471 @@ adding.insert(80);
 //          30  40   20    10
 //
 
+// Heapify Up (or Percolate Up): This operation starts from a newly inserted or updated node and moves it up the heap until it satisfies the heap property. It's typically used after inserting a new element or increasing the key of an existing element. The process continues until the element reaches the root (index 0) or until its parent is greater than or equal to it.
+
+// Heapify Down (or Percolate Down): This operation starts from the root node and moves down the heap until it satisfies the heap property. It's commonly used after removing the root node (e.g., during heap sort or extracting the maximum/minimum element). The process continues until the heap property is satisfied for all nodes, or until the element reaches a leaf node.
+
 class MaxHeap {
   constructor() {
     this.heap = [];
   }
-
-  inserting(value) {
-    this.heap.push(value);
-
-    this.heapifyDownAdding(this.heap.length - 1);
+  /// insert new node
+  push(node) {
+    this.heap.push(node);
+    this.heapifyUp(this.heap.length - 1);
   }
-
-  heapifyDownAdding(index) {
+  // perculate up bottom to up vara pogum which is check the parent node if parent small swap till root
+  /// this doesn't fit for build a heap already heap maintain aaagi iruntha idhu just upadate pannum
+  /// avloadhan onnnum illa top ah nokki pogum appuram heap kulla value push panna use pannalam
+  /// heap maintain aagudhu but aana proper ah maintain aagala
+  heapifyUp(index) {
+    if (index <= 0) {
+      return;
+    }
     let findParentIndex = Math.floor((index - 1) / 2); //// for replacing max heap we need keep track root always greater of current node
-
     if (this.heap[findParentIndex] < this.heap[index]) {
       let temp = this.heap[findParentIndex];
-
       this.heap[findParentIndex] = this.heap[index];
       this.heap[index] = temp;
       /// just recursion if you don't how this is works just add the 4 nodes inserting then check you will understand
-      this.heapifyDownAdding(findParentIndex);
+      this.heapifyUp(findParentIndex);
+    }
+  }
+  /// extract max
+  pop() {
+    if (this.heap.length === 0) return;
+    let heapList = this.heap;
+
+    /// always our first node is maxheap so extract
+    let currentMaxHeap = heapList[0];
+
+    /// we extacted we need to swap the who is last left node element which this left to right
+    let lastNode = heapList.pop();
+
+    if (this.heap.length > 0) {
+      this.heap[0] = lastNode;
+      this.heapifyDown(this.heap, 0, this.heap.length);
+    }
+    return currentMaxHeap;
+  }
+  /// perculate down top to down varum example for extract root check children update root till leaf
+  /// don't sent each iteration array need entire random array doesn't matter order he will taking care
+  heapifyDown(list, index, length) {
+    /// here no need to base when the recursion reached the leaf node there no comparisons.... because
+    /// no one leaf node doesn't have children all the if condition will failed so that our recursion is
+    /// we placed one of the if conditions....
+    //// first find the who is child of indexes
+    let lChild = Math.floor(2 * index + 1);
+    let rChild = Math.floor(2 * index + 2);
+    let currentMaxNodeForReplace = index;
+    if (lChild < length && list[lChild] > list[currentMaxNodeForReplace]) {
+      currentMaxNodeForReplace = lChild;
+    }
+
+    if (rChild < length && list[rChild] > list[currentMaxNodeForReplace]) {
+      currentMaxNodeForReplace = rChild;
+    }
+
+    /// finally your maxnode vandhu unnoda index oda  value ah irukka koodathu why because rendume
+    /// orey place la dhan irukkum which adhudhan unnoda parent no need to do anything
+
+    if (currentMaxNodeForReplace !== index) {
+      let temp = list[currentMaxNodeForReplace];
+      list[currentMaxNodeForReplace] = list[index];
+      list[index] = temp;
+      this.heapifyDown(list, currentMaxNodeForReplace, length);
     }
   }
 
-  extractMax() {
-    if (this.heap.length === 0) return null;
+  upadeInsert(index, node) {
+    let heapList = this.heap;
 
-    const maxOfheap = this.heap[0];
-    // we just over write the heap values we need to rearranging as it is back to normal treee
-    this.heap[0] = this.heap.pop();
-    this.heapifyUprearranging(0);
-    return maxOfheap;
-  }
-
-  heapifyUprearranging(index) {
-    let heapSize = this.heap.length;
-    //// it's just formula
-    let leftChild = Math.floor(2 * index + 1);
-    let rightChild = Math.floor(2 * index + 2);
-    let maxIndex = index;
-    //// just check the boundary first you we did many times in a matrix problem 4 direction check
-    if (leftChild < heapSize && this.heap[leftChild] > this.heap[maxIndex]) {
-      maxIndex = leftChild;
+    if (node < heapList[index]) {
+      return console.error("please enter higher of that node");
     }
 
-    if (rightChild < heapSize && this.heap[rightChild] > this.heap[maxIndex]) {
-      maxIndex = rightChild;
+    heapList[index] = node;
+
+    this.heapifyUp(index);
+  }
+
+  upadateDecreasing(index, node) {
+    let heapList = this.heap;
+
+    if (node > heapList[index]) {
+      return console.error("please enter lesser value");
+    }
+    heapList[index] = node;
+    this.heapifyDown(heapList, index, heapList.length);
+  }
+
+  heapSort(array) {
+    for (let i = Math.floor(array.length / 2 - 1); i >= 0; i--) {
+      this.heapifyDown(array, i, array.length);
     }
 
-    if (maxIndex !== index) {
-      let temp = this.heap[maxIndex];
-      this.heap[maxIndex] = this.heap[index];
-      this.heap[index] = temp;
+    let heapSize = array.length;
 
-      this.heapifyUprearranging(maxIndex);
+    for (let i = array.length - 1; i >= 0; i--) {
+      let max = array[0];
+      array[0] = array[i];
+      array[i] = max;
+      heapSize--;
+      this.heapifyDown(array, 0, heapSize);
+    }
+
+    return array;
+  }
+
+  remove(value) {
+    //// starting min value
+    let index = -1;
+
+    for (let i = 0; i < this.heap.length; i++) {
+      if (this.heap[i] === value) {
+        index = i;
+        break;
+      }
+    }
+
+    if (index !== -1) {
+      this.heap[index] = this.heap[this.heap.length - 1];
+      // once we ararranged we need to pop last value
+      this.heap.pop();
+      this.heapifyDown(this.heap, index, this.heap.length);
     }
   }
 
-  increaseKey(i, value) {
-    let list = this.heap;
-  }
-
-  printHeaps() {
-    return this.heap;
+  isEmpty() {
+    if (this.heap.length === 0) return;
   }
 }
 
-let heaps = new MaxHeap();
+// let maxHeap = new MaxHeap();
 
-var arraytoheap = function (values) {
-  for (let i = 0; i < values.length; i++) {
-    heaps.inserting(values[i]);
+// let array = [97, 88, 68, 51, 74, 9, 32, 4, 11, 61];
+// //// output looks like maxheap [97, 88, 68, 51, 74, 9, 32, 4, 11, 61]
+
+// for (let i = 0; i < array.length; i++) {
+//   maxHeap.push(array[i]);
+// }
+
+// //console.log(maxHeap.heap);
+
+// maxHeap.pop();
+
+// maxHeap.remove(68);
+
+// console.log(maxHeap.heap);
+// maxHeap.upadeInsert(2, 10);
+
+//maxHeap.upadateDecreasing(3, 1);
+
+// console.log(maxHeap.heapSort(maxHeap.heap));
+// console.log(maxHeap.heapSort([9, 6, 8, 2, 1, 4, 3]), "your heap sort");
+//console.log(maxHeap.heap, "all over console list");
+
+class MinHeap {
+  constructor() {
+    this.minHeap = [];
+  }
+
+  push(value) {
+    this.minHeap.push(value);
+
+    this.heapifyUp(this.minHeap.length - 1);
+  }
+
+  heapifyUp(index) {
+    if (index <= 0) return;
+
+    let parent = Math.floor((index - 1) / 2);
+
+    if (this.minHeap[parent] > this.minHeap[index]) {
+      let temp = this.minHeap[parent];
+      this.minHeap[parent] = this.minHeap[index];
+      this.minHeap[index] = temp;
+      this.heapifyUp(parent);
+    }
+  }
+  /// adding new node not update
+  insert(node) {
+    this.minHeap.push(node);
+    this.heapifyUp(this.minHeap.length - 1);
+  }
+
+  updateNode(index, node) {
+    this.minHeap[index] = node;
+
+    this.heapifyDown(this.minHeap, index, this.minHeap.length);
+  }
+
+  pop() {
+    if (this.minHeap.length === 0) return;
+
+    const minValue = this.minHeap[0];
+    const lastValue = this.minHeap.pop();
+
+    if (this.minHeap.length > 0) {
+      this.minHeap[0] = lastValue;
+      this.heapifyDown(this.minHeap, 0, this.minHeap.length);
+    }
+
+    return minValue;
+  }
+
+  heapifyDown(list, index, length) {
+    let lChild = Math.floor(2 * index + 1);
+    let rChild = Math.floor(2 * index + 2);
+    let smallest = index;
+
+    if (lChild < length && list[lChild] < list[smallest]) {
+      smallest = lChild;
+    }
+    if (rChild < length && list[rChild] < list[smallest]) {
+      smallest = rChild;
+    }
+
+    if (smallest !== index) {
+      let temp = list[smallest];
+      list[smallest] = list[index];
+      list[index] = temp;
+      this.heapifyDown(list, smallest, length);
+    }
+  }
+
+  heapSort(array) {
+    // Build the initial min-heap
+    for (let i = Math.floor(array.length / 2 - 1); i >= 0; i--) {
+      this.heapifyDown(array, i, array.length);
+    }
+
+    // Extract the minimum element from the heap and swap it to the end of the array
+    for (let i = array.length - 1; i > 0; i--) {
+      // Swap the root (minimum element) with the last element
+      let temp = array[0];
+      array[0] = array[i];
+      array[i] = temp;
+
+      // Reduce the heap size and heapify down to restore the min-heap property
+      this.heapifyDown(array, 0, i);
+    }
+
+    return array;
+  }
+}
+
+// let min = new MinHeap();
+// let array = [9, 6, 8, 2, 1, 4, 3];
+// for (let i = 0; i < array.length; i++) {
+//   min.push(array[i]);
+// }
+
+// //min.insert(5);
+// // min.updateNode(2, 5);
+// min.pop();
+// console.log(min.minHeap, "minheapification");
+// let list = min.heapSort([9, 6, 8, 2, 1, 4, 3]);
+// console.log(list.reverse());
+/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
+var lastStoneWeight = function (stones) {
+  let heaps = new MaxHeap();
+  //// first push the arrays into heaps
+  for (let i = 0; i < stones.length; i++) {
+    heaps.push(stones[i]);
+  }
+
+  while (heaps.heap.length > 1) {
+    //// sorting before sorting first build a maxheap then sorting
+    heaps.heapSort(heaps.heap);
+    //// extract last element because ascending order
+    let first = heaps.heap.pop();
+    let second = heaps.heap.pop();
+    //// then comparing if both are not equal then only subract or don't do anything just skip over it
+    if (first !== second) {
+      heaps.push(Math.abs(first - second));
+    }
+  }
+  //// still your heap having some values just print it or just print 0 done....s
+  if (heaps.heap.length > 0) {
+    return heaps.heap[0];
+  } else {
+    return 0;
   }
 };
 
-arraytoheap([100, 50, 60, 30, 40, 20, 10, 1]);
+// console.log(lastStoneWeight([2, 7, 4, 9, 8, 1, 1]));
 
-// console.log(heaps.extractMax());
+var kThLargestElement = function (array, kth) {
+  let maxheap = new MaxHeap();
 
-heaps.increaseKey(2, 150);
+  for (let i = 0; i < array.length; i++) {
+    maxheap.push(array[i]);
+  }
 
-console.log(heaps.printHeaps());
+  for (let i = Math.floor(array.length / 2 - 1); i >= 0; i--) {
+    maxheap.heapifyDown(maxheap.heap, i, array.length);
+  }
+
+  // console.log(array);
+
+  let max = 0;
+  while (kth > 0) {
+    max = maxheap.pop();
+    kth--;
+  }
+  return max;
+};
+
+//console.log(kThLargestElement([9, 6, 8, 2, 1, 4, 3], 3));
+
+var topKFrequent = function (nums, k) {
+  let hashMap = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    if (!hashMap.has(nums[i])) {
+      hashMap.set(nums[i], 1);
+    } else {
+      let count = hashMap.get(nums[i]);
+      hashMap.set(nums[i], count + 1);
+    }
+  }
+
+  ///Convert map entries into an array of objects 0(nlogn) nice time and space dont use heap
+  let entriesArray = Array.from(hashMap.entries());
+
+  console.log(entriesArray, "map to array");
+
+  // Sort the array based on counts in descending order
+  entriesArray.sort((a, b) => b[1] - a[1]);
+
+  let top = [];
+  i = 0;
+  while (k > 0) {
+    top.push(entriesArray[i][0]);
+    i++;
+    k--;
+  }
+  return top;
+};
+
+// console.log(topKFrequent([1, 1, 1, 2, 2, 3, 3, 3, 3], 2));
+
+var nearlySorted = function (arr, n, k) {
+  let min = new MinHeap();
+
+  for (let i = 0; i < n; i++) {
+    min.push(arr[i]);
+  }
+
+  let list = min.heapSort(min.minHeap).reverse();
+
+  return list;
+};
+
+// let arr = [10, 9, 8, 7, 4, 70, 60, 50];r
+// let n = arr.length;
+// let k = 4;
+
+// console.log(nearlySorted(arr, n, k));
+
+var kClosest = function (points, k) {
+  let squareArray = [];
+  for (let [x, y] of points) {
+    let first = x;
+    let second = y;
+
+    squareArray.push(first * first + second * second);
+  }
+};
+
+// let arr = [
+//   [3, 3],
+//   [5, -1],
+//   [-2, 4],
+// ];
+// let k = 2;
+
+// console.log(kClosest(arr, k));
+
+var leastInterval = function (tasks, n) {
+  let max = new MaxHeap();
+  let hashMap = new Map();
+  /// find the frequency of each letter because with letter we can't apply our algo so we
+  /// just transformed as a total number then applying maxheap that's the core let'see
+  for (let task of tasks) {
+    if (!hashMap.has(task)) {
+      hashMap.set(task, 1);
+    } else {
+      let count = hashMap.get(task);
+      hashMap.set(task, count + 1);
+    }
+  }
+  /// after added frequency of each letter then assigning to maxHeap they will taking care
+  for (let [key, freq] of hashMap) {
+    max.push(freq);
+  }
+  let time = 0;
+  let queue = [];
+
+  while (max.heap.length !== 0 || queue.length !== 0) {
+    time = time + 1;
+    if (max.heap.length !== 0) {
+      let count = max.pop();
+      let remains = count - 1;
+
+      if (remains !== 0) {
+        queue.push([remains, time + n]);
+      }
+    }
+
+    if (queue.length !== 0) {
+      if (queue[0][1] === time) {
+        max.push(queue.shift()[0]);
+      }
+    }
+  }
+  return time;
+};
+
+// let tasks = ["A", "A", "A", "B", "B", "B"];
+// let n = 2;
+
+// console.log(leastInterval(tasks, n));
+
+var minimumDeviation = function (nums) {
+  let heap = new MaxHeap();
+  let min = Number.MAX_SAFE_INTEGER;
+
+  for (let num of nums) {
+    if (num % 2 === 1) {
+      num = num * 2;
+    }
+    min = Math.min(min, num);
+    heap.push(num);
+  }
+
+  let differ = Number.MAX_SAFE_INTEGER;
+  while (heap.heap[0] % 2 === 0) {
+    let current = heap.pop();
+    differ = Math.min(differ, current - min);
+    min = Math.min(current / 2, min);
+    heap.push(current / 2);
+  }
+  return Math.min(differ, heap.heap[0] - min);
+};
+// let arr = [4, 1, 5, 20, 3];
+
+// console.log(minimumDeviation(arr));
+
+var carPooling = function (trips, capacity) {};
+
+let trips = [
+  [2, 1, 5],
+  [3, 3, 7],
+];
+
+console.log(carPooling(trips, 5));
