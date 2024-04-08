@@ -2177,12 +2177,3 @@ var minimumDeviation = function (nums) {
 // let arr = [4, 1, 5, 20, 3];
 
 // console.log(minimumDeviation(arr));
-
-var carPooling = function (trips, capacity) {};
-
-let trips = [
-  [2, 1, 5],
-  [3, 3, 7],
-];
-
-console.log(carPooling(trips, 5));

@@ -294,86 +294,86 @@ var maxSlidingWindow = function (nums, k) {
 
 ///// -----------------------------------------------------------------------
 
-class MinHeap {
-  constructor() {
-    this.minHeap = [];
-  }
+// class MinHeap {
+//   constructor() {
+//     this.minHeap = [];
+//   }
 
-  push(value) {
-    // console.log(value);
-    this.minHeap.push(value);
+//   push(value) {
+//     // console.log(value);
+//     this.minHeap.push(value);
 
-    this.heapifyUp(this.minHeap.length - 1);
-  }
+//     this.heapifyUp(this.minHeap.length - 1);
+//   }
 
-  heapifyUp(index) {
-    if (index <= 0) return;
+//   heapifyUp(index) {
+//     if (index <= 0) return;
 
-    let parent = Math.floor((index - 1) / 2);
+//     let parent = Math.floor((index - 1) / 2);
 
-    if (
-      this.minHeap[parent][1] > this.minHeap[index][1] ||
-      (this.minHeap[parent][1] === this.minHeap[index][1] &&
-        this.minHeap[parent][2] > this.minHeap[index][2])
-    ) {
-      let temp = this.minHeap[parent];
-      this.minHeap[parent] = this.minHeap[index];
-      this.minHeap[index] = temp;
-      this.heapifyUp(parent);
-    }
-  }
-  /// adding new node not update
-  pop() {
-    if (this.minHeap.length === 0) return;
+//     if (
+//       this.minHeap[parent][1] > this.minHeap[index][1] ||
+//       (this.minHeap[parent][1] === this.minHeap[index][1] &&
+//         this.minHeap[parent][2] > this.minHeap[index][2])
+//     ) {
+//       let temp = this.minHeap[parent];
+//       this.minHeap[parent] = this.minHeap[index];
+//       this.minHeap[index] = temp;
+//       this.heapifyUp(parent);
+//     }
+//   }
+//   /// adding new node not update
+//   pop() {
+//     if (this.minHeap.length === 0) return;
 
-    const minValue = this.minHeap[0];
-    const lastValue = this.minHeap.pop();
+//     const minValue = this.minHeap[0];
+//     const lastValue = this.minHeap.pop();
 
-    if (this.minHeap.length > 0) {
-      this.minHeap[0] = lastValue;
-      this.heapifyDown(this.minHeap, 0, this.minHeap.length);
-    }
+//     if (this.minHeap.length > 0) {
+//       this.minHeap[0] = lastValue;
+//       this.heapifyDown(this.minHeap, 0, this.minHeap.length);
+//     }
 
-    return minValue;
-  }
+//     return minValue;
+//   }
 
-  heapifyDown(list, index, length) {
-    let lChild = 2 * index + 1;
-    let rChild = 2 * index + 2;
-    let smallest = index;
+//   heapifyDown(list, index, length) {
+//     let lChild = 2 * index + 1;
+//     let rChild = 2 * index + 2;
+//     let smallest = index;
 
-    // Compare primary priority
-    if (lChild < length && list[lChild][1] < list[smallest][1]) {
-      smallest = lChild;
-    }
-    if (rChild < length && list[rChild][1] < list[smallest][1]) {
-      smallest = rChild;
-    }
+//     // Compare primary priority
+//     if (lChild < length && list[lChild][1] < list[smallest][1]) {
+//       smallest = lChild;
+//     }
+//     if (rChild < length && list[rChild][1] < list[smallest][1]) {
+//       smallest = rChild;
+//     }
 
-    // If primary priorities are equal, compare secondary priorities
-    if (lChild < length && list[lChild][1] === list[smallest][1]) {
-      if (list[lChild][2] < list[smallest][2]) {
-        smallest = lChild;
-      }
-    }
-    if (rChild < length && list[rChild][1] === list[smallest][1]) {
-      if (list[rChild][2] < list[smallest][2]) {
-        smallest = rChild;
-      }
-    }
+//     // If primary priorities are equal, compare secondary priorities
+//     if (lChild < length && list[lChild][1] === list[smallest][1]) {
+//       if (list[lChild][2] < list[smallest][2]) {
+//         smallest = lChild;
+//       }
+//     }
+//     if (rChild < length && list[rChild][1] === list[smallest][1]) {
+//       if (list[rChild][2] < list[smallest][2]) {
+//         smallest = rChild;
+//       }
+//     }
 
-    // Swap if necessary and continue heapifying down
-    if (smallest !== index) {
-      let temp = list[smallest];
-      list[smallest] = list[index];
-      list[index] = temp;
-      this.heapifyDown(list, smallest, length);
-    }
-  }
-  size() {
-    return this.minHeap.length !== 0;
-  }
-}
+//     // Swap if necessary and continue heapifying down
+//     if (smallest !== index) {
+//       let temp = list[smallest];
+//       list[smallest] = list[index];
+//       list[index] = temp;
+//       this.heapifyDown(list, smallest, length);
+//     }
+//   }
+//   size() {
+//     return this.minHeap.length !== 0;
+//   }
+// }
 
 var getOrder = function (tasks) {
   // let mini = new MinHeap();
@@ -630,7 +630,7 @@ class MaxHeap {
     }
   }
 }
-/// if you havent get correct output check the heap might changes
+/// if you havent get correct output check the heap might changes or go and checkout leetcode
 var reorganizeString = function (s) {
   let heaping = new MaxHeap();
   let hashMap = new Map();
@@ -744,3 +744,115 @@ var longestDiverseString = function (a, b, c) {
 };
 
 // console.log(longestDiverseString(2, 7, 10));
+
+class MinHeap {
+  constructor() {
+    this.minHeap = [];
+  }
+
+  push(value) {
+    // console.log(value);
+    this.minHeap.push(value);
+
+    this.heapifyUp(this.minHeap.length - 1);
+  }
+
+  heapifyUp(index) {
+    if (index <= 0) return;
+    let parent = Math.floor((index - 1) / 2);
+
+    if (this.minHeap[parent][0] > this.minHeap[index][0]) {
+      let temp = this.minHeap[parent];
+      this.minHeap[parent] = this.minHeap[index];
+      this.minHeap[index] = temp;
+      this.heapifyUp(parent);
+    }
+  }
+  /// adding new node not update
+  pop() {
+    if (this.minHeap.length === 0) return;
+
+    const minValue = this.minHeap[0];
+    const lastValue = this.minHeap.pop();
+
+    if (this.minHeap.length > 0) {
+      this.minHeap[0] = lastValue;
+      this.heapifyDown(this.minHeap, 0, this.minHeap.length);
+    }
+
+    return minValue;
+  }
+
+  heapifyDown(list, index, length) {
+    let lChild = Math.floor(2 * index + 1);
+    let rChild = Math.floor(2 * index + 2);
+    let smallest = index;
+    if (lChild < length && list[lChild][0] < list[smallest][0]) {
+      smallest = lChild;
+    }
+    if (rChild < length && list[rChild][0] < list[smallest][0]) {
+      smallest = rChild;
+    }
+    if (smallest !== index) {
+      let temp = list[smallest];
+      list[smallest] = list[index];
+      list[index] = temp;
+      this.heapifyDown(list, smallest, length);
+    }
+  }
+  size() {
+    return this.minHeap.length !== 0;
+  }
+}
+
+var carPooling = function (trips, capacity) {
+  let mini = new MinHeap();
+  // as we starting we need to first sorting based on starting point which is 1st index why because
+  // appodhan namakku therium yarulam munnadi station pick aaga poranganu illana namakku theriyadhula
+  // for example 1st station 3passanger eruranga appudina sort pannalana namakku eppudi therium.
+  trips.sort((a, b) => a[1] - b[1]);
+
+  // here is the most important part ippo namma 1st station la 2 pera pick pannittom 3rd station la 3 pera
+  // pick pannittom nu vachippom nammakku eppudi therium yaru yaru entha station la eranga poranganu
+  // theriyadhula so adhukkagathan namma minheap la pair ah store panna porom number of passanger and
+  // end station oda for example [2,5]
+
+  let carCurrentPassanger = 0;
+
+  for (let extract of trips) {
+    [numPass, start, end] = extract;
+
+    if (mini.minHeap.length !== 0) {
+      console.log(mini.minHeap[0][0]);
+    }
+    //// our min heap vandhu yaroda end chinnadha irukko avuga padi than heapify panni vachirukku
+    /// en appudina appodhana yaru first varangalo avungala thookka mudium so namma start vandhu 3rd station
+    /// la irukkunu vachippom inga vandhu 3rd station kku munnadhu yaravaddhu irukkangala drop pannuradhukkunu
+    /// check pannuradhukku appudi irunthanga avungala out pannanum our heap pair[end, numberofpassanger]
+    while (mini.minHeap.length !== 0 && mini.minHeap[0][0] <= start) {
+      carCurrentPassanger -= mini.minHeap[0][1];
+      mini.pop();
+    }
+
+    carCurrentPassanger += numPass;
+
+    if (carCurrentPassanger > capacity) {
+      return false;
+    }
+    mini.push([end, numPass]);
+
+    // console.log(mini.minHeap);
+  }
+  console.log(carCurrentPassanger);
+  return true;
+  // console.log(carCurrentPassanger);
+};
+
+let trips = [
+  [3, 2, 7],
+  [2, 1, 3],
+  [3, 7, 9],
+  [8, 3, 9],
+]; /// my own test cases true.....
+
+console.log(carPooling(trips, 11));
