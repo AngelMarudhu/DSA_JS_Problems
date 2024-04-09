@@ -1,20 +1,20 @@
-// class BinaryHeap {
-//   constructor() {
-//     this.values = [1, 44, 55, 53, 84, 85, 93];
-//   }
-//   insert(element) {
-//     this.values.push(element);
-//     this.bubbleUp();
-//   }
-//   bubbleUp() {
-//     let idx = this.values.length - 1;
-//     const element = this.values[idx];
-//     console.log(idx, element, "idx");
-//     let parentidx = Math.floor((idx - 1) / 2);
+class BinaryHeap {
+  constructor() {
+    this.values = [1, 44, 55, 53, 84, 85, 93];
+  }
+  insert(element) {
+    this.values.push(element);
+    this.bubbleUp();
+  }
+  bubbleUp() {
+    let idx = this.values.length - 1;
+    const element = this.values[idx];
+    console.log(idx, element, "idx");
+    let parentidx = Math.floor((idx - 1) / 2);
 
-//     console.log(this.values);
-//   }
-// }
+    console.log(this.values);
+  }
+}
 
 // let heap = new BinaryHeap();
 // heap.insert(6);

@@ -2083,30 +2083,11 @@ var nearlySorted = function (arr, n, k) {
   return list;
 };
 
-// let arr = [10, 9, 8, 7, 4, 70, 60, 50];r
+// let arr = [10, 9, 8, 7, 4, 70, 60, 50];
 // let n = arr.length;
 // let k = 4;
 
 // console.log(nearlySorted(arr, n, k));
-
-var kClosest = function (points, k) {
-  let squareArray = [];
-  for (let [x, y] of points) {
-    let first = x;
-    let second = y;
-
-    squareArray.push(first * first + second * second);
-  }
-};
-
-// let arr = [
-//   [3, 3],
-//   [5, -1],
-//   [-2, 4],
-// ];
-// let k = 2;
-
-// console.log(kClosest(arr, k));
 
 var leastInterval = function (tasks, n) {
   let max = new MaxHeap();
@@ -2177,3 +2158,11 @@ var minimumDeviation = function (nums) {
 // let arr = [4, 1, 5, 20, 3];
 
 // console.log(minimumDeviation(arr));
+
+/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
+/// finally we've done find median data stream on leetcode done done done done....
+
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////

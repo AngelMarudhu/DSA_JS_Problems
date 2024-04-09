@@ -1,9 +1,3 @@
-const {
-  PriorityQueue,
-  MinPriorityQueue,
-  MaxPriorityQueue,
-} = require("@datastructures-js/priority-queue");
-
 // class MaxHeap {
 //   constructor() {
 //     this.heap = [];
@@ -254,34 +248,34 @@ var maxSlidingWindow = function (nums, k) {
 //   }
 // }
 
-// var kClosest = function (points, k) {
-//   let min = new MinHeap();
-//   for (let [x, y] of points) {
-//     let first = x;
-//     let second = y;
-//     /// why do we square marudhu because this one only gives positive integer other then
-//     /// addition subraction divide like chance to give negative integes so squere will help you
-//     /// to find the distance
-//     /// you can math.pow as well done done....
-//     let currentDistance = first * first + second * second;
+var kClosest = function (points, k) {
+  let min = new MinHeap();
+  for (let [x, y] of points) {
+    let first = x;
+    let second = y;
+    /// why do we square marudhu because this one only gives positive integer other then
+    /// addition subraction divide like chance to give negative integes so squere will help you
+    /// to find the distance
+    /// you can math.pow as well done done....
+    let currentDistance = first * first + second * second;
 
-//     min.push([currentDistance, first, second]);
-//   }
-//   // you can write also like this your choice
+    min.push([currentDistance, first, second]);
+  }
+  // you can write also like this your choice
 
-//   // for (let i = 0; i < points.length; i++) {
-//   //   min.push([square[i], points[i][0], points[i][1]]);
-//   // }
+  // for (let i = 0; i < points.length; i++) {
+  //   min.push([square[i], points[i][0], points[i][1]]);
+  // }
 
-//   let result = [];
+  let result = [];
 
-//   while (k > 0) {
-//     [dist, x, y] = min.pop();
-//     result.push([x, y]);
-//     k = k - 1;
-//   }
-//   return result;
-// };
+  while (k > 0) {
+    [dist, x, y] = min.pop();
+    result.push([x, y]);
+    k = k - 1;
+  }
+  return result;
+};
 
 // let arr = [
 //   [3, 3],
@@ -405,12 +399,12 @@ var getOrder = function (tasks) {
   return screen;
 };
 
-let array = [
-  [1, 2],
-  [2, 4],
-  [3, 2],
-  [4, 1],
-];
+// let array = [
+//   [1, 2],
+//   [2, 4],
+//   [3, 2],
+//   [4, 1],
+// ];
 
 // console.log(getOrder(array));
 
@@ -545,7 +539,7 @@ let nums = [
   "87236929298425799136",
   "3103886291279",
 ];
-let k = 3;
+// let k = 3;
 
 // console.log(kthLargestNumber(nums, k));
 ///"38272299275037314530"
@@ -686,7 +680,7 @@ var reorganizeString = function (s) {
   return screen;
 };
 
-let s = "aab";
+// let s = "aab";
 
 //console.log(reorganizeString(s));
 //////////////////////////////////////////////
@@ -855,4 +849,12 @@ let trips = [
   [8, 3, 9],
 ]; /// my own test cases true.....
 
-console.log(carPooling(trips, 11));
+// console.log(carPooling(trips, 11));
+
+/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////
+
+/// finally we've done find median data stream on leetcode done done done done....
+
+/////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
