@@ -324,7 +324,7 @@
 // console.log(out);
 
 // --------------------------------------------------
-//// next petmutations what it is?
+//// next permutations what it is?
 
 // var reverseArray = function (arr) {
 //   let n = arr.length;
