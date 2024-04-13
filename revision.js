@@ -173,7 +173,7 @@
 //     for (let j = i; j < n; j++) {
 //       summation += arr[j];
 //       if (summation === k) {
-//         // simple j-i + 1 if answer want 0 based you just j - i more enough
+//         // the formula finding the length j - i + 1 if answer want 0 based you just j - i more enough
 //         // but all the platform expect 1 based indext j - i + 1 that's the meaning of 1 okay
 //         // example assume i = 1; j = 4 okay 4 - 1 + 1 -----> 3 + 1 = 4 so total suarray length is 4..
 //         count++;

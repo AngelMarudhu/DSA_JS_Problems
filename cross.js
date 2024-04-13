@@ -858,3 +858,161 @@ let trips = [
 /// two pointer and sliding window technique....
 /////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
+/// expand and shrink the window patterns.....
+function subarray(arr, k) {
+  let xminus = 0; // representing the sheeet school red sheet graph x axis something different hahaha
+  let xplus = 0;
+  let n = arr.length;
+  let summation = arr[0];
+  let lenghtOftheSubArray = 0;
+
+  while (xplus < n) {
+    while (summation > k) {
+      summation = summation - arr[xminus];
+      xminus++;
+    }
+    if (summation === k) {
+      lenghtOftheSubArray = Math.max(lenghtOftheSubArray, xplus - xminus + 1);
+    }
+    xplus++;
+    summation = summation + arr[xplus];
+  }
+  return lenghtOftheSubArray;
+}
+
+// let out = subarray([10, 5, 2, 7, 1, 9], 15);
+// console.log(out);
+
+///-----------------------------------------------------------------------------
+//// constand sliding window size problem.....
+var maxScore = function (cardPoints, k) {
+  let maxSum = 0;
+  let lHand = 0;
+  let rHand = 0;
+  let n = cardPoints.length;
+
+  for (let i = 0; i <= k - 1; i++) {
+    lHand += cardPoints[i];
+  }
+  //// obiviously we know always our lHand sum is maximum we don't need to compare anything here
+  /// just assign the lHand sum to maxSum
+  maxSum = lHand;
+
+  //// our left side over now we need to reduce the left side increase the rightside portion
+
+  let rightSide = n - 1;
+
+  for (let i = k - 1; i >= 0; i--) {
+    lHand -= cardPoints[i];
+    rHand += cardPoints[rightSide];
+    rightSide = rightSide - 1;
+    maxSum = Math.max(maxSum, lHand + rHand);
+  }
+
+  return maxSum;
+};
+
+// let cardPoints = [100, 40, 17, 9, 73, 75];
+// let k = 3;
+
+// console.log(maxScore(cardPoints, k));
+///-----------------------------------------------------------------------------
+/// brute force distinct substring.....
+var lengthOfLongestSubstring = function (s) {
+  // don't forget to write base case always
+  if (s.length === 0) {
+    return s.length;
+  }
+  let n = s.length;
+  let maxVal = Number.MIN_VALUE;
+  for (let i = 0; i < n; i++) {
+    let hash = new Map();
+    for (let j = i; j < n; j++) {
+      if (hash.has(s[j])) {
+        break;
+      }
+      // the formula finding the length j - i + 1 if answer want 0 based you just j - i more enough
+      // but all the platform expect 1 based indext j - i + 1 that's the meaning of 1 okay
+      // example assume i = 1; j = 4 okay 4 - 1 + 1 -----> 3 + 1 = 4 so total suarray length is 4..
+      maxVal = Math.max(maxVal, j - i + 1);
+      hash.set(s[j]);
+    }
+  }
+  return maxVal;
+};
+
+// let str = "abcabcbb";
+
+// console.log(lengthOfLongestSubstring(str));
+
+///-----------------------------------------------------------------------------
+//// brute force approach
+// var longestOnes = function (nums, k) {
+//   let n = nums.length;
+//   let max = 0;
+
+//   for (let i = 0; i < n; i++) {
+//     let zeroCount = 0;
+//     for (let j = i; j < n; j++) {
+//       if (nums[j] === 0) {
+//         zeroCount++;
+//       }
+//       if (zeroCount > k) {
+//         break;
+//       }
+
+//       max = Math.max(max, j - i + 1);
+//     }
+//   }
+//   return max;
+// };
+/// sliding approach....
+var longestOnes = function (nums, k) {
+  let n = nums.length;
+  let left = 0;
+  let right = 0;
+  let max = 0;
+  let zeroCount = 0;
+  while (right < n) {
+    if (nums[right] === 0) zeroCount++;
+    /// when zerocount greater of k we need to move our left pointer while moving
+    /// if left facing any 0 we need to reduce the zero count till zerocount vandhu k kku kulla vara varai
+    while (zeroCount > k) {
+      if (nums[left] === 0) {
+        zeroCount--;
+      }
+      left++;
+    }
+    max = Math.max(max, right - left + 1);
+    right++;
+  }
+  return max;
+};
+
+// let numss = [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0];
+// let k = 2;
+
+// console.log(longestOnes(numss, k));
+
+var totalFruit = function (fruits) {
+  let n = fruits.length;
+  let maxLength = 0;
+  for (let i = 0; i < n; i++) {
+    let hashSet = new Set(); /// for storing only unique type of fruites
+
+    for (let j = i; j < n; j++) {
+      hashSet.add(fruits[j]);
+
+      if (hashSet.size > 2) {
+        break;
+      } else {
+        maxLength = Math.max(maxLength, j - i + 1);
+      }
+    }
+  }
+  return maxLength;
+};
+
+let fruits = [1, 2, 3, 2, 2];
+
+console.log(totalFruit(fruits));
