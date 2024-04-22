@@ -995,24 +995,266 @@ var longestOnes = function (nums, k) {
 // console.log(longestOnes(numss, k));
 
 var totalFruit = function (fruits) {
-  let n = fruits.length;
+  let left = 0;
+  let right = 0;
   let maxLength = 0;
-  for (let i = 0; i < n; i++) {
-    let hashSet = new Set(); /// for storing only unique type of fruites
-
-    for (let j = i; j < n; j++) {
-      hashSet.add(fruits[j]);
-
-      if (hashSet.size > 2) {
-        break;
-      } else {
-        maxLength = Math.max(maxLength, j - i + 1);
-      }
+  let n = fruits.length;
+  let hashMap = new Map();
+  while (right < n) {
+    //// when comes to samy type of fruits we need to increase the number
+    if (!hashMap.has(fruits[right])) {
+      hashMap.set(fruits[right], 1);
+    } else {
+      let count = hashMap.get(fruits[right]);
+      hashMap.set(fruits[right], count + 1);
     }
+    /// when reached 2 which means basket we need to reduce the left pointer with reduce the count as well
+    /// when reached the count === 0 we need to delete the type of fruits no longer needed
+    if (hashMap.size > 2) {
+      while (hashMap.size > 2) {
+        let count = hashMap.get(fruits[left]);
+        hashMap.set(fruits[left], count - 1);
+
+        let temp = hashMap.get(fruits[left]);
+        if (temp === 0) {
+          hashMap.delete(fruits[left]);
+        }
+        left++;
+      }
+    } else {
+      /// if condition failed just classical way to update the length to max right - left + 1, 0 based index
+      maxLength = Math.max(maxLength, right - left + 1);
+    }
+    right++;
   }
   return maxLength;
 };
 
-let fruits = [1, 2, 3, 2, 2];
+// let fruits = [1, 2, 3, 2, 2];
 
-console.log(totalFruit(fruits));
+// console.log(totalFruit(fruits));
+/// today also solved sqrt(x) problem on leetcode binary search problem random problem....
+
+/// brute force
+// var longSubstringKdistinct = function (str, k) {
+//   let hashMap = new Map();
+//   let n = str.length;
+//   let maxLength = 0;
+
+//   for (let i = 0; i < n; i++) {
+//     hashMap.clear();
+//     for (let j = i; j < n; j++) {
+//       if (!hashMap.has(str[j])) {
+//         hashMap.set(str[j], 1);
+//       } else {
+//         let count = hashMap.get(str[j]);
+//         hashMap.set(str[j], count + 1);
+//       }
+//       ///// if map reachd k size we need to do calculate the substring....
+//       if (hashMap.size > k) {
+//         break;
+//       }
+//       maxLength = Math.max(maxLength, j - i + 1);
+//     }
+//   }
+//   return maxLength > 0 ? maxLength : -1;
+// };
+
+var longSubstringKdistinct = function (str, k) {
+  let left = 0;
+  let right = 0;
+  let maxLength = 0;
+  let hashMap = new Map();
+
+  while (right < str.length) {
+    if (!hashMap.has(str[right])) {
+      hashMap.set(str[right], 1);
+    } else {
+      let count = hashMap.get(str[right]);
+      hashMap.set(str[right], count + 1);
+    }
+
+    if (hashMap.size > k) {
+      while (hashMap.size > k) {
+        let count = hashMap.get(str[left]);
+        hashMap.set(str[left], count - 1);
+
+        let temp = hashMap.get(str[left]);
+        if (temp === 0) {
+          hashMap.delete(str[left]);
+        }
+        left++;
+      }
+    } else {
+      maxLength = Math.max(maxLength, right - left + 1);
+    }
+    right++;
+  }
+  return maxLength;
+};
+
+// let str = "aabacbebebe";
+// let k = 3;
+// console.log(longSubstringKdistinct(str, k)); // Output: -1
+///// ----------------------------------------------
+
+var numberOfSubstrings = function (s) {
+  let count = 0;
+  for (let i = 0; i < s.length; i++) {
+    let hashArray = new Array(3).fill(0);
+    for (let j = i; j < s.length; j++) {
+      hashArray[s[j].charCodeAt(0) - 97] = 1;
+
+      if (hashArray[0] + hashArray[1] + hashArray[2] === 3) {
+        count = count + 1;
+      }
+    }
+  }
+  return count;
+};
+
+// let s = "abcabc";
+
+// console.log(numberOfSubstrings(s));
+
+var characterReplacement = function (s, k) {
+  let n = s.length;
+  let max = 0;
+  let left = 0;
+  let right = 0;
+  let hashMap = new Map();
+  let maxSofar = 0;
+
+  while (right < n) {
+    if (!hashMap.has(s[right])) {
+      hashMap.set(s[right], 1);
+    } else {
+      let count = hashMap.get(s[right]);
+      hashMap.set(s[right], count + 1);
+    }
+    maxSofar = Math.max(maxSofar, hashMap.get(s[right]));
+    //// if our changes > k which is k vida perusa irundhuchina we can't make replacement because
+    //// namma k size mattumdhan replace panna mudium illana panna mudiyadhu.....
+    //// totalcurrentsubstring - maxfrequencysofar > k formula......
+    if (right - left + 1 - maxSofar > k) {
+      let count = hashMap.get(s[left]);
+      hashMap.set(s[left], count - 1);
+      left += 1;
+    }
+
+    if (right - left + 1 - maxSofar <= k) {
+      max = Math.max(max, right - left + 1);
+    }
+
+    right += 1;
+  }
+  return max;
+};
+
+// let s = "AABABBA";
+// let k = 1;
+
+// console.log(characterReplacement(s, k));
+
+let helper = (nums, goal) => {
+  if (goal < 0) return 0;
+
+  let left = 0;
+  let right = 0;
+  let sum = 0;
+  let count = 0;
+
+  while (right < nums.length) {
+    sum += nums[right];
+
+    while (left <= right && sum > goal) {
+      sum -= nums[left];
+      left += 1;
+    }
+
+    if (sum === goal) {
+      count += right - left + 1;
+    }
+
+    right += 1;
+  }
+  return count;
+};
+
+var numSubarraysWithSum = function (nums, goal) {
+  // Count of subarrays with sum equal to goal
+  let one = helper(nums, goal);
+  // Count of subarrays with sum equal to (goal - 1)
+  let two = helper(nums, goal - 1);
+
+  // Subtract the count of subarrays with sum equal to (goal - 1) from the count of subarrays with sum equal to goal
+  return one - two;
+};
+
+// let numss = [0, 0, 0, 0, 0];
+// let goal = 0;
+
+// console.log(numSubarraysWithSum(numss, goal));
+
+////-----------------------------------------------
+
+var minWindow = function (s, t) {
+  let maxLength = Infinity;
+  let findStartIndex = -1; /// it's negative there is no negative index in anywhere
+  let count = 0;
+  let left = 0;
+  let right = 0;
+  let hashMap = new Map();
+
+  for (let i = 0; i < t.length; i++) {
+    if (!hashMap.has(t[i])) {
+      hashMap.set(t[i], 1);
+    } else {
+      let count = hashMap.get(t[i]);
+      hashMap.set(t[i], (count += 1));
+    }
+  }
+
+  while (right < s.length) {
+    let extract = hashMap.get(s[right]);
+    /// initially t values are positive so when we searching s string yarulam t string oda match aagurangalo
+    /// appo count increase aagum at some point la all the t string match aanadhum count became equal to
+    /// t.length appo we got a substring then we need to find minumum adhuthu check pannuradhukkaga
+    /// nmma left pointer ah move pannanum adhudhan inside of second while loop done.....
+    if (extract > 0) {
+      count += 1;
+    }
+
+    hashMap.set(s[right], (extract -= 1));
+
+    while (count === t.length) {
+      if (right - left + 1 < maxLength) {
+        maxLength = right - left + 1;
+        findStartIndex = left;
+      }
+
+      // Move the left pointer to the right to shrink the window
+      let leftChar = s[left];
+      if (hashMap.has(leftChar)) {
+        let leftCount = hashMap.get(leftChar);
+        hashMap.set(leftChar, leftCount + 1);
+        if (leftCount === 0) {
+          count--; // Increment count only if we move out of the character that contributes to the count
+        }
+      }
+      left += 1;
+    }
+    right += 1;
+  }
+
+  if (findStartIndex === -1) {
+    return "";
+  } else {
+    return s.substring(findStartIndex, findStartIndex + maxLength);
+  }
+};
+
+// let s = "ADOBECODEBANC";
+// let t = "ABC";
+
+// console.log(minWindow(s, t));

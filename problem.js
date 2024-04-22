@@ -2432,7 +2432,7 @@
 // console.log(`First occurrence of ${x} is at index ${occurrence}`);
 // console.log(`Last occurrence of ${x} is at index ${occurrence}`);
 
-// 2 method
+//  /// 2 method
 
 // function findFirstOccurrence(arr, x, left, right) {
 //   if (left > right) {
@@ -2520,6 +2520,45 @@
 // console.log(data);
 
 // --------------------------------------------------------------------------------------
+
+// var rotateSortedSearch = function (nums, k) {
+//   let left = 0;
+//   let right = nums.length - 1;
+
+//   while (left <= right) {
+//     let mid = left + Math.floor((right - left) / 2);
+//     if (nums[mid] === k) {
+//       return true;
+//     }
+
+//     if (nums[left] === nums[mid]) {
+//       left++;
+//       continue;
+//     }
+
+//     if (nums[left] <= nums[mid]) {
+//       if (nums[left] <= k && k <= nums[mid]) {
+//         right = mid - 1;
+//       } else {
+//         left = mid + 1;
+//       }
+//     } else {
+//       if (nums[mid] <= k && k <= nums[right]) {
+//         left = mid + 1;
+//       } else {
+//         right = mid - 1;
+//       }
+//     }
+//   }
+//   return false;
+// };
+
+// let numss = [2, 5, 6, 0, 0, 1, 2];
+// let p = 5;
+
+// console.log(rotateSortedSearch(numss, p));
+
+//-------------------------------------------------------------------------------
 
 // function findPeak(arr, n) {
 //   if (n === 1) return 0;
