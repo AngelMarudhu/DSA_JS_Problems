@@ -2028,7 +2028,7 @@ var kThLargestElement = function (array, kth) {
     maxheap.heapifyDown(maxheap.heap, i, array.length);
   }
 
-  // console.log(array);
+  console.log(maxheap);
 
   let max = 0;
   while (kth > 0) {
@@ -2038,7 +2038,7 @@ var kThLargestElement = function (array, kth) {
   return max;
 };
 
-//console.log(kThLargestElement([9, 6, 8, 2, 1, 4, 3], 3));
+console.log(kThLargestElement([9, 6, 8, 2, 1, 4, 3], 3));
 
 var topKFrequent = function (nums, k) {
   let hashMap = new Map();

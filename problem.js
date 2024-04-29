@@ -2521,7 +2521,7 @@
 
 // --------------------------------------------------------------------------------------
 
-// var rotateSortedSearch = function (nums, k) {
+// var xSortedSearch = function (nums, k) {
 //   let left = 0;
 //   let right = nums.length - 1;
 
