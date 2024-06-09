@@ -2103,6 +2103,7 @@ var leastInterval = function (tasks, n) {
     }
   }
   /// after added frequency of each letter then assigning to maxHeap they will taking care
+  /// we need to come from high freq to low frequency.....
   for (let [key, freq] of hashMap) {
     max.push(freq);
   }
